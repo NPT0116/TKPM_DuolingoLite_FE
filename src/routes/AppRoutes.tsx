@@ -8,18 +8,18 @@ import GuestPage from "../views/pages/GuestPage";
 
 const AppRoutes: React.FC = () => {
   return (
-    <Routes>
-      <Route path={PATH.LOGIN.index} element={<LoginPage />} />
-      <Route path={PATH.REGISTER.index} element={<RegisterPage />} />
-      <Route path="*" element={<NotFoundPage />} />
+    <div>
+      <Routes>
+        <Route path={PATH.LOGIN.index} element={<LoginPage />} />
+        <Route path={PATH.REGISTER.index} element={<RegisterPage />} />
+        <Route path="*" element={<NotFoundPage />} />
 
-      {/* For component that have layout */}
-      <Route element={<NavigationLayout />}>
-        <Route path={PATH.GUEST.index} element={<GuestPage />} />
-        <Route path={PATH.LESSON.outlets.slug} element={<GuestPage />} />
-        <Route path={PATH.LESSON.outlets.new} element={<LoginPage />} />
-      </Route>
-    </Routes>
+        {/* For component that have layout */}
+        <Route element={<NavigationLayout />}>
+          <Route path={PATH.GUEST.index} element={<GuestPage />} />
+        </Route>
+      </Routes>
+    </div>
   );
 };
 export default AppRoutes;
