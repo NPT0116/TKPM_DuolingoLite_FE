@@ -15,7 +15,7 @@ const RegisterPage: React.FC = () => {
         >
           Tạo hồ sơ
         </div>
-        <InputField type="text" placeholder="Tuổi" />
+        <InputField type="text" placeholder="Tuổi" inputMode="numeric" />
         <InputField type="text" placeholder="Tên (tuỳ chọn)" />
         <InputField type="email" placeholder="Email" />
         <InputField type="text" placeholder="Mật khẩu" />
