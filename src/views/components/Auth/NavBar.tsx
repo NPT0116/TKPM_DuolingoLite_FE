@@ -23,16 +23,16 @@ export const Navbar: React.FC<NavbarProps> = ({ pageName }) => {
         />
       </div>
       {/* Navigate Button */}
-      <button
-        className="font-bold border-2 border-b-4 border-[#37464F] text-[#49C0F8] 
+      <Link to={linkTo} className="text-[14px] w-">
+        <button
+          className="font-bold border-2 border-b-4 border-[#37464F] text-[#49C0F8] 
           hover:text-[#49c1f8c5] rounded-2xl hover:bg-[#2b131f42] cursor-pointer 
           transition-all duration-100 active:border-b-2 active:translate-y-0.5"
-        style={{ padding: "10px 16px 16px 16px" }}
-      >
-        <Link to={linkTo} className="text-[14px]">
+          style={{ padding: "10px 16px 16px 16px" }}
+        >
           {linkText}
-        </Link>
-      </button>
+        </button>
+      </Link>
     </div>
   );
 };
