@@ -6,6 +6,8 @@ import NotFoundPage from "../views/pages/NotFoundPage";
 import NavigationLayout from "../views/layouts/NavigationLayout";
 import GuestPage from "../views/pages/GuestPage";
 import WelcomePage from "../views/pages/WelcomePages/WelcomePage";
+import LeaderBoardPage from "../views/pages/LeaderBoardPage";
+import ProfilePage from "../views/pages/ProfilePage";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -18,7 +20,12 @@ const AppRoutes: React.FC = () => {
 
         {/* For component that have layout */}
         <Route element={<NavigationLayout />}>
-          <Route path={PATH.GUEST.index} element={<GuestPage />} />
+          <Route path={PATH.USER.index} element={<GuestPage />} />
+          <Route
+            path={PATH.USER.outlets.leaderBoard}
+            element={<LeaderBoardPage />}
+          />
+          <Route path={PATH.USER.outlets.profile} element={<ProfilePage />} />
         </Route>
       </Routes>
     </div>

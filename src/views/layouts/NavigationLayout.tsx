@@ -28,13 +28,12 @@ const NavigationLayout: React.FC = () => {
             alt="Logo of Duolingo"
           />
         </div>
-        {/* , LUYỆN TẬP, BẢNG XẾP HẠNG, NHIỆM VỤ, CỬA HÀNG, HỒ SƠ, XEM THÊM */}
 
         <div className="w-full h-full relative flex flex-col gap-2">
           <div className="rounded-xl">
             <Link
               to="#"
-              className="flex font-din  rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
+              className="flex font-bold  rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
               style={{
                 padding: "8px 4px 8px 4px",
               }}
@@ -56,7 +55,7 @@ const NavigationLayout: React.FC = () => {
           <div className="rounded-xl">
             <Link
               to="#"
-              className="flex font-din rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
+              className="flex font-bold rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
               style={{ padding: "8px 4px 8px 4px" }}
             >
               <span className="flex flex-row">
@@ -78,8 +77,8 @@ const NavigationLayout: React.FC = () => {
           </div>
           <div className="rounded-xl">
             <Link
-              to="#"
-              className="flex font-din rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
+              to="/leaderboard"
+              className="flex font-bold rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
               style={{ padding: "8px 4px 8px 4px" }}
             >
               <span className="flex flex-row">
@@ -99,8 +98,8 @@ const NavigationLayout: React.FC = () => {
           </div>
           <div className="rounded-xl">
             <Link
-              to="#"
-              className="flex font-din rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
+              to="/profile"
+              className="flex font-bold rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
               style={{ padding: "8px 4px 8px 4px" }}
             >
               <span className="flex flex-row">

@@ -7,13 +7,19 @@ export const PATH = {
     },
     GUEST: {
         index: "/",
-
     },
     LESSON: {
         index: "/lesson",
         outlets: {
             slug: "/lesson/:id",
             new: "/lesson/new"
+        }
+    },
+    USER: {
+        index: "/",
+        outlets: {
+            leaderBoard: "/leaderboard",
+            profile: "/profile"
         }
     }
 }
