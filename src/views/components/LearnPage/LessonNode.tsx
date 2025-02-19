@@ -1,22 +1,22 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 interface ILessonNode {
-  mainColor: string;
-  bgColor: string;
+  topColor: string;
+  botColor: string;
   shadowColor: string;
   transX: string;
 }
 
 const LessonNode: React.FC<ILessonNode> = ({
-  mainColor,
-  bgColor,
+  topColor,
+  botColor,
   shadowColor,
   transX,
 }) => {
   const nodeColor = css`
-    background: #${mainColor};
+    background: #${botColor};
     &::before {
-      background: #${bgColor};
+      background: #${topColor};
     }
   `;
   return (
