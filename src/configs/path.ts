@@ -5,9 +5,6 @@ export const PATH = {
     REGISTER: {
         index: "/register"
     },
-    GUEST: {
-        index: "/",
-    },
     LESSON: {
         index: "/lesson",
         outlets: {
@@ -19,7 +16,8 @@ export const PATH = {
         index: "/",
         outlets: {
             leaderBoard: "/leaderboard",
-            profile: "/profile"
+            profile: "/profile",
+            learn: "/learn"
         }
     }
 }
