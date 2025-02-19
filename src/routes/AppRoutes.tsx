@@ -8,6 +8,7 @@ import GuestPage from "../views/pages/GuestPage";
 import WelcomePage from "../views/pages/WelcomePages/WelcomePage";
 import LeaderBoardPage from "../views/pages/LeaderBoardPage";
 import ProfilePage from "../views/pages/ProfilePage";
+import LearnPage from "../views/pages/LearnPage/LearnPage";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -26,6 +27,7 @@ const AppRoutes: React.FC = () => {
             element={<LeaderBoardPage />}
           />
           <Route path={PATH.USER.outlets.profile} element={<ProfilePage />} />
+          <Route path={PATH.USER.outlets.learn} element={<LearnPage />} />
         </Route>
       </Routes>
     </div>
