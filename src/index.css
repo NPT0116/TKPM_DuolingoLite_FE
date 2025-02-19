@@ -1,12 +1,15 @@
 @import "tailwindcss";
 
 @font-face {
-    font-family: Din;
-    font-display: swap;
-    src: url("./assets/fonts/din-round-bold.ttf") format('truetype');
-
+  font-family: Din;
+  font-display: swap;
+  src: url("./assets/fonts/din-round-bold.ttf") format("truetype");
 }
 
 @theme {
-    --font-din: Din
+  --font-din: Din;
+}
+
+body {
+  overflow-y: auto;
 }
