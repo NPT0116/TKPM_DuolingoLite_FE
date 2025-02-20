@@ -176,15 +176,19 @@ const ProfilePage: React.FC = () => {
                       <div className="text-[17px] text-[#52656D]">1/3</div>
                     </div>
 
-                    {/* Progress Bar */}
-                    <div className="relative w-full h-[14px] rounded-2xl overflow-hidden bg-[#37464F]">
-                      <div
-                        className="absolute top-0 left-0 h-full bg-[#FFC700] rounded-2xl transition-all"
-                        style={{ width: "33.33%" }}
-                      ></div>
-                    </div>
+                    <div className="flex flex-col gap-3">
+                      {/* Progress Bar */}
+                      <div className="relative w-full h-[14px] rounded-2xl overflow-hidden bg-[#37464F]">
+                        <div
+                          className="absolute top-0 left-0 h-full bg-[#FFC700] rounded-2xl transition-all"
+                          style={{ width: "33.33%" }}
+                        ></div>
+                      </div>
 
-                    <div className="font-semibold">Đạt chuỗi 3 ngày streak</div>
+                      <div className="font-semibold">
+                        Đạt chuỗi 3 ngày streak
+                      </div>
+                    </div>
                   </div>
                 </li>
 
