@@ -9,4 +9,8 @@
 
 @theme {
     --font-din: Din
-} */
+*/
+
+body {
+  overflow-y: auto;
+}
