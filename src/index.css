@@ -6,10 +6,10 @@
   src: url("./assets/fonts/din-round-bold.ttf") format("truetype");
 }
 
-@theme {
+/* @theme {
   --font-din: Din;
 }
 
 body {
   overflow-y: auto;
-}
+} */
