@@ -1,7 +1,8 @@
-import facebook_icon from "../../assets/imgs/login/facebook_icon.png";
-import google_icon from "../../assets/imgs/login/google_icon.png";
-import { InputField } from "../components/Auth/Input";
-import { Navbar } from "../components/Auth/NavBar";
+import { InputField } from "../../../components/Auth/Input";
+import { Navbar } from "../../../components/Auth/NavBar";
+import facebook_icon from "../../../../assets/imgs/login/facebook_icon.png";
+import google_icon from "../../../../assets/imgs/login/google_icon.png";
+
 const LoginPage: React.FC = () => {
   return (
     <div

@@ -1,14 +1,14 @@
 import { Route, Routes } from "react-router-dom";
 import { PATH } from "../configs/path";
-import LoginPage from "../views/pages/LoginPage";
-import RegisterPage from "../views/pages/RegisterPage";
-import NotFoundPage from "../views/pages/NotFoundPage";
+import RegisterPage from "../views/pages/AuthPage/RegisterPage/RegisterPage";
+import NotFoundPage from "../views/pages/NotFoundPage/NotFoundPage";
 import NavigationLayout from "../views/layouts/NavigationLayout";
-import GuestPage from "../views/pages/GuestPage";
+import GuestPage from "../views/pages/GuestPage/GuestPage";
 import WelcomePage from "../views/pages/WelcomePages/WelcomePage";
-import LeaderBoardPage from "../views/pages/LeaderBoardPage";
-import ProfilePage from "../views/pages/ProfilePage";
+import LeaderBoardPage from "../views/pages/LeaderBoardPage/LeaderBoardPage";
 import LearnPage from "../views/pages/LearnPage/LearnPage";
+import LoginPage from "../views/pages/AuthPage/LoginPage/LoginPage";
+import ProfilePage from "../views/pages/ProfilePage/ProfilePage";
 
 const AppRoutes: React.FC = () => {
   return (

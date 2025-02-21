@@ -1,6 +1,6 @@
-import facebook_icon from "../../assets/imgs/login/facebook_icon.png";
-import { InputField } from "../components/Auth/Input";
-import { Navbar } from "../components/Auth/NavBar";
+import facebook_icon from "../../../../assets/imgs/login/facebook_icon.png";
+import { InputField } from "../../../components/Auth/Input";
+import { Navbar } from "../../../components/Auth/NavBar";
 const RegisterPage: React.FC = () => {
   return (
     <div className="w-full h-[100vh] pt-[31px] bg-[#131f24] flex flex-col items-center justify-center">
