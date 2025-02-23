@@ -1,9 +1,9 @@
-const Instruction: React.FC = () => {
-  return (
-    <span className="text-[32px] font-bold">
-      Nhấn vào những gì bạn nghe được
-    </span>
-  );
+interface InstructionProps {
+  instruction: string;
+}
+
+const Instruction: React.FC<InstructionProps> = ({ instruction }) => {
+  return <span className="text-[32px] font-bold">{instruction}</span>;
 };
 
 export default Instruction;

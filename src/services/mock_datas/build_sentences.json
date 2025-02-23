@@ -1,0 +1,91 @@
+{
+  "value": {
+    "question": {
+      "instruction": "Viết lại bằng Tiếng Việt",
+      "questionId": "buildsentence-guid-1234",
+      "vietnameseText": null,
+      "pictureId": null,
+      "englishText": "Which animal is the fastest?",
+      "audioId": null,
+      "type": "BuildSentence",
+      "questionConfigureId": "config-guid-1111",
+      "optionConfigureId": "config-guid-2222",
+      "order": 1,
+      "options": [
+        {
+          "optionId": "opt1-guid",
+          "englishText": "Which",
+          "vietnameseText": null,
+          "order": 1
+        },
+        {
+          "optionId": "opt2-guid",
+          "englishText": "animal",
+          "vietnameseText": null,
+          "order": 2
+        },
+        {
+          "optionId": "opt3-guid",
+          "englishText": "is",
+          "vietnameseText": null,
+          "order": 3
+        },
+        {
+          "optionId": "opt4-guid",
+          "englishText": "the",
+          "vietnameseText": null,
+          "order": 4
+        },
+        {
+          "optionId": "opt5-guid",
+          "englishText": "fastest",
+          "vietnameseText": null,
+          "order": 5
+        },
+        {
+          "optionId": "opt6-guid",
+          "englishText": "distractor",
+          "vietnameseText": null,
+          "order": -1
+        },
+        {
+          "optionId": "opt7-guid",
+          "englishText": "hello",
+          "vietnameseText": null,
+          "order": -1
+        },
+        {
+          "optionId": "opt8-guid",
+          "englishText": "evening",
+          "vietnameseText": null,
+          "order": -1
+        },
+        {
+          "optionId": "opt9-guid",
+          "englishText": "choice",
+          "vietnameseText": null,
+          "order": -1
+        },
+        {
+          "optionId": "opt10-guid",
+          "englishText": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "vietnameseText": null,
+          "order": -1
+        },
+        {
+          "optionId": "opt1-guid",
+          "englishText": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "vietnameseText": null,
+          "order": -1
+        }
+      ]
+    }
+  },
+  "isSuccess": true,
+  "isFailure": false,
+  "error": {
+    "code": "",
+    "description": "",
+    "type": 0
+  }
+}

@@ -1,6 +1,10 @@
 import turto_icon from "../../../../../assets/imgs/build_sentence/turtle_icon.png";
 
-export const OnlyAudio: React.FC = () => {
+interface OnlyAudioProps {
+  audioId: string;
+}
+
+export const OnlyAudio: React.FC<OnlyAudioProps> = ({ audioId }) => {
   return (
     <div className="flex  justify-center items-end gap-[16px]">
       <button

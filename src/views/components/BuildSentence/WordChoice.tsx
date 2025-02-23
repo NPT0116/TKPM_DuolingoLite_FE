@@ -1,47 +1,59 @@
-import { useRef, useCallback } from "react";
 import { motion } from "framer-motion";
+import React, { useEffect, useRef } from "react";
 import BSButton from "../Button/BuildSentenceButton/BSButton";
+import { BuildSentenceOption } from "../../../interfaces/Options/BuildSentenceOption";
 
 interface WordChoiceProps {
-  selectedWords: {
-    word: string;
-    optionPosition: { x: number; y: number };
-    answerPosition: { x: number; y: number };
-  }[];
-  onWordClick: (word: string, position: { x: number; y: number }) => void;
+  selectedWords: BuildSentenceOption[];
+  wordOptions: BuildSentenceOption[];
+  onWordClick: (option: BuildSentenceOption) => void;
+  onWrapCountChange?: (count: number) => void;
 }
 
 const WordChoice: React.FC<WordChoiceProps> = ({
   selectedWords,
+  wordOptions,
   onWordClick,
+  onWrapCountChange,
 }) => {
-  const words = ["coffee", "water", "and", "milk"];
-  const wordRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  // Ref cho container chứa các nút từ
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const setWordRef = useCallback(
-    (word: string) => (el: HTMLDivElement | null) => {
-      wordRefs.current[word] = el;
-    },
-    []
-  );
-
-  const handleWordClick = (word: string) => {
-    const ref = wordRefs.current[word];
-    if (ref) {
-      const rect = ref.getBoundingClientRect();
-      // Tính vị trí của BSButton (theo viewport)
-      onWordClick(word, { x: rect.left, y: rect.top });
+  useEffect(() => {
+    if (containerRef.current) {
+      // Lấy tất cả phần tử con và đếm các offsetTop khác nhau
+      const children = Array.from(containerRef.current.children);
+      const rows = new Set<number>();
+      children.forEach((child) => {
+        const el = child as HTMLElement;
+        rows.add(el.offsetTop);
+      });
+      if (onWrapCountChange) {
+        onWrapCountChange(rows.size);
+      }
     }
+  }, [wordOptions, selectedWords, onWrapCountChange]);
+
+  const handleWordClick = (option: BuildSentenceOption) => {
+    onWordClick(option);
   };
 
   return (
-    <div className="flex flex-wrap justify-center text-[19px] gap-[10px]">
-      {words.map((word) => {
-        const isSelected = selectedWords.some((w) => w.word === word);
+    <div
+      ref={containerRef}
+      className="flex flex-wrap justify-center text-[19px] gap-[10px]"
+    >
+      {wordOptions.map((option) => {
+        // Lấy giá trị hiển thị từ englishText nếu có, nếu không dùng vietnameseText.
+        const word: string = option.englishText ?? option.vietnameseText!;
+        const isSelected = selectedWords.some((selected) => {
+          const selectedWord = selected.englishText ?? selected.vietnameseText!;
+          return selectedWord === word;
+        });
         return (
-          <motion.div key={word} ref={setWordRef(word)} className="relative">
+          <motion.div key={option.optionId} className="relative">
             <div
-              className={`bg-white rounded-xl absolute inset-0 pointer-events-none transition-opacity duration-300 `}
+              className="bg-[#37464F] rounded-xl absolute inset-0 pointer-events-none transition-opacity duration-300"
               style={{
                 opacity: isSelected ? 1 : 0,
                 transition: "opacity 0.3s",
@@ -50,8 +62,12 @@ const WordChoice: React.FC<WordChoiceProps> = ({
             <div className="relative z-10">
               <BSButton
                 label={word}
-                onClick={() => !isSelected && handleWordClick(word)}
+                onClick={() => !isSelected && handleWordClick(option)}
                 disabled={isSelected}
+                style={{
+                  opacity: isSelected ? 0 : 1,
+                  transition: "opacity 0.3s",
+                }}
               />
             </div>
           </motion.div>
