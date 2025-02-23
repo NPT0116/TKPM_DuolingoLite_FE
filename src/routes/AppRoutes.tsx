@@ -9,6 +9,7 @@ import LeaderBoardPage from "../views/pages/LeaderBoardPage/LeaderBoardPage";
 import LearnPage from "../views/pages/LearnPage/LearnPage";
 import LoginPage from "../views/pages/AuthPage/LoginPage/LoginPage";
 import ProfilePage from "../views/pages/ProfilePage/ProfilePage";
+import BuildSentencePage from "../views/pages/BuildSentencePage/BuildSentencePage";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -18,6 +19,8 @@ const AppRoutes: React.FC = () => {
         <Route path={PATH.REGISTER.index} element={<RegisterPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/welcome" element={<WelcomePage />} />
+
+        <Route path="/lesson/build-sentence" element={<BuildSentencePage />} />
 
         {/* For component that have layout */}
         <Route element={<NavigationLayout />}>
