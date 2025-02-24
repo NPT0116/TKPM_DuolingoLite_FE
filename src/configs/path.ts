@@ -9,7 +9,8 @@ export const PATH = {
         index: "/lesson",
         outlets: {
             slug: "/lesson/:id",
-            new: "/lesson/new"
+            new: "/lesson/new",
+            matching: "/lesson/matching"
         }
     },
     USER: {
@@ -19,5 +20,6 @@ export const PATH = {
             profile: "/profile",
             learn: "/learn"
         }
-    }
+    },
+
 }

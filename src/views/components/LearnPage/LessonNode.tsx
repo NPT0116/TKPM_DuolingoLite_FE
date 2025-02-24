@@ -6,7 +6,6 @@ interface ILessonNode {
   shadowColor: string;
   transX: string;
 }
-
 const LessonNode: React.FC<ILessonNode> = ({
   topColor,
   botColor,

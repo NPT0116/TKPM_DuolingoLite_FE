@@ -32,7 +32,7 @@ const NavigationLayout: React.FC = () => {
         <div className="w-full h-full relative flex flex-col gap-2">
           <div className="rounded-xl">
             <Link
-              to="#"
+              to="/learn"
               className="flex font-bold  rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
               style={{
                 padding: "8px 4px 8px 4px",

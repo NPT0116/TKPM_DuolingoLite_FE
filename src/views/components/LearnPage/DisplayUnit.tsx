@@ -52,7 +52,7 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({ type }) => {
             <span className="text-xl"> Talk about weather</span>
           </div>
           <div
-            className="border-2 border-b-4  rounded-2xl hover:opacity-80 flex justify-between items-center gap-4"
+            className="border-2 border-b-4  rounded-2xl hover:opacity-80 flex justify-between items-center gap-4 cursor-pointer"
             style={{
               padding: "12px 10px",
               borderColor: `#${randomTemplate.botColor}`,
@@ -130,7 +130,7 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({ type }) => {
           <span className="text-xl"> Talk about weather</span>
         </div>
         <div
-          className="border-2 border-b-4  rounded-2xl hover:opacity-80 flex justify-between items-center gap-4"
+          className="border-2 border-b-4  rounded-2xl hover:opacity-80 flex justify-between items-center gap-4 cursor-pointer"
           style={{
             padding: "12px 10px",
             borderColor: `#${randomTemplate.botColor}`,
