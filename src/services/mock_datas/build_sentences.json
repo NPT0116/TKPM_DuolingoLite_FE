@@ -65,18 +65,6 @@
           "englishText": "choice",
           "vietnameseText": null,
           "order": -1
-        },
-        {
-          "optionId": "opt10-guid",
-          "englishText": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-          "vietnameseText": null,
-          "order": -1
-        },
-        {
-          "optionId": "opt1-guid",
-          "englishText": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-          "vietnameseText": null,
-          "order": -1
         }
       ]
     }
