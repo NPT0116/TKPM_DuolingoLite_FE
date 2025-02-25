@@ -1,13 +1,13 @@
 import { useState } from "react";
-import AnswerLine from "../../components/BuildSentence/AnswerLine";
-import Instruction from "../../components/BuildSentence/Instruction";
-import QuestionSection from "../../components/BuildSentence/QuestionSection";
-import WordChoice from "../../components/BuildSentence/WordChoice";
-import { Configure } from "../../../interfaces/Configure";
-import configData from "../../../services/mock_datas/configure.json";
-import buildSentenceData from "../../../services/mock_datas/build_sentences.json";
-import { BuildSentenceQuestion } from "../../../interfaces/Questions/BuildSentenceQuestion";
-import { BuildSentenceOption } from "../../../interfaces/Options/BuildSentenceOption";
+import AnswerLine from "../../../components/BuildSentence/AnswerLine";
+import Instruction from "../../../components/BuildSentence/Instruction";
+import QuestionSection from "../../../components/BuildSentence/QuestionSection";
+import WordChoice from "../../../components/BuildSentence/WordChoice";
+import { Configure } from "../../../../interfaces/Configure";
+import configData from "../../../../services/mock_datas/configure.json";
+import buildSentenceData from "../../../../services/mock_datas/build_sentences.json";
+import { BuildSentenceQuestion } from "../../../../interfaces/Questions/BuildSentenceQuestion";
+import { BuildSentenceOption } from "../../../../interfaces/Options/BuildSentenceOption";
 
 const BuildSentencePage: React.FC = () => {
   const [selectedWords, setSelectedWords] = useState<BuildSentenceOption[]>([]);
@@ -17,15 +17,10 @@ const BuildSentencePage: React.FC = () => {
   const data: BuildSentenceQuestion = buildSentenceData.value
     .question as BuildSentenceQuestion;
 
-  const handleWordClick = (option: BuildSentenceOption) => {
-    // Lấy giá trị hiển thị của option (sử dụng englishText nếu có, nếu không thì vietnameseText)
-    const wordValue: string = option.englishText ?? option.vietnameseText!;
-    setSelectedWords((prev) =>
-      prev.some((w) => (w.englishText ?? w.vietnameseText)! === wordValue)
-        ? prev.filter((w) => (w.englishText ?? w.vietnameseText)! !== wordValue)
-        : [...prev, option]
-    );
+  const handleChooseWord = (option: BuildSentenceOption) => {
+    setSelectedWords((prev) => [...prev, option]);
   };
+
   const handleRemoveWord = (option: BuildSentenceOption) => {
     setSelectedWords((prev) =>
       prev.filter((w) => w.optionId !== option.optionId)
@@ -53,7 +48,7 @@ const BuildSentencePage: React.FC = () => {
             <WordChoice
               selectedWords={selectedWords}
               wordOptions={data.options}
-              onWordClick={handleWordClick}
+              onWordClick={handleChooseWord}
               onWrapCountChange={(count) => setWrapCount(count)}
             />
           </div>

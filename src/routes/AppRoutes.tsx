@@ -11,6 +11,7 @@ import LoginPage from "../views/pages/AuthPage/LoginPage/LoginPage";
 import ProfilePage from "../views/pages/ProfilePage/ProfilePage";
 import MatchingLessonPage from "../views/pages/LearnPage/MatchingWord/MatchingLessonPage";
 import PronunciationPage from "../views/pages/LearnPage/Pronunciation/PronunciationPage";
+import BuildSentencePage from "../views/pages/LearnPage/BuildSentencePage/BuildSentencePage";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -24,6 +25,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/lesson">
           <Route path="matching" element={<MatchingLessonPage />} />
           <Route path="pronunciation" element={<PronunciationPage />} />
+          <Route path="build-sentence" element={<BuildSentencePage />} />
         </Route>
 
         {/* For component that have layout */}

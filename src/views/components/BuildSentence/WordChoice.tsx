@@ -34,17 +34,12 @@ const WordChoice: React.FC<WordChoiceProps> = ({
     }
   }, [wordOptions, selectedWords, onWrapCountChange]);
 
-  const handleWordClick = (option: BuildSentenceOption) => {
-    onWordClick(option);
-  };
-
   return (
     <div
       ref={containerRef}
       className="flex flex-wrap justify-center text-[19px] gap-[10px]"
     >
       {wordOptions.map((option) => {
-        // Lấy giá trị hiển thị từ englishText nếu có, nếu không dùng vietnameseText.
         const word: string = option.englishText ?? option.vietnameseText!;
         const isSelected = selectedWords.some((selected) => {
           const selectedWord = selected.englishText ?? selected.vietnameseText!;
@@ -62,7 +57,7 @@ const WordChoice: React.FC<WordChoiceProps> = ({
             <div className="relative z-10">
               <BSButton
                 label={word}
-                onClick={() => !isSelected && handleWordClick(option)}
+                onClick={() => !isSelected && onWordClick(option)}
                 disabled={isSelected}
                 style={{
                   opacity: isSelected ? 0 : 1,
