@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";
-import BSButton from "../Button/BuildSentenceButton/BSButton";
+import BSBWordButton from "../Button/BuildSentence/BSWordButton";
 import { BuildSentenceOption } from "../../../interfaces/Options/BuildSentenceOption";
 
 interface WordChoiceProps {
@@ -55,7 +55,7 @@ const WordChoice: React.FC<WordChoiceProps> = ({
               }}
             ></div>
             <div className="relative z-10">
-              <BSButton
+              <BSBWordButton
                 label={word}
                 onClick={() => !isSelected && onWordClick(option)}
                 disabled={isSelected}

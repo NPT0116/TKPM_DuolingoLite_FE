@@ -3,8 +3,8 @@ import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { css } from "@emotion/react";
 import WelcomeOwl from "../../../components/Learning/Matching/WelcomeOwl";
-import ContinueButton from "../../../components/Learning/Matching/ContinueButton";
-import ButtonMatching from "../../../components/Learning/Matching/ButtonMatching";
+import ContinueButton from "../../../components/Button/Matching/ContinueButton";
+import ButtonMatching from "../../../components/Button/Matching/ButtonMatching";
 
 interface IVNContent {
   optionId: string;

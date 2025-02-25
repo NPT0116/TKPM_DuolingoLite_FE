@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import React from "react";
-import BSButton from "../Button/BuildSentenceButton/BSButton";
+import BSButton from "../Button/BuildSentence/BSWordButton";
 import { BuildSentenceOption } from "../../../interfaces/Options/BuildSentenceOption";
 
 interface AnswerLineProps {

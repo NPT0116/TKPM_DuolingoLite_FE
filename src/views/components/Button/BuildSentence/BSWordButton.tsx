@@ -1,13 +1,13 @@
 import React from "react";
 
-interface BSButtonProps {
+interface BSWordProps {
   label: string;
   onClick: () => void;
   disabled?: boolean;
   style?: React.CSSProperties;
 }
 
-const BSButton: React.FC<BSButtonProps> = ({
+const BSBWordButton: React.FC<BSWordProps> = ({
   label,
   onClick,
   disabled,
@@ -33,4 +33,4 @@ const BSButton: React.FC<BSButtonProps> = ({
   );
 };
 
-export default BSButton;
+export default BSBWordButton;
