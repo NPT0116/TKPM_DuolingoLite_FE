@@ -1,4 +1,7 @@
 /** @jsxImportSource @emotion/react */
+import QuestionBox from "../../../components/Learning/Pronunciation/QuestionBox";
+import { css } from "@emotion/react";
+
 const questionElements = [
   {
     englishText: "Is",
@@ -36,24 +39,10 @@ const questionElements = [
     audio: "",
   },
 ];
-interface IFullAudio {
-  [index: string]: string;
-}
-const fullAudio: IFullAudio = {};
-questionElements.forEach((item, index) => {
-  if (item.audio) {
-    fullAudio[index] = item.audio;
-  }
-});
-
-import QuestionBox from "../../../components/Learning/Pronunciation/QuestionBox";
-import { css } from "@emotion/react";
 
 const PronunciationPage: React.FC = () => {
   return (
     <div>
-      {/* Header  */}
-      <div className="w-[100vw] h-[10vh] bg-red-200">XP bar</div>
       {/* Main content */}
       <div
         className="relative w-[100vw] h-[75vh] flex flex-col justify-center items-center "
@@ -99,8 +88,6 @@ const PronunciationPage: React.FC = () => {
           </div>
         </div>
       </div>
-      {/* Navigation */}
-      <div className="w-[100vw] h-[15vh] bg-green-200">Navigation</div>
     </div>
   );
 };

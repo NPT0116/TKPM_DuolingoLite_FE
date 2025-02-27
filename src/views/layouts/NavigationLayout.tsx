@@ -118,6 +118,102 @@ const NavigationLayout: React.FC = () => {
               </span>
             </Link>
           </div>
+          <div className="rounded-xl">
+            <Link
+              to="/lesson/matching"
+              className="flex font-bold rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
+              style={{ padding: "8px 4px 8px 4px" }}
+            >
+              <span className="flex flex-row">
+                <div>
+                  <img
+                    src="https://simg-ssl.duolingo.com/ssr-avatars/1288943247/SSR-Dnq9imvO9g/medium"
+                    alt="logo of Profile"
+                    width="32px"
+                    style={{
+                      margin: "0px 20px 0px 10px",
+                      borderRadius: "100%",
+                    }}
+                  />
+                </div>
+                <span className="flex justify-center items-center">
+                  Matching
+                </span>
+              </span>
+            </Link>
+          </div>
+          <div className="rounded-xl">
+            <Link
+              to="/lesson/pronunciation"
+              className="flex font-bold rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
+              style={{ padding: "8px 4px 8px 4px" }}
+            >
+              <span className="flex flex-row">
+                <div>
+                  <img
+                    src="https://simg-ssl.duolingo.com/ssr-avatars/1288943247/SSR-Dnq9imvO9g/medium"
+                    alt="logo of Profile"
+                    width="32px"
+                    style={{
+                      margin: "0px 20px 0px 10px",
+                      borderRadius: "100%",
+                    }}
+                  />
+                </div>
+                <span className="flex justify-center items-center">
+                  Pronunciation
+                </span>
+              </span>
+            </Link>
+          </div>
+          <div className="rounded-xl">
+            <Link
+              to="/lesson/build-sentence"
+              className="flex font-bold rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
+              style={{ padding: "8px 4px 8px 4px" }}
+            >
+              <span className="flex flex-row">
+                <div>
+                  <img
+                    src="https://simg-ssl.duolingo.com/ssr-avatars/1288943247/SSR-Dnq9imvO9g/medium"
+                    alt="logo of Profile"
+                    width="32px"
+                    style={{
+                      margin: "0px 20px 0px 10px",
+                      borderRadius: "100%",
+                    }}
+                  />
+                </div>
+                <span className="flex justify-center items-center">
+                  Build Sentence
+                </span>
+              </span>
+            </Link>
+          </div>
+          <div className="rounded-xl">
+            <Link
+              to="/lesson/multiple-choice"
+              className="flex font-bold rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
+              style={{ padding: "8px 4px 8px 4px" }}
+            >
+              <span className="flex flex-row">
+                <div>
+                  <img
+                    src="https://simg-ssl.duolingo.com/ssr-avatars/1288943247/SSR-Dnq9imvO9g/medium"
+                    alt="logo of Profile"
+                    width="32px"
+                    style={{
+                      margin: "0px 20px 0px 10px",
+                      borderRadius: "100%",
+                    }}
+                  />
+                </div>
+                <span className="flex justify-center items-center">
+                  Multiple Choice
+                </span>
+              </span>
+            </Link>
+          </div>
         </div>
       </div>
 

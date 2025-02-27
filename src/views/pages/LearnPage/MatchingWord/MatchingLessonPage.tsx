@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useMemo } from "react";
+import { Link, useOutletContext } from "react-router-dom";
 import { css } from "@emotion/react";
 import WelcomeOwl from "../../../components/Learning/Matching/WelcomeOwl";
-import ContinueButton from "../../../components/Button/Matching/ContinueButton";
+import ContinueButton from "../../../components/Button/ContinueButton";
 import ButtonMatching from "../../../components/Button/Matching/ButtonMatching";
 
 interface IVNContent {
@@ -16,17 +16,24 @@ interface IELContent {
   targetType: string;
   englishText: string;
 }
+interface OutletContextType {
+  setXp: React.Dispatch<
+    React.SetStateAction<{ accumulated: number; total: number }>
+  >;
+  state: number;
+  setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 type PickingQueueItem = IVNContent | IELContent;
 
 const MatchingLessonPage: React.FC = () => {
-  const [state, setState] = useState(1);
-  const [isButtonActivate, setButtonActivate] = useState(false);
   const [correctPickingList, setCorrectPickingList] = useState<string[]>([]);
   const [pickingQueue, setPickingQueue] = useState<PickingQueueItem[]>([]);
   const [wrongPickingList, setWrongPickingList] = useState<PickingQueueItem[]>(
     []
   );
+  const { setXp, state, setIsButtonActive } =
+    useOutletContext<OutletContextType>();
 
   const sourceCollection: IVNContent[] = [
     { optionId: "1", sourceType: "VietNamText", vietnameseText: "đắt" },
@@ -60,61 +67,21 @@ const MatchingLessonPage: React.FC = () => {
 
   // Activate button when the correct picking list reaches 5 items.
   useEffect(() => {
-    if (correctPickingList.length === 5) {
-      setButtonActivate(true);
-    }
-  }, [correctPickingList]);
+    setXp({
+      accumulated: correctPickingList.length,
+      total: targetCollection.length,
+    });
 
-  // Memoize the CSS style for performance.
-  const statusCheckCSS = useMemo(
-    () => css`
-      background: ${isButtonActivate ? "#93D333" : "#52656d"};
-    `,
-    [isButtonActivate]
-  );
-  const effectCSS = css`
-    width: ${(correctPickingList.length / totalItem) * 100}%;
-    transition: width 0.5s ease;
-  `;
+    if (correctPickingList.length === 5) {
+      setIsButtonActive(true);
+    }
+  }, [correctPickingList, setXp]);
+
   const handleScreenClick = () => {
     setPickingQueue([]);
   };
   return (
     <div onClick={() => handleScreenClick()}>
-      {/* Progress Bar Container */}
-      <div
-        className="relative w-[100vw] h-[10vh] flex justify-center items-center translate-y-6"
-        style={{ padding: "0px 200px" }}
-      >
-        <div className="w-full flex flex-row justify-between gap-4 items-center">
-          <Link to="/learn" className="absolute -translate-x-[30px]">
-            <img
-              src="https://d35aaqx5ub95lt.cloudfront.net/images/df223d5b9feb8017b323ed21103eb5ac.svg"
-              alt="Back to homepage button"
-            />
-          </Link>
-          <div className="relative bg-[#37464F] w-full h-[15px] rounded-full">
-            <div
-              css={effectCSS}
-              className="relative  bg-[#3B4EFF] rounded-full flex justify-center items-center"
-              style={{ padding: "0px 10px 5px 10px", height: "100%" }}
-            >
-              <div className=" bg-[#6271FF] w-full h-1/5 top-[3px] rounded-full"></div>
-            </div>
-            {/* <div
-              css={statusCheckCSS}
-              className="absolute flex justify-center items-center top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-[25px] h-[25px] rounded-full"
-            >
-              <img
-                className="absolute"
-                src="https://d35aaqx5ub95lt.cloudfront.net/images/bf8b7058ea10715c26469f85f15f8c07.svg"
-                alt="checking icons"
-              />
-            </div> */}
-          </div>
-        </div>
-      </div>
-
       {/* Lesson Container */}
       <div className="relative w-[100vw] h-[75vh] ">
         <div className="absolute text-white font-bold text-3xl left-[200px] top-[40px]">
@@ -155,18 +122,6 @@ const MatchingLessonPage: React.FC = () => {
       </div>
 
       {/* Navigation Button Container */}
-      <div className="relative border-t-2 border-[#37464F] w-[100vw] h-[15vh] flex items-center bg-[#131F23]">
-        <ContinueButton
-          state={state}
-          isButtonActivate={isButtonActivate}
-          setState={setState}
-          mainColor="3B4EFF"
-          borderColor="3F22EC"
-          hoverColor="4156FF"
-          paddingWidth={80}
-          positionRight={250}
-        />
-      </div>
     </div>
   );
 };

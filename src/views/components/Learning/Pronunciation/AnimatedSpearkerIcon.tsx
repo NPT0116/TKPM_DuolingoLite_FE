@@ -1,10 +1,33 @@
 import React from "react";
 
-const AnimatedSpeakerIcon = () => {
+interface IItem {
+  audio: string;
+  englishText: string;
+  vietnameseText: string;
+}
+interface IAnimatedSpeakerIcon {
+  questionElements: IItem[];
+}
+
+const AnimatedSpeakerIcon: React.FC<IAnimatedSpeakerIcon> = ({
+  questionElements,
+}) => {
+  const playAudioSequence = async () => {
+    for (const item of questionElements) {
+      await new Promise<void>((resolve) => {
+        const audio = new Audio(item.audio);
+        audio.play().catch((err) => {
+          console.log("error playing sound: ", err);
+          resolve();
+        });
+        audio.onended = () => resolve();
+      });
+    }
+  };
   return (
     <span
       className="cursor-pointer"
-      onClick={() => {}}
+      onClick={playAudioSequence}
       style={{ background: "#48C0F8" }}
     >
       <svg

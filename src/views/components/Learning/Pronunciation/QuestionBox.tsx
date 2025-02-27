@@ -46,7 +46,6 @@ interface IQuestionBox {
 const QuestionBox: React.FC<IQuestionBox> = ({ questionElements }) => {
   const [isHover, setIsHover] = useState(false);
   const [hoverItem, setHoverItem] = useState(-1);
-  console.log(hoverItem);
   return (
     <div className="relative">
       <div css={arrow}></div>
@@ -55,7 +54,7 @@ const QuestionBox: React.FC<IQuestionBox> = ({ questionElements }) => {
         style={{ padding: "15px 10px" }}
       >
         <div className="w-[30px]">
-          <AnimatedSpeakerIcon />
+          <AnimatedSpeakerIcon questionElements={questionElements} />
         </div>
         <div className="flex flex-row">
           {" "}

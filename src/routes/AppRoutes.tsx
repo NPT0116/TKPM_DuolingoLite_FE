@@ -12,6 +12,7 @@ import ProfilePage from "../views/pages/ProfilePage/ProfilePage";
 import MatchingLessonPage from "../views/pages/LearnPage/MatchingWord/MatchingLessonPage";
 import PronunciationPage from "../views/pages/LearnPage/Pronunciation/PronunciationPage";
 import BuildSentencePage from "../views/pages/LearnPage/BuildSentencePage/BuildSentencePage";
+import LessonLayout from "../views/layouts/LessonLayout";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -22,7 +23,7 @@ const AppRoutes: React.FC = () => {
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/welcome" element={<WelcomePage />} />
         {/* Route for lesson */}
-        <Route path="/lesson">
+        <Route path="/lesson" element={<LessonLayout />}>
           <Route path="matching" element={<MatchingLessonPage />} />
           <Route path="pronunciation" element={<PronunciationPage />} />
           <Route path="build-sentence" element={<BuildSentencePage />} />
