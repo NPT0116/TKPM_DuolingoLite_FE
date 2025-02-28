@@ -1,6 +1,6 @@
+import { Configure } from "../../../../interfaces/Configure/Configure";
 import { OnlyAudio } from "./QuestionType/OnlyAudio/OnlyAudio";
 import { TextAudioPicture } from "./QuestionType/TextAudioPicture/TextAudioPicture";
-import { Configure } from "../../../interfaces/Configure";
 
 interface QuestionSectionProps {
   config: Configure;
@@ -22,7 +22,7 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
       {config.audio &&
       !config.englishText &&
       !config.vietnameseText &&
-      !config.picture ? (
+      !config.image ? (
         <OnlyAudio audioId={audioId!} />
       ) : (
         <TextAudioPicture

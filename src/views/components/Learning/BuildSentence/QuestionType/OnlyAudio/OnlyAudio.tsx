@@ -1,4 +1,4 @@
-import turto_icon from "../../../../../assets/imgs/build_sentence/turtle_icon.png";
+import turto_icon from "../../../../../../assets/imgs/build_sentence/turtle_icon.png";
 
 interface OnlyAudioProps {
   audioId: string;

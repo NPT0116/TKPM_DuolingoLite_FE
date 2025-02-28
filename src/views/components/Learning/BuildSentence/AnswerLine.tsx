@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import React from "react";
-import BSButton from "../Button/BuildSentence/BSWordButton";
-import { BuildSentenceOption } from "../../../interfaces/Options/BuildSentenceOption";
+import { BuildSentenceOption } from "../../../../interfaces/Options/BuildSentenceOption";
+import BSBWordButton from "../../Button/BuildSentence/BSWordButton";
 
 interface AnswerLineProps {
   selectedWords: BuildSentenceOption[];
@@ -52,7 +52,10 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
               exit={{ opacity: 0, x: 0, y: -20 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
-              <BSButton label={word} onClick={() => onRemoveWord(option)} />
+              <BSBWordButton
+                label={word}
+                onClick={() => onRemoveWord(option)}
+              />
             </motion.div>
           );
         })}

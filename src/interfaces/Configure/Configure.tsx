@@ -3,5 +3,6 @@ export interface Configure {
   audio: boolean;
   englishText: boolean;
   vietnameseText: boolean;
-  picture: boolean;
+  image: boolean;
+  instruction: boolean;
 }

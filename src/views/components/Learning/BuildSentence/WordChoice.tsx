@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";
-import BSBWordButton from "../Button/BuildSentence/BSWordButton";
-import { BuildSentenceOption } from "../../../interfaces/Options/BuildSentenceOption";
+import { BuildSentenceOption } from "../../../../interfaces/Options/BuildSentenceOption";
+import BSBWordButton from "../../Button/BuildSentence/BSWordButton";
 
 interface WordChoiceProps {
   selectedWords: BuildSentenceOption[];

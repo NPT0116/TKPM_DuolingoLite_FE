@@ -5,7 +5,8 @@
       "audio": false,
       "englishText": true,
       "vietnameseText": false,
-      "picture": false
+      "image": false,
+      "instruction": false
     }
   },
   "isSuccess": true,
