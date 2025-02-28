@@ -16,7 +16,7 @@ export const PATH = {
     USER: {
         index: "/",
         outlets: {
-            leaderBoard: "/leaderboard",
+            home: "/home",
             profile: "/profile",
             learn: "/learn"
         }

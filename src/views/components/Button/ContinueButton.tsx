@@ -36,15 +36,16 @@ const ContinueButton: React.FC<IContinueButton> = ({
       className={`absolute text-md rounded-2xl font-bold text-white border-b-[4px] cursor-pointer active:border-b-0 active:translate-y-[4px]`}
       style={{ padding: `12px ${paddingWidth}px` }}
       onClick={() => {
-        if (state == 1) {
-          setState((prevState) => prevState + 1);
-        } else {
-          if (isButtonActivate) {
-            if (state < 3) {
-              setState((prevState) => prevState + 1);
-            }
-          }
-        }
+        setState((prev) => prev + 1);
+        // if (state == 1) {
+        //   setState((prevState) => prevState + 1);
+        // } else {
+        //   if (isButtonActivate) {
+        //     if (state < 3) {
+        //       setState((prevState) => prevState + 1);
+        //     }
+        //   }
+        // }
       }}
       css={CSS}
     >

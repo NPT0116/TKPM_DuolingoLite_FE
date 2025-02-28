@@ -30,7 +30,6 @@ const arrowVietnamese = css`
   top: -10px;
   transform: translateX(-50%);
   left: 50%;
-
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-bottom: 10px solid #37464f;
