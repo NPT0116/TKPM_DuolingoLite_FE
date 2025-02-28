@@ -1,10 +1,16 @@
+/** @jsxImportSource @emotion/react */
+import { css } from "@emotion/react";
 import { Link, Outlet } from "react-router-dom";
 import NavigationButton from "../components/Button/NavigationButton";
+
+const scrollBarCSS = css`
+  overflow: hidden;
+`;
 
 const NavigationLayout: React.FC = () => {
   return (
     <div
-      className="flex flex-row text-white bg-primary"
+      className="flex flex-row text-white bg-primary "
       style={{
         width: "100vw",
         height: "100vh",
@@ -30,7 +36,7 @@ const NavigationLayout: React.FC = () => {
           />
         </div>
 
-        <div className="w-full h-full relative flex flex-col gap-2">
+        <div className="w-full relative flex flex-col gap-2">
           <NavigationButton
             isAvatar={false}
             iconLink="https://d35aaqx5ub95lt.cloudfront.net/vendor/784035717e2ff1d448c0f6cc4efc89fb.svg"
@@ -83,7 +89,7 @@ const NavigationLayout: React.FC = () => {
         </div>
       </div>
 
-      <div className="h-full w-4/5">
+      <div className="h-full w-4/5 ">
         <Outlet />
       </div>
     </div>

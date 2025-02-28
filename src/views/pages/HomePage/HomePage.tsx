@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import DisplayUnit from "../../components/LearnPage/DisplayUnit";
 import { css } from "@emotion/react";
-const scrollContainerStyle = css`
+const te = css`
   overflow-y: auto;
   /* Firefox */
   scrollbar-width: thin;
@@ -23,19 +23,28 @@ const scrollContainerStyle = css`
     background-color: #555;
   }
 `;
+const scrollContainerStyle = css`
+  scrollbar-width: 0px;
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+`;
 
 const HomePage: React.FC = () => {
   return (
-    <div className="w-full h-full flex gap-4">
-      <div className="w-3/5 h-full overflow-auto">
+    <div
+      className="w-full h-full flex justify-between"
+      css={scrollContainerStyle}
+    >
+      <div className="w-3/5 h-full overflow-auto" css={scrollContainerStyle}>
         <DisplayUnit type={1} />
         <DisplayUnit type={2} />
         <DisplayUnit type={1} />
         <DisplayUnit type={2} />
       </div>
       <div className="w-2/5 h-full">
-        <div className="w-full h-full flex flex-col gap-4">
-          <div className="w-ful h-1/12  flex justify-evenly items-center gap-10 border-b-2 border-[#37464f]">
+        <div className="w-[95%] h-full flex flex-col">
+          <div className="w-ful h-[12%]  flex justify-evenly items-center gap-10 ">
             <img
               src="https://static.wikia.nocookie.net/duolingo/images/5/59/American_flag.png"
               alt="america flag"
@@ -50,12 +59,14 @@ const HomePage: React.FC = () => {
             </div>
           </div>
           <div
-            className="flex flex-col border-2 border-[#37464f] rounded-3xl"
-            style={{ padding: "10px 15px" }}
+            className="flex flex-col border-2 border-[#37464f] rounded-2xl gap-4"
+            style={{ padding: "25px 25px" }}
           >
-            <span className="self-end font-bold text-[#50D3FF]">
-              XEM GIẢI ĐẤU
-            </span>
+            <div className="w-full flex justify-between">
+              <span className=" font-bold text-white">Giải đấu Kim Cương</span>
+              <span className=" font-bold text-[#50D3FF]">XEM GIẢI ĐẤU</span>
+            </div>
+
             <div className="flex flex-row gap-8">
               <img
                 src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/afe5c7067cd5fb7de936d3928ea7add6.svg"
@@ -63,7 +74,7 @@ const HomePage: React.FC = () => {
               />
               <div className="flex flex-col justify-start items-start gap-2">
                 <span className="font-bold">Bạn đã đạt vị trí thứ 8</span>
-                <span className="font-medium">
+                <span className="font-medium text-[#DCE6EC]">
                   Tuần này bạn đã kiếm được tổng cộng 899 KN
                 </span>
               </div>
