@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import QuestionBox from "../../../components/Learning/Pronunciation/QuestionBox";
 import { css, keyframes } from "@emotion/react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import { IQuestion } from "../../../../interfaces/IQuestion";
 const fluctuate = keyframes`
   0% { transform: scaleY(1); }
   25% { transform: scaleY(1.8); }
@@ -47,12 +48,46 @@ const questionElements = [
     audio: "",
   },
 ];
-const waveBars = Array(5).fill(null);
 
-const PronunciationPage: React.FC = () => {
+const waveBars = Array(10).fill(null);
+
+interface IPronunciationPage {
+  setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
+  data: IQuestion;
+}
+
+const PronunciationPage: React.FC<IPronunciationPage> = ({
+  setIsButtonActive,
+  setIsButtonCorrect,
+  data,
+}) => {
+  //
   const timeoutRef = useRef<number | null>(null);
+  const [result, setResult] = useState("");
+  const [answer, setAnswer] = useState("");
   const [btnState, setBtnState] = useState(0);
   const [isRecord, setIsRecord] = useState(false);
+  const [countRetry, setCountRetry] = useState(0);
+
+  if (countRetry < 3) {
+    setIsButtonActive(false);
+  } else {
+    setIsButtonActive(true);
+  }
+
+  useEffect(() => {
+    if (data && data.englishText) {
+      const cleanText = data.englishText.replace(/[^\w\s]/g, "");
+      setResult(cleanText);
+    }
+  }, []);
+  useEffect(() => {
+    if (result === answer && answer !== "") {
+      setIsButtonCorrect(true);
+      setIsButtonActive(true);
+    }
+  }, [answer]);
 
   // Audio handle
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -60,6 +95,7 @@ const PronunciationPage: React.FC = () => {
 
   // Start Recording
   const startRecording = async () => {
+    setCountRetry((prev) => prev + 1);
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
@@ -103,6 +139,7 @@ const PronunciationPage: React.FC = () => {
           },
         });
         console.log("Upload response:", response.data);
+        setAnswer(response.data.transcript);
       } catch (error) {
         console.error("Error uploading audio:", error);
       }
@@ -131,7 +168,7 @@ const PronunciationPage: React.FC = () => {
     <div>
       {/* Main content */}
       <div
-        className="relative w-[100vw] h-[75vh] flex flex-col justify-center items-center"
+        className="relative w-[100vw] h-[70vh] flex flex-col justify-center items-center"
         style={{ padding: "0px 300px" }}
       >
         <div className="w-full h-full  flex flex-col justify-evenly items-center">
@@ -139,10 +176,10 @@ const PronunciationPage: React.FC = () => {
           <div className="font-bold text-3xl text-white w-full h-1/6 flex justify-start items-center">
             Đọc câu này
           </div>
-          <div className="w-full h-5/6 flex flex-col justify-center items-center gap-8">
+          <div className="relative w-full h-5/6 flex flex-col justify-center items-center ">
             <div
               id="reading-content"
-              className="flex flex-row justify-center items-end gap-4 w-full h-4/6"
+              className=" flex flex-row justify-center items-center gap-4 w-full h-4/6"
             >
               <div className="w-full h-2/3 flex flex-row gap-8">
                 {" "}
@@ -157,45 +194,51 @@ const PronunciationPage: React.FC = () => {
                 </div>
               </div>
             </div>
-            <button className="w-full h-2/6" onClick={handleRecordButton}>
-              <div
-                id="record-micro"
-                className="hover:bg-[#121C1F] bg-[#131F23] flex justify-center items-center gap-4 border-2 border-b-4 border-[#313F47] w-full  rounded-xl active:border-b-2 active:translate-y-[2px] cursor-pointer "
-                style={{ padding: "15px" }}
+            <div className="relative w-full h-2/6  flex flex-row justify-start items-center">
+              <button
+                className="absolute top-0  w-full"
+                onClick={handleRecordButton}
               >
-                <div className="flex flex-row gap-2 h-[20px]">
-                  {!isRecord && (
-                    <img
-                      src="https://d35aaqx5ub95lt.cloudfront.net/images/18758dd8bd61ed4f1783c8b0917fe899.svg"
-                      alt="Micro icon"
-                      width="20"
-                    />
-                  )}
-
-                  <div className="font-bold text-[#41ACE0] h-full ">
-                    {" "}
-                    {!isRecord && "NHẤN ĐỂ ĐỌC"}
-                    {isRecord && (
-                      <div className="flex flex-row justify-center items-start gap-2 translate-y-2">
-                        {waveBars.map((_, index) => (
-                          <div
-                            key={index}
-                            css={css`
-                              background-color: #41ace0;
-                              width: 5px;
-                              height: 10px;
-                              border-radius: 9999px;
-                              animation: ${fluctuate} 1.2s ease-in-out infinite;
-                              animation-delay: ${index * 0.2}s;
-                            `}
-                          />
-                        ))}
-                      </div>
+                <div
+                  id="record-micro"
+                  className="hover:bg-[#121C1F] bg-[#131F23] flex justify-center items-center gap-4 border-2 border-b-4 border-[#313F47] w-full  rounded-xl active:border-b-2 active:translate-y-[2px] cursor-pointer "
+                  style={{ padding: "15px" }}
+                >
+                  <div className="flex flex-row gap-2 h-[20px]">
+                    {!isRecord && (
+                      <img
+                        src="https://d35aaqx5ub95lt.cloudfront.net/images/18758dd8bd61ed4f1783c8b0917fe899.svg"
+                        alt="Micro icon"
+                        width="20"
+                      />
                     )}
+
+                    <div className="font-bold flex justify-center items-center text-[#41ACE0] h-full ">
+                      {" "}
+                      {!isRecord && "NHẤN ĐỂ ĐỌC"}
+                      {isRecord && (
+                        <div className="flex flex-row justify-center items-start gap-2">
+                          {waveBars.map((_, index) => (
+                            <div
+                              key={index}
+                              css={css`
+                                background-color: #41ace0;
+                                width: 5px;
+                                height: 10px;
+                                border-radius: 9999px;
+                                animation: ${fluctuate} 1.2s ease-in-out
+                                  infinite;
+                                animation-delay: ${index * 0.2}s;
+                              `}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </button>
+              </button>
+            </div>
           </div>
         </div>
       </div>

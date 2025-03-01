@@ -4,16 +4,22 @@ import AnswerImageContainer3Cols from "../AnswerContainer/AnswerImageContainer3C
 interface AnswerSectionImage3ColsProps {
   data: IMultipleChoiceQuestion;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
+  isNext: boolean;
 }
 
 const AnswerSectionImage3Cols: React.FC<AnswerSectionImage3ColsProps> = ({
   data,
   setIsButtonActive,
+  setIsButtonCorrect,
+  isNext,
 }) => {
   return (
     <AnswerImageContainer3Cols
       options={data.options}
       setIsButtonActive={setIsButtonActive}
+      setIsButtonCorrect={setIsButtonCorrect}
+      isNext={isNext}
     />
   );
 };

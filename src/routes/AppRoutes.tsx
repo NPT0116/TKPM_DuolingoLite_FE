@@ -23,12 +23,7 @@ const AppRoutes: React.FC = () => {
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/welcome" element={<WelcomePage />} />
         {/* Route for lesson */}
-        <Route path="/lesson" element={<LessonLayout />}>
-          <Route path="matching" element={<MatchingLessonPage />} />
-          <Route path="pronunciation" element={<PronunciationPage />} />
-          <Route path="build-sentence" element={<BuildSentencePage />} />
-          <Route path="multiple-choice" element={<MultipleChoicePage />} />
-        </Route>
+        <Route path="/lesson" element={<LessonLayout />}></Route>
 
         {/* For component that have layout */}
         <Route element={<NavigationLayout />}>

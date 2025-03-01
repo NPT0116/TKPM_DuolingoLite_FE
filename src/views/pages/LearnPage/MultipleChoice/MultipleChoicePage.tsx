@@ -7,14 +7,17 @@ import AnswerSectionImage3Cols from "../../../components/Learning/MultipleChoice
 interface MultipleChoiceProps {
   data: IMultipleChoiceQuestion;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
+  isNext: boolean;
 }
 
 const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
   setIsButtonActive,
+  setIsButtonCorrect,
+  isNext,
+  data,
 }) => {
-  const data = mockData.value;
-
-  // Properly check if any of these exist
+  // const data = mockData.value;
   const hasQuestionContent =
     data.questionConfigure.audio ||
     data.questionConfigure.englishText ||
@@ -23,14 +26,23 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
   return (
     <div className="w-full h-full flex items-center justify-center">
       <div className="w-[600px] h-[450px] flex flex-col gap-[24px] ">
+        {/* Instruction */}
         <Instruction instruction={data.instruction} />
 
+        {/* Question & Answer Section */}
         {hasQuestionContent ? (
-          <AnswerSection2Cols data={data} />
+          <AnswerSection2Cols
+            data={data}
+            setIsButtonActive={setIsButtonActive}
+            setIsButtonCorrect={setIsButtonCorrect}
+            isNext={isNext}
+          />
         ) : (
           <AnswerSectionImage3Cols
             data={data}
             setIsButtonActive={setIsButtonActive}
+            setIsButtonCorrect={setIsButtonCorrect}
+            isNext={isNext}
           />
         )}
       </div>
