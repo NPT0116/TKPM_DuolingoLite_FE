@@ -16,7 +16,7 @@ interface IELContent {
   targetType: string;
   englishText: string;
 }
-interface OutletContextType {
+interface IMatchingLessonPage {
   setXp: React.Dispatch<
     React.SetStateAction<{ accumulated: number; total: number }>
   >;
@@ -26,14 +26,18 @@ interface OutletContextType {
 
 type PickingQueueItem = IVNContent | IELContent;
 
-const MatchingLessonPage: React.FC = () => {
+const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
+  setXp,
+  state,
+  setIsButtonActive,
+}) => {
   const [correctPickingList, setCorrectPickingList] = useState<string[]>([]);
   const [pickingQueue, setPickingQueue] = useState<PickingQueueItem[]>([]);
   const [wrongPickingList, setWrongPickingList] = useState<PickingQueueItem[]>(
     []
   );
-  const { setXp, state, setIsButtonActive } =
-    useOutletContext<OutletContextType>();
+  // const { setXp, state, setIsButtonActive } =
+  //   useOutletContext<OutletContextType>();
 
   const sourceCollection: IVNContent[] = [
     { optionId: "1", sourceType: "VietNamText", vietnameseText: "đắt" },
@@ -67,11 +71,6 @@ const MatchingLessonPage: React.FC = () => {
 
   // Activate button when the correct picking list reaches 5 items.
   useEffect(() => {
-    setXp({
-      accumulated: correctPickingList.length,
-      total: targetCollection.length,
-    });
-
     if (correctPickingList.length === 5) {
       setIsButtonActive(true);
     }
@@ -87,38 +86,36 @@ const MatchingLessonPage: React.FC = () => {
         <div className="absolute text-white font-bold text-3xl left-[200px] top-[40px]">
           Chọn cặp từ
         </div>
-        {state === 1 && <WelcomeOwl />}
-        {state === 2 && (
-          <div
-            className="relative w-full h-full grid grid-cols-2 grid-row-1 gap-4"
-            style={{ padding: "120px 350px 50px 350px" }}
-          >
-            <div className="w-full h-full grid grid-cols-1 grid-rows-5 gap-4 ">
-              {sourceCollection.map((content) => (
-                <ButtonMatching
-                  key={`source-${content.optionId}`}
-                  setWrongPickingList={setWrongPickingList}
-                  wrongPickingList={wrongPickingList}
-                  correctPickingList={correctPickingList}
-                  setPickingQueue={setPickingQueue}
-                  content={content}
-                />
-              ))}
-            </div>
-            <div className="w-full h-full grid grid-cols-1 grid-rows-5 gap-4">
-              {targetCollection.map((content) => (
-                <ButtonMatching
-                  key={`target-${content.optionId}`}
-                  setWrongPickingList={setWrongPickingList}
-                  wrongPickingList={wrongPickingList}
-                  correctPickingList={correctPickingList}
-                  setPickingQueue={setPickingQueue}
-                  content={content}
-                />
-              ))}
-            </div>
+        <div
+          className="relative w-full h-full grid grid-cols-2 grid-row-1 gap-4"
+          style={{ padding: "120px 350px 50px 350px" }}
+        >
+          <div className="w-full h-full grid grid-cols-1 grid-rows-5 gap-4 ">
+            {sourceCollection.map((content) => (
+              <ButtonMatching
+                key={`source-${content.optionId}`}
+                setWrongPickingList={setWrongPickingList}
+                wrongPickingList={wrongPickingList}
+                correctPickingList={correctPickingList}
+                setPickingQueue={setPickingQueue}
+                content={content}
+              />
+            ))}
           </div>
-        )}
+          <div className="w-full h-full grid grid-cols-1 grid-rows-5 gap-4">
+            {targetCollection.map((content) => (
+              <ButtonMatching
+                key={`target-${content.optionId}`}
+                setWrongPickingList={setWrongPickingList}
+                wrongPickingList={wrongPickingList}
+                correctPickingList={correctPickingList}
+                setPickingQueue={setPickingQueue}
+                content={content}
+              />
+            ))}
+          </div>
+        </div>
+        )
       </div>
 
       {/* Navigation Button Container */}

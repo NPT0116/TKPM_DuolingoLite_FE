@@ -6,18 +6,31 @@ import ContinueButton from "../components/Button/ContinueButton";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { IQuestionResponse, IQuestion } from "../../interfaces/IQuestion";
+import { ILessonInformation, ILessonValue } from "../../interfaces/Course";
+import { div } from "framer-motion/client";
+
+// Import Page Component
+import MatchingLessonPage from "../pages/LearnPage/MatchingWord/MatchingLessonPage";
+import PronunciationPage from "../pages/LearnPage/Pronunciation/PronunciationPage";
+
 const LessonLayout: React.FC = () => {
   const [xp, setXp] = useState({ accumulated: 0, total: 1 });
   const [state, setState] = useState(1);
   const [isButtonActivate, setIsButtonActive] = useState(false);
   const [quesionList, setQuestionList] = useState<IQuestion[]>([]);
   const location = useLocation();
-  const { id } = location.state || {};
+  const { lessonInformation } = location.state as {
+    lessonInformation: ILessonInformation;
+  };
+  const [lesson, setLesson] = useState(1);
+
   const fetchLesson = async () => {
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < lessonInformation.questionCount; i++) {
       await axios
         .get(
-          `/api/Question/questions/list-questions/${id}?questionOrder=${i + 1}`
+          `/api/Question/questions/list-questions/${
+            lessonInformation.id
+          }?questionOrder=${i + 1}`
         )
         .then((response) => {
           setQuestionList((prev) => [...prev, response.data.value]);
@@ -27,14 +40,31 @@ const LessonLayout: React.FC = () => {
         });
     }
   };
-  console.log(quesionList);
+  const handleLesson = (type: string) => {
+    switch (type) {
+      case "MultipleChoice":
+        return (
+          <MatchingLessonPage
+            setXp={setXp}
+            state={state}
+            setIsButtonActive={setIsButtonActive}
+          />
+        );
+      case "Pronunciation":
+        return <PronunciationPage />;
+      default:
+        return <div>hiu</div>;
+    }
+  };
+
   useEffect(() => {
     fetchLesson();
-  }, [id]);
+  }, [lessonInformation]);
   useEffect(() => {
     setIsButtonActive(true);
-  }, [state]);
+  }, []);
 
+  console.log(quesionList);
   return (
     <div>
       {/* XP Bar */}
@@ -43,7 +73,7 @@ const LessonLayout: React.FC = () => {
       </div>
       {/* Main Layout */}
       <div className="w-[100vw] h-[75vh]">
-        {state == 1 && quesionList[state - 1]}
+        {quesionList?.[0] ? handleLesson(quesionList[state]?.type) : null}
       </div>
 
       {/* Navigation Bar */}
