@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { MultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
+
 import AnswerImageCard from "../AnswerCard/AnswerImageCard";
+import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
 
 interface AnswerImageContainer3ColsProps {
-  options: MultipleChoiceOption[];
+  options: IMultipleChoiceOption[];
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

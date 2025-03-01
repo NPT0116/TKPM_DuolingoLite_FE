@@ -1,9 +1,8 @@
-import QuestionSection from "../../../components/Learning/BuildSentence/QuestionSection";
 import Instruction from "../../../components/LearnPage/Instruction/Instruction";
 import mockData from "../../../../services/mock_datas/multiple_choice.json";
-import AnswerImageContainer3Cols from "../../../components/Learning/MultipleChoice/AnswerContainer/AnswerImageContainer3Cols";
-import AnswerContainer2Cols from "../../../components/Learning/MultipleChoice/AnswerContainer/AnswerContainer2Cols";
 import { IMultipleChoiceQuestion } from "../../../../interfaces/Questions/IMultipleChoiceQuestion";
+import AnswerSection2Cols from "../../../components/Learning/MultipleChoice/AnswerSection/2Cols";
+import AnswerSectionImage3Cols from "../../../components/Learning/MultipleChoice/AnswerSection/3ColsImage";
 
 interface MultipleChoiceProps {
   data: IMultipleChoiceQuestion;
@@ -33,24 +32,10 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
         <Instruction instruction={data.instruction} />
 
         {hasQuestionContent ? (
-          <div
-            className="flex flex-col gap-[24px] h-[50%]"
-            style={{ margin: "auto 0px" }}
-          >
-            <QuestionSection
-              questionConfigure={data.questionConfigure}
-              audio={data.audio}
-              picture={data.picture}
-              englishText={data.englishText}
-              vietnameseText={data.vietnameseText}
-            />
-            {/* Answer Section */}
-            <AnswerContainer2Cols options={data.options} />
-          </div>
+          <AnswerSection2Cols data={data} />
         ) : (
-          /* If no question content, render AnswerImageContainer3Cols */
-          <AnswerImageContainer3Cols
-            options={data.options}
+          <AnswerSectionImage3Cols
+            data={data}
             setIsButtonActive={setIsButtonActive}
           />
         )}

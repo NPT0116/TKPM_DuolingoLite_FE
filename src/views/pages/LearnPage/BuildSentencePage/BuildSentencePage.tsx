@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Instruction from "../../../components/LearnPage/Instruction/Instruction";
-import QuestionSection from "../../../components/Learning/BuildSentence/QuestionSection";
+import QuestionSection from "../../../components/LearnPage/QuestionSection/QuestionSection";
 import AnswerLine from "../../../components/Learning/BuildSentence/AnswerLine";
 import WordChoice from "../../../components/Learning/BuildSentence/WordChoice";
 import { IBuildSentenceQuestion } from "../../../../interfaces/Questions/IBuildSentenceQuestion";
