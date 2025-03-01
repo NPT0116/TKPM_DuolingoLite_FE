@@ -1,4 +1,4 @@
-import { Resource } from "../../../../../interfaces/Resource";
+import { Resource } from "../../../../../interfaces/IResource";
 
 interface OnlyAudioProps {
   audio: Resource;

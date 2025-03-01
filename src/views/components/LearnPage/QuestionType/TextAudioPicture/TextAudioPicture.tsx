@@ -1,5 +1,5 @@
 import React from "react";
-import { Resource } from "../../../../../interfaces/Resource";
+import { Resource } from "../../../../../interfaces/IResource";
 
 interface TextAudioPictureProps {
   vietnameseText: string | null;
