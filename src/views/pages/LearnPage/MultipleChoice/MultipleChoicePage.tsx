@@ -3,9 +3,21 @@ import Instruction from "../../../components/LearnPage/Instruction/Instruction";
 import mockData from "../../../../services/mock_datas/multiple_choice.json";
 import AnswerImageContainer3Cols from "../../../components/Learning/MultipleChoice/AnswerContainer/AnswerImageContainer3Cols";
 import AnswerContainer2Cols from "../../../components/Learning/MultipleChoice/AnswerContainer/AnswerContainer2Cols";
+import { useOutletContext } from "react-router-dom";
+
+interface OutletContextType {
+  setXp: React.Dispatch<
+    React.SetStateAction<{ accumulated: number; total: number }>
+  >;
+  state: number;
+  setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 const MultipleChoicePage: React.FC = () => {
   const data = mockData.value;
+
+  // const { setXp, state, setIsButtonActive } =
+  //   useOutletContext<OutletContextType>();
 
   // Properly check if any of these exist
   const hasQuestionContent =
@@ -18,7 +30,6 @@ const MultipleChoicePage: React.FC = () => {
       <div className="w-[600px] h-[450px] flex flex-col gap-[24px] ">
         <Instruction instruction={data.instruction} />
 
-        {/* If hasQuestionContent, render QuestionSection and AnswerContainer2Cols */}
         {hasQuestionContent ? (
           <div
             className="flex flex-col gap-[24px] h-[50%]"

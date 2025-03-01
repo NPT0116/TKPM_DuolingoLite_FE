@@ -1,68 +1,100 @@
 {
   "value": {
-    "instruction": "Bạn nghe được gì?",
-    "questionId": "11daf52c-2288-49f7-8528-0bc880457c28",
-    "vietnameseText": null,
+    "instruction": "Đâu là nước?",
+    "questionId": "4781dd27-6916-48ac-bbf4-db4f538b613b",
+    "vietnameseText": "",
     "picture": null,
     "englishText": "",
-    "audio": {
-      "fileName": "audio",
-      "url": "https://drive.google.com/file/d/14lwRwq9-9Z4CrbCXwOY50RsGhTpV1mR3/view?usp=drive_link",
-      "mimeType": 1,
-      "size": 10000,
-      "createdAt": "2025-02-27T16:17:05.467402Z",
-      "updatedAt": "0001-01-01T00:00:00",
-      "id": "b4fe262c-3a21-4d90-be4b-97de0d6ee9e9"
-    },
+    "audio": null,
     "type": "MultipleChoice",
     "questionConfigure": {
-      "audio": true,
+      "audio": false,
       "englishText": false,
       "vietnameseText": false,
       "instruction": true,
       "image": false,
-      "id": "646fc1df-65bd-46bd-a995-e8e2de88d290"
+      "id": "a329175a-a614-4c39-b797-0af7de4a3085"
     },
     "optionConfigure": {
       "audio": true,
       "englishText": true,
       "vietnameseText": false,
       "instruction": false,
-      "image": false,
-      "id": "3df2957b-c21c-4d7e-9f15-e5c46a3816d3"
+      "image": true,
+      "id": "ce4e0550-6c86-435f-8187-657f1b6a9a61"
     },
-    "order": 3,
+    "order": 2,
     "options": [
       {
-        "isCorrect": true,
-        "optionId": "41d8edf2-a825-4d8a-874f-059012a1081c",
-        "vietnameseText": "",
-        "englishText": "sea",
-        "image": null,
+        "isCorrect": false,
+        "optionId": "cf858d6c-9eae-4a46-8558-a89b4d7e95e8",
+        "vietnameseText": "Cà phê",
+        "englishText": "Coffee",
+        "image": {
+          "fileName": "optionImage",
+          "url": "https://d2pur3iezf4d1j.cloudfront.net/images/6fd84b8a838c43c4a84b44b08b10177e",
+          "mimeType": 0,
+          "size": 100000,
+          "createdAt": "2025-02-27T16:17:05.183097Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "22dc3481-3b67-46a1-83af-e5ba077c1b12"
+        },
         "audio": {
           "fileName": "optionAudio",
-          "url": "https://drive.google.com/file/d/14lwRwq9-9Z4CrbCXwOY50RsGhTpV1mR3/view?usp=drive_link",
+          "url": "https://drive.google.com/file/d/12AV4usJFLn5Y1fWAmUowsyaeftAu5jH7/view?usp=drive_link",
           "mimeType": 1,
           "size": 10000,
-          "createdAt": "2025-02-27T16:17:05.469781Z",
+          "createdAt": "2025-02-27T16:17:05.18315Z",
           "updatedAt": "0001-01-01T00:00:00",
-          "id": "d82d5b0a-1269-4ef2-8c49-6efd2835a6b0"
+          "id": "3e34f86d-6dac-4647-a370-46c0f6d9694c"
+        }
+      },
+      {
+        "isCorrect": true,
+        "optionId": "0ead320f-8cf1-4de2-864f-2dab20b78b36",
+        "vietnameseText": "Nước",
+        "englishText": "Water",
+        "image": {
+          "fileName": "optionImage",
+          "url": "https://d2pur3iezf4d1j.cloudfront.net/images/7afea32bcf0e8c6f9d446ad4aad416be",
+          "mimeType": 0,
+          "size": 100000,
+          "createdAt": "2025-02-27T16:17:05.457335Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "d5a075b2-a8ea-423d-9475-6de81f4c76f6"
+        },
+        "audio": {
+          "fileName": "optionAudio",
+          "url": "https://drive.google.com/file/d/10GRPc8BYjSKwyfMFxSSWsKy2a86wzbrD/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.457337Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "32011aa6-a1b4-4cc8-97e0-3fee008c3ed8"
         }
       },
       {
         "isCorrect": false,
-        "optionId": "41d8edf2-a825-4d8a-874f-059012a1081c",
-        "vietnameseText": "",
-        "englishText": "sea",
-        "image": null,
+        "optionId": "2590837a-1c43-49ce-8d73-7fb0d41ba476",
+        "vietnameseText": "Trà",
+        "englishText": "Tea",
+        "image": {
+          "fileName": "optionImage",
+          "url": "https://d2pur3iezf4d1j.cloudfront.net/images/18a521f1507cb86689faa5b2e8277703",
+          "mimeType": 0,
+          "size": 100000,
+          "createdAt": "2025-02-27T16:17:05.449772Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "d73474ce-c306-41dd-b808-ecb7a94a10de"
+        },
         "audio": {
           "fileName": "optionAudio",
-          "url": "https://drive.google.com/file/d/14lwRwq9-9Z4CrbCXwOY50RsGhTpV1mR3/view?usp=drive_link",
+          "url": "https://drive.google.com/file/d/16U8wq9ATR7J1e-FtTk4SNXwS82lt016t/view?usp=drive_link",
           "mimeType": 1,
           "size": 10000,
-          "createdAt": "2025-02-27T16:17:05.469781Z",
+          "createdAt": "2025-02-27T16:17:05.449775Z",
           "updatedAt": "0001-01-01T00:00:00",
-          "id": "d82d5b0a-1269-4ef2-8c49-6efd2835a6b0"
+          "id": "98e6c54c-2ee7-4cc9-99db-b86d8f81a5e7"
         }
       }
     ],

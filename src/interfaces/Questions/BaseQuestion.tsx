@@ -10,4 +10,5 @@ export interface BaseQuestion {
   questionConfigure: Configure;
   optionConfigure: Configure;
   order: number;
+  type: string;
 }

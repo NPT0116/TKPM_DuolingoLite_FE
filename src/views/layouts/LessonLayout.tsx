@@ -1,12 +1,15 @@
 import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import XPBar from "../components/XPBar/XPBar";
 import ContinueButton from "../components/Button/ContinueButton";
 const LessonLayout: React.FC = () => {
   const [xp, setXp] = useState({ accumulated: 0, total: 1 });
   const [state, setState] = useState(1);
-  const [isButtonActivate, setIsButtonActive] = useState(false);
+  const [isButtonActivate, setIsButtonActive] = useState(true);
+  // useEffect(() => {
+  //   setIsButtonActive();
+  // });
   return (
     <div>
       {/* XP Bar */}
@@ -15,8 +18,9 @@ const LessonLayout: React.FC = () => {
       </div>
       {/* Main Layout */}
       <div className="w-[100vw] h-[75vh]">
-        <Outlet context={{ setXp, state, setIsButtonActive }} />
+        {/* <Outlet context={{ setXp, state, setIsButtonActive }} /> */}
       </div>
+      state == 1 mount cai question 1 do
       {/* Navigation Bar */}
       <div
         className="w-[100vw] h-[15vh] border-[#37464F] border-t-2 bg-[#131F23]"
