@@ -1,15 +1,20 @@
 import React from "react";
+import { Resource } from "../../../../../interfaces/Resource";
 
 interface TextAudioPictureProps {
   vietnameseText: string | null;
   pictureId: string | null;
   englishText: string | null;
+  isBuildSentence?: boolean;
+  audio: Resource | null;
 }
 
 export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
   vietnameseText,
   pictureId,
   englishText,
+  isBuildSentence = false,
+  audio,
 }) => {
   const textToSplit = vietnameseText || englishText || "";
 
@@ -17,8 +22,8 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
 
   return (
     <div
-      className={`flex items-center ${
-        pictureId ? "border-b-2 border-[#37464F]" : ""
+      className={`flex items-center text-white ${
+        pictureId && isBuildSentence ? "border-b-2 border-[#37464F]" : ""
       }`}
     >
       {/* Image Placeholder */}
@@ -58,40 +63,42 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
           } h-fit rounded-xl items-center `}
           style={pictureId ? { paddingLeft: "30px" } : { paddingLeft: "50px" }}
         >
-          <div className="w-full h-fit flex items-center cursor-pointer">
-            {/* Icon 1 (Loa chính) */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="#49C0F8"
-              stroke="#49C0F8"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-volume-2 w-[30px] h-auto  absolute left-7 "
-            >
-              <path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" />
-            </svg>
+          {audio !== null && (
+            <div className="w-full h-fit flex items-center cursor-pointer">
+              {/* Icon 1 (Loa chính) */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="#49C0F8"
+                stroke="#49C0F8"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-volume-2 w-[30px] h-auto  absolute left-7 "
+              >
+                <path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" />
+              </svg>
 
-            {/* Icon 2 (Sóng âm thanh) */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#49C0F8"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-volume-2 w-[30px] h-auto absolute left-7"
-            >
-              <path d="M16 9a5 5 0 0 1 0 6" />
-              <path d="M19.364 18.364a9 9 0 0 0 0-12.728" />
-            </svg>
-          </div>
+              {/* Icon 2 (Sóng âm thanh) */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#49C0F8"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-volume-2 w-[30px] h-auto absolute left-7"
+              >
+                <path d="M16 9a5 5 0 0 1 0 6" />
+                <path d="M19.364 18.364a9 9 0 0 0 0-12.728" />
+              </svg>
+            </div>
+          )}
           <div
             className="flex gap-[4.84px] text-[20px] "
             style={{ padding: "10px 14px" }}

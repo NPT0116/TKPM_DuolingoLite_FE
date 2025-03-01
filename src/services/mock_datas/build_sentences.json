@@ -4,12 +4,26 @@
       "instruction": "Viết lại bằng Tiếng Việt",
       "questionId": "buildsentence-guid-1234",
       "vietnameseText": null,
-      "pictureId": null,
+      "pictureId": "aaas",
       "englishText": "Which animal is the fastest?",
       "audioId": null,
       "type": "BuildSentence",
-      "questionConfigureId": "config-guid-1111",
-      "optionConfigureId": "config-guid-2222",
+      "questionConfigure": {
+        "audio": false,
+        "englishText": false,
+        "vietnameseText": true,
+        "instruction": true,
+        "image": false,
+        "id": "8c420454-8bad-4571-82d3-284e5a754f15"
+      },
+      "optionConfigure": {
+        "audio": true,
+        "englishText": true,
+        "vietnameseText": false,
+        "instruction": false,
+        "image": true,
+        "id": "60d3e0c1-1cb2-4fcd-8064-257555417a87"
+      },
       "order": 1,
       "options": [
         {

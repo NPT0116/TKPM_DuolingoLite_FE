@@ -1,5 +1,5 @@
 export interface Configure {
-  configureId: string;
+  id: string;
   audio: boolean;
   englishText: boolean;
   vietnameseText: boolean;

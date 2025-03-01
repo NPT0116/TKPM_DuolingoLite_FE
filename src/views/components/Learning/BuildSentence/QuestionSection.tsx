@@ -1,34 +1,39 @@
 import { Configure } from "../../../../interfaces/Configure/Configure";
-import { OnlyAudio } from "./QuestionType/OnlyAudio/OnlyAudio";
-import { TextAudioPicture } from "./QuestionType/TextAudioPicture/TextAudioPicture";
+import { Resource } from "../../../../interfaces/Resource";
+import { OnlyAudio } from "../../LearnPage/QuestionType/OnlyAudio/OnlyAudio";
+import { TextAudioPicture } from "../../LearnPage/QuestionType/TextAudioPicture/TextAudioPicture";
 
 interface QuestionSectionProps {
-  config: Configure;
+  questionConfigure: Configure;
   vietnameseText: string | null;
   pictureId: string | null;
   englishText: string | null;
-  audioId: string | null;
+  audio: Resource | null;
+  isBuildSentence?: boolean;
 }
 
 const QuestionSection: React.FC<QuestionSectionProps> = ({
-  config,
+  questionConfigure,
   vietnameseText,
   englishText,
-  audioId,
+  audio,
   pictureId,
+  isBuildSentence = false,
 }) => {
   return (
     <div>
-      {config.audio &&
-      !config.englishText &&
-      !config.vietnameseText &&
-      !config.image ? (
-        <OnlyAudio audioId={audioId!} />
+      {questionConfigure.audio &&
+      !questionConfigure.englishText &&
+      !questionConfigure.vietnameseText &&
+      !questionConfigure.image ? (
+        <OnlyAudio audio={audio!} />
       ) : (
         <TextAudioPicture
           vietnameseText={vietnameseText}
           englishText={englishText}
           pictureId={pictureId}
+          isBuildSentence={isBuildSentence}
+          audio={audio}
         />
       )}
     </div>

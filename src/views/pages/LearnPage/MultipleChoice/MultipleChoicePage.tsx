@@ -1,53 +1,43 @@
-import Instruction from "../../../components/Learning/Instruction/Instruction";
+import QuestionSection from "../../../components/Learning/BuildSentence/QuestionSection";
+import Instruction from "../../../components/LearnPage/Instruction/Instruction";
+import mockData from "../../../../services/mock_datas/multiple_choice.json";
+import AnswerImageContainer3Cols from "../../../components/Learning/MultipleChoice/AnswerContainer/AnswerImageContainer3Cols";
+import AnswerContainer2Cols from "../../../components/Learning/MultipleChoice/AnswerContainer/AnswerContainer2Cols";
 
 const MultipleChoicePage: React.FC = () => {
+  const data = mockData.value;
+
+  // Properly check if any of these exist
+  const hasQuestionContent =
+    data.questionConfigure.audio ||
+    data.questionConfigure.englishText ||
+    data.questionConfigure.vietnameseText;
+
   return (
-    <div className="w-full h-full flex items-center justify-center ">
-      <div className="w-[600px] h-[450px] flex flex-col gap-[24px]">
-        <Instruction instruction="Đâu là 'xe tắc-xi'?" />
-        {/* Answer Section */}
-        <div className="h-full w-full flex flex-col-3 items-center gap-[8px]">
-          {/* Answer Card */}
-          <div className="h-[80%] border-2 border-[#37464F] rounded-xl flex flex-col items-center cursor-pointer hover:bg-[#202F36]">
-            <img
-              src="https://d2pur3iezf4d1j.cloudfront.net/images/557ae6485402007dd47203cedf18f158"
-              alt="card-image"
-              className="w-[70%] h-[80%] mb-[10px]"
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="w-[600px] h-[450px] flex flex-col gap-[24px] ">
+        <Instruction instruction={data.instruction} />
+
+        {/* If hasQuestionContent, render QuestionSection and AnswerContainer2Cols */}
+        {hasQuestionContent ? (
+          <div
+            className="flex flex-col gap-[24px] h-[50%]"
+            style={{ margin: "auto 0px" }}
+          >
+            <QuestionSection
+              questionConfigure={data.questionConfigure}
+              audio={data.audio}
+              pictureId={data.picture}
+              englishText={data.englishText}
+              vietnameseText={data.vietnameseText}
             />
-            <div className="flex w-[70%] justify-between ">
-              <span className="text-[17px] font-bold text-white">taxi</span>
-              <span className="text-[15px] border-2 border-[#37464F] text-[#52656D] h-full aspect-square flex items-center justify-center rounded-lg">
-                1
-              </span>
-            </div>
+            {/* Answer Section */}
+            <AnswerContainer2Cols options={data.options} />
           </div>
-          <div className="h-[80%] border-2 border-[#37464F] rounded-xl flex flex-col items-center cursor-pointer hover:bg-[#202F36]">
-            <img
-              src="https://d2pur3iezf4d1j.cloudfront.net/images/557ae6485402007dd47203cedf18f158"
-              alt="card-image"
-              className="w-[70%] h-[80%] mb-[10px]"
-            />
-            <div className="flex w-[70%] justify-between ">
-              <span className="text-[17px] font-bold text-white">taxi</span>
-              <span className="text-[15px] border-2 border-[#37464F] text-[#52656D] h-full aspect-square flex items-center justify-center rounded-lg">
-                1
-              </span>
-            </div>
-          </div>
-          <div className="h-[80%] border-2 border-[#37464F] rounded-xl flex flex-col items-center cursor-pointer hover:bg-[#202F36]">
-            <img
-              src="https://d2pur3iezf4d1j.cloudfront.net/images/557ae6485402007dd47203cedf18f158"
-              alt="card-image"
-              className="w-[70%] h-[80%] mb-[10px]"
-            />
-            <div className="flex w-[70%] justify-between ">
-              <span className="text-[17px] font-bold text-white">taxi</span>
-              <span className="text-[15px] border-2 border-[#37464F] text-[#52656D] h-full aspect-square flex items-center justify-center rounded-lg">
-                1
-              </span>
-            </div>
-          </div>
-        </div>
+        ) : (
+          /* If no question content, render AnswerImageContainer3Cols */
+          <AnswerImageContainer3Cols options={data.options} />
+        )}
       </div>
     </div>
   );

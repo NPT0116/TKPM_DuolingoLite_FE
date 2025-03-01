@@ -1,3 +1,5 @@
+import { Configure } from "../Configure/Configure";
+
 export interface BaseQuestion {
   instruction: string;
   questionId: string;
@@ -5,7 +7,7 @@ export interface BaseQuestion {
   pictureId: string | null;
   englishText: string;
   audioId: string | null;
-  questionConfigureId: string;
-  optionConfigureId: string;
+  questionConfigure: Configure;
+  optionConfigure: Configure;
   order: number;
 }

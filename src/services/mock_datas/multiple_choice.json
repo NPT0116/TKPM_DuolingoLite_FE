@@ -1,0 +1,78 @@
+{
+  "value": {
+    "instruction": "Bạn nghe được gì?",
+    "questionId": "11daf52c-2288-49f7-8528-0bc880457c28",
+    "vietnameseText": null,
+    "picture": null,
+    "englishText": "",
+    "audio": {
+      "fileName": "audio",
+      "url": "https://drive.google.com/file/d/14lwRwq9-9Z4CrbCXwOY50RsGhTpV1mR3/view?usp=drive_link",
+      "mimeType": 1,
+      "size": 10000,
+      "createdAt": "2025-02-27T16:17:05.467402Z",
+      "updatedAt": "0001-01-01T00:00:00",
+      "id": "b4fe262c-3a21-4d90-be4b-97de0d6ee9e9"
+    },
+    "type": "MultipleChoice",
+    "questionConfigure": {
+      "audio": true,
+      "englishText": false,
+      "vietnameseText": false,
+      "instruction": true,
+      "image": false,
+      "id": "646fc1df-65bd-46bd-a995-e8e2de88d290"
+    },
+    "optionConfigure": {
+      "audio": true,
+      "englishText": true,
+      "vietnameseText": false,
+      "instruction": false,
+      "image": false,
+      "id": "3df2957b-c21c-4d7e-9f15-e5c46a3816d3"
+    },
+    "order": 3,
+    "options": [
+      {
+        "isCorrect": true,
+        "optionId": "41d8edf2-a825-4d8a-874f-059012a1081c",
+        "vietnameseText": "",
+        "englishText": "sea",
+        "image": null,
+        "audio": {
+          "fileName": "optionAudio",
+          "url": "https://drive.google.com/file/d/14lwRwq9-9Z4CrbCXwOY50RsGhTpV1mR3/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.469781Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "d82d5b0a-1269-4ef2-8c49-6efd2835a6b0"
+        }
+      },
+      {
+        "isCorrect": false,
+        "optionId": "41d8edf2-a825-4d8a-874f-059012a1081c",
+        "vietnameseText": "",
+        "englishText": "sea",
+        "image": null,
+        "audio": {
+          "fileName": "optionAudio",
+          "url": "https://drive.google.com/file/d/14lwRwq9-9Z4CrbCXwOY50RsGhTpV1mR3/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.469781Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "d82d5b0a-1269-4ef2-8c49-6efd2835a6b0"
+        }
+      }
+    ],
+    "words": []
+  },
+  "isSuccess": true,
+  "isFailure": false,
+  "error": {
+    "code": "",
+    "description": "",
+    "type": 0
+  }
+}

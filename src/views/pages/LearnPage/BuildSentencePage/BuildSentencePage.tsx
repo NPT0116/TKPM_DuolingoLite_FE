@@ -4,7 +4,7 @@ import configData from "../../../../services/mock_datas/configure.json";
 import buildSentenceData from "../../../../services/mock_datas/build_sentences.json";
 import { BuildSentenceQuestion } from "../../../../interfaces/Questions/BuildSentenceQuestion";
 import { BuildSentenceOption } from "../../../../interfaces/Options/BuildSentenceOption";
-import Instruction from "../../../components/Learning/Instruction/Instruction";
+import Instruction from "../../../components/LearnPage/Instruction/Instruction";
 import QuestionSection from "../../../components/Learning/BuildSentence/QuestionSection";
 import AnswerLine from "../../../components/Learning/BuildSentence/AnswerLine";
 import WordChoice from "../../../components/Learning/BuildSentence/WordChoice";
@@ -37,6 +37,7 @@ const BuildSentencePage: React.FC = () => {
           pictureId={data.pictureId}
           englishText={data.englishText}
           vietnameseText={data.vietnameseText}
+          isBuildSentence={true}
         />
         <div className="flex flex-col gap-[60px]">
           <AnswerLine
