@@ -12,6 +12,7 @@ const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({ data }) => {
       className="flex flex-col gap-[24px] h-[50%]"
       style={{ margin: "auto 0px" }}
     >
+      {/* Question Section */}
       <QuestionSection
         questionConfigure={data.questionConfigure}
         audio={data.audio}

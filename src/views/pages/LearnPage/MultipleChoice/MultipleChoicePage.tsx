@@ -20,7 +20,6 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
 }) => {
   const data = mockData.value;
 
-  // Properly check if any of these exist
   const hasQuestionContent =
     data.questionConfigure.audio ||
     data.questionConfigure.englishText ||
@@ -29,8 +28,10 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
   return (
     <div className="w-full h-full flex items-center justify-center">
       <div className="w-[600px] h-[450px] flex flex-col gap-[24px] ">
+        {/* Instruction */}
         <Instruction instruction={data.instruction} />
 
+        {/* Question & Answer Section */}
         {hasQuestionContent ? (
           <AnswerSection2Cols data={data} />
         ) : (
