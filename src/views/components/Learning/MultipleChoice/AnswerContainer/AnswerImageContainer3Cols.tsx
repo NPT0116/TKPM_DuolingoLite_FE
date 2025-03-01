@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { MultipleChoiceOption } from "../../../../../interfaces/Options/MultipleChoiceOption";
+import { MultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
 import AnswerImageCard from "../AnswerCard/AnswerImageCard";
 
 interface AnswerImageContainer3ColsProps {
   options: MultipleChoiceOption[];
+  setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
   options,
+  setIsButtonActive,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
@@ -19,7 +21,10 @@ const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
           option={option}
           index={index}
           isSelected={selectedIndex === index}
-          onSelect={() => setSelectedIndex(index)}
+          onSelect={() => {
+            setSelectedIndex(index);
+            setIsButtonActive(true);
+          }}
         />
       ))}
     </div>

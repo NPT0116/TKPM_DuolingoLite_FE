@@ -1,9 +1,9 @@
 import LessonNode from "./LessonNode";
 import { css } from "@emotion/react";
-interface IDisplayUnit {
-  type: number;
-}
-const DisplayUnit: React.FC<IDisplayUnit> = ({ type }) => {
+import { ICourse, ILesson, IDisplayUnit } from "../../../interfaces/Course";
+import { div } from "framer-motion/client";
+
+const DisplayUnit: React.FC<IDisplayUnit> = ({ type, title, lessons }) => {
   const template1 = {
     topColor: "58CC05",
     botColor: "47A30B",
@@ -29,6 +29,8 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({ type }) => {
     botColor: "198CC5",
     shadowColor: "44BEF8",
   };
+  const layout1 = ["0", "40", "80", "40", "0"];
+  const layout2 = ["0", "-40", "-80", "-40", "0"];
   const templates = [template1, template2, template3, template4, template5];
   const getRandomTemplate = () => {
     const randomIndex = Math.floor(Math.random() * templates.length);
@@ -49,7 +51,7 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({ type }) => {
         >
           <div className="flex flex-col justify-start items-start">
             <span className="text-md">Part 2, Gate 31</span>
-            <span className="text-xl"> Talk about weather</span>
+            <span className="text-xl"> {title}</span>
           </div>
           <div
             className="border-2 border-b-4  rounded-2xl hover:opacity-80 flex justify-between items-center gap-4 cursor-pointer"
@@ -70,48 +72,25 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({ type }) => {
           style={{ padding: "0px 40px" }}
         >
           <hr className="border-[#52656D] border-[1px] w-full rounded-full" />
-          <span className="w-full text-center" style={{ padding: "0px 20px" }}>
-            Talk about weather
+          <span className="w-full text-center" style={{ padding: "0px 10px" }}>
+            {title}
           </span>
           <hr className="border-[#52656D] border-[1px] w-full rounded-full" />
         </div>
-
-        <LessonNode
-          topColor={randomTemplate.topColor}
-          botColor={randomTemplate.botColor}
-          shadowColor={randomTemplate.shadowColor}
-          transX="0"
-        />
-        <LessonNode
-          topColor={randomTemplate.topColor}
-          botColor={randomTemplate.botColor}
-          shadowColor={randomTemplate.shadowColor}
-          transX="40"
-        />
-        <LessonNode
-          topColor={randomTemplate.topColor}
-          botColor={randomTemplate.botColor}
-          shadowColor={randomTemplate.shadowColor}
-          transX="80"
-        />
-        <LessonNode
-          topColor={randomTemplate.topColor}
-          botColor={randomTemplate.botColor}
-          shadowColor={randomTemplate.shadowColor}
-          transX="40"
-        />
-        <LessonNode
-          topColor={randomTemplate.topColor}
-          botColor={randomTemplate.botColor}
-          shadowColor={randomTemplate.shadowColor}
-          transX="0"
-        />
-        <LessonNode
-          topColor={randomTemplate.topColor}
-          botColor={randomTemplate.botColor}
-          shadowColor={randomTemplate.shadowColor}
-          transX="0"
-        />
+        {lessons?.map((item, index) => {
+          return (
+            <div key={item.id}>
+              <LessonNode
+                id={item.id}
+                order={item.order}
+                topColor={randomTemplate.topColor}
+                botColor={randomTemplate.botColor}
+                shadowColor={randomTemplate.shadowColor}
+                transX={layout1[index]}
+              />
+            </div>
+          );
+        })}
       </div>
     );
   }
@@ -127,7 +106,7 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({ type }) => {
       >
         <div className="flex flex-col justify-start items-start">
           <span className="text-md">Part 2, Gate 31</span>
-          <span className="text-xl"> Talk about weather</span>
+          <span className="text-xl"> {title}</span>
         </div>
         <div
           className="border-2 border-b-4  rounded-2xl hover:opacity-80 flex justify-between items-center gap-4 cursor-pointer"
@@ -149,47 +128,24 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({ type }) => {
       >
         <hr className="border-[#52656D] border-[1px] w-full rounded-full" />
         <span className="w-full text-center" style={{ padding: "0px 20px" }}>
-          Talk about weather
+          {title}
         </span>
         <hr className="border-[#52656D] border-[1px] w-full rounded-full" />
       </div>
-
-      <LessonNode
-        topColor={randomTemplate.topColor}
-        botColor={randomTemplate.botColor}
-        shadowColor={randomTemplate.shadowColor}
-        transX="0"
-      />
-      <LessonNode
-        topColor={randomTemplate.topColor}
-        botColor={randomTemplate.botColor}
-        shadowColor={randomTemplate.shadowColor}
-        transX="-40"
-      />
-      <LessonNode
-        topColor={randomTemplate.topColor}
-        botColor={randomTemplate.botColor}
-        shadowColor={randomTemplate.shadowColor}
-        transX="-80"
-      />
-      <LessonNode
-        topColor={randomTemplate.topColor}
-        botColor={randomTemplate.botColor}
-        shadowColor={randomTemplate.shadowColor}
-        transX="-40"
-      />
-      <LessonNode
-        topColor={randomTemplate.topColor}
-        botColor={randomTemplate.botColor}
-        shadowColor={randomTemplate.shadowColor}
-        transX="0"
-      />
-      <LessonNode
-        topColor={randomTemplate.topColor}
-        botColor={randomTemplate.botColor}
-        shadowColor={randomTemplate.shadowColor}
-        transX="0"
-      />
+      {lessons?.map((item, index) => {
+        return (
+          <div key={item.id}>
+            <LessonNode
+              id={item.id}
+              order={item.order}
+              topColor={randomTemplate.topColor}
+              botColor={randomTemplate.botColor}
+              shadowColor={randomTemplate.shadowColor}
+              transX={layout2[index]}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 };

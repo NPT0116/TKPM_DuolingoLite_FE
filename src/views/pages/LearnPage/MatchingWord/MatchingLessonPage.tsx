@@ -16,7 +16,7 @@ interface IELContent {
   targetType: string;
   englishText: string;
 }
-interface OutletContextType {
+interface IMatchingLessonPage {
   setXp: React.Dispatch<
     React.SetStateAction<{ accumulated: number; total: number }>
   >;
@@ -26,14 +26,18 @@ interface OutletContextType {
 
 type PickingQueueItem = IVNContent | IELContent;
 
-const MatchingLessonPage: React.FC = () => {
+const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
+  setXp,
+  state,
+  setIsButtonActive,
+}) => {
   const [correctPickingList, setCorrectPickingList] = useState<string[]>([]);
   const [pickingQueue, setPickingQueue] = useState<PickingQueueItem[]>([]);
   const [wrongPickingList, setWrongPickingList] = useState<PickingQueueItem[]>(
     []
   );
-  const { setXp, state, setIsButtonActive } =
-    useOutletContext<OutletContextType>();
+  // const { setXp, state, setIsButtonActive } =
+  //   useOutletContext<OutletContextType>();
 
   const sourceCollection: IVNContent[] = [
     { optionId: "1", sourceType: "VietNamText", vietnameseText: "đắt" },

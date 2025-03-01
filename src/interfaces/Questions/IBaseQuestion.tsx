@@ -1,12 +1,13 @@
 import { Configure } from "../Configure/Configure";
+import { Resource } from "../Resource";
 
-export interface BaseQuestion {
+export interface IBaseQuestion {
   instruction: string;
   questionId: string;
   vietnameseText: string | null;
-  pictureId: string | null;
+  picture: Resource | null;
   englishText: string;
-  audioId: string | null;
+  audio: Resource | null;
   questionConfigure: Configure;
   optionConfigure: Configure;
   order: number;

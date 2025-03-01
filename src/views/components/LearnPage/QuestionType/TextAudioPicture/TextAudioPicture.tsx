@@ -3,7 +3,7 @@ import { Resource } from "../../../../../interfaces/Resource";
 
 interface TextAudioPictureProps {
   vietnameseText: string | null;
-  pictureId: string | null;
+  picture: Resource | null;
   englishText: string | null;
   isBuildSentence?: boolean;
   audio: Resource | null;
@@ -11,7 +11,7 @@ interface TextAudioPictureProps {
 
 export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
   vietnameseText,
-  pictureId,
+  picture,
   englishText,
   isBuildSentence = false,
   audio,
@@ -23,12 +23,15 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
   return (
     <div
       className={`flex items-center text-white ${
-        pictureId && isBuildSentence ? "border-b-2 border-[#37464F]" : ""
+        picture && isBuildSentence ? "border-b-2 border-[#37464F]" : ""
       }`}
     >
       {/* Image Placeholder */}
-      {pictureId !== null && (
-        <div className="w-[175px] h-[175px] text-[20px] bg-white "></div>
+      {picture !== null && (
+        <img
+          src={picture.url}
+          className="w-[175px] h-[175px] text-[20px] "
+        ></img>
       )}
 
       {/* Text */}
@@ -38,7 +41,7 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
           style={{ marginTop: "25px" }}
         >
           {/* Chat image */}
-          {pictureId !== null && (
+          {picture !== null && (
             <svg height="20" viewBox="0 0 18 20" width="18" fill="#131F24">
               <path
                 d="M2.00358 19.0909H18V0.909058L0.624575 15.9561C-0.682507 17.088 0.198558 19.0909 2.00358 19.0909Z"
@@ -59,9 +62,9 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
         {/* Text Question: */}
         <div
           className={`flex gap-[4.84px] ${
-            pictureId ? "border-2 border-[#37464F]" : ""
+            picture ? "border-2 border-[#37464F]" : ""
           } h-fit rounded-xl items-center `}
-          style={pictureId ? { paddingLeft: "30px" } : { paddingLeft: "50px" }}
+          style={picture ? { paddingLeft: "30px" } : { paddingLeft: "50px" }}
         >
           {audio !== null && (
             <div className="w-full h-fit flex items-center cursor-pointer">

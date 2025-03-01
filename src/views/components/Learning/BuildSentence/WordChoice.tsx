@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";
-import { BuildSentenceOption } from "../../../../interfaces/Options/BuildSentenceOption";
+
 import BSBWordButton from "../../Button/BuildSentence/BSWordButton";
+import { IBuildSentenceOption } from "../../../../interfaces/Options/IBuildSentenceOption";
 
 interface WordChoiceProps {
-  selectedWords: BuildSentenceOption[];
-  wordOptions: BuildSentenceOption[];
-  onWordClick: (option: BuildSentenceOption) => void;
+  isEnglish: boolean;
+  selectedWords: IBuildSentenceOption[];
+  wordOptions: IBuildSentenceOption[];
+  onWordClick: (option: IBuildSentenceOption) => void;
   onWrapCountChange?: (count: number) => void;
 }
 
@@ -15,6 +17,7 @@ const WordChoice: React.FC<WordChoiceProps> = ({
   wordOptions,
   onWordClick,
   onWrapCountChange,
+  isEnglish,
 }) => {
   // Ref cho container chứa các nút từ
   const containerRef = useRef<HTMLDivElement>(null);
@@ -40,9 +43,13 @@ const WordChoice: React.FC<WordChoiceProps> = ({
       className="flex flex-wrap justify-center text-[19px] gap-[10px]"
     >
       {wordOptions.map((option) => {
-        const word: string = option.englishText ?? option.vietnameseText!;
+        const word: string = isEnglish
+          ? option.englishText!
+          : option.vietnameseText!;
         const isSelected = selectedWords.some((selected) => {
-          const selectedWord = selected.englishText ?? selected.vietnameseText!;
+          const selectedWord = isEnglish
+            ? selected.englishText
+            : selected.vietnameseText;
           return selectedWord === word;
         });
         return (
@@ -57,7 +64,11 @@ const WordChoice: React.FC<WordChoiceProps> = ({
             <div className="relative z-10">
               <BSBWordButton
                 label={word}
-                onClick={() => !isSelected && onWordClick(option)}
+                onClick={() => {
+                  if (!isSelected) {
+                    onWordClick(option);
+                  }
+                }}
                 disabled={isSelected}
                 style={{
                   opacity: isSelected ? 0 : 1,

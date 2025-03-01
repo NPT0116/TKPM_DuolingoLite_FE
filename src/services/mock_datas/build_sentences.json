@@ -1,87 +1,295 @@
 {
   "value": {
-    "question": {
-      "instruction": "Viết lại bằng Tiếng Việt",
-      "questionId": "buildsentence-guid-1234",
-      "vietnameseText": null,
-      "pictureId": "aaas",
-      "englishText": "Which animal is the fastest?",
-      "audioId": null,
-      "type": "BuildSentence",
-      "questionConfigure": {
-        "audio": false,
-        "englishText": false,
-        "vietnameseText": true,
-        "instruction": true,
-        "image": false,
-        "id": "8c420454-8bad-4571-82d3-284e5a754f15"
-      },
-      "optionConfigure": {
-        "audio": true,
-        "englishText": true,
-        "vietnameseText": false,
-        "instruction": false,
-        "image": true,
-        "id": "60d3e0c1-1cb2-4fcd-8064-257555417a87"
-      },
-      "order": 1,
-      "options": [
-        {
-          "optionId": "opt1-guid",
-          "englishText": "Which",
-          "vietnameseText": null,
-          "order": 1
-        },
-        {
-          "optionId": "opt2-guid",
-          "englishText": "animal",
-          "vietnameseText": null,
-          "order": 2
-        },
-        {
-          "optionId": "opt3-guid",
-          "englishText": "is",
-          "vietnameseText": null,
-          "order": 3
-        },
-        {
-          "optionId": "opt4-guid",
-          "englishText": "the",
-          "vietnameseText": null,
-          "order": 4
-        },
-        {
-          "optionId": "opt5-guid",
-          "englishText": "fastest",
-          "vietnameseText": null,
-          "order": 5
-        },
-        {
-          "optionId": "opt6-guid",
-          "englishText": "distractor",
-          "vietnameseText": null,
-          "order": -1
-        },
-        {
-          "optionId": "opt7-guid",
-          "englishText": "hello",
-          "vietnameseText": null,
-          "order": -1
-        },
-        {
-          "optionId": "opt8-guid",
-          "englishText": "evening",
-          "vietnameseText": null,
-          "order": -1
-        },
-        {
-          "optionId": "opt9-guid",
-          "englishText": "choice",
-          "vietnameseText": null,
-          "order": -1
+    "instruction": "",
+    "questionId": "d0f9f0c0-5a08-49d4-9dc8-463127983dc1",
+    "vietnameseText": null,
+    "picture": {
+      "fileName": "image",
+      "url": "https://d2pur3iezf4d1j.cloudfront.net/images/0f284113af41f7f7296263183701a13b",
+      "mimeType": 0,
+      "size": 100000,
+      "createdAt": "2025-02-27T16:17:05.839806Z",
+      "updatedAt": "0001-01-01T00:00:00",
+      "id": "a0628181-b240-4a7d-9db6-9ee7944990e5"
+    },
+    "englishText": "You would like two beers, right?",
+    "audio": {
+      "fileName": "audio",
+      "url": "https://drive.google.com/file/d/16lYIfmEbJe_edHuOZkwHoqbJBdZ4keo9/view?usp=drive_link",
+      "mimeType": 1,
+      "size": 10000,
+      "createdAt": "2025-02-27T16:17:05.839804Z",
+      "updatedAt": "0001-01-01T00:00:00",
+      "id": "2dd20616-365d-4deb-bcb2-fb2760876e5e"
+    },
+    "type": "BuildSentence",
+    "questionConfigure": {
+      "audio": true,
+      "englishText": true,
+      "vietnameseText": false,
+      "instruction": true,
+      "image": false,
+      "id": "2b006620-bf3b-4a52-bb6b-b2057fa7fbbd"
+    },
+    "optionConfigure": {
+      "audio": false,
+      "englishText": false,
+      "vietnameseText": true,
+      "instruction": false,
+      "image": false,
+      "id": "cd2d5cfb-0506-4d8d-baad-4f68d9124a27"
+    },
+    "order": 2,
+    "options": [
+      {
+        "order": -1,
+        "optionId": "53f76fe2-e5b7-4351-a7e7-409874cc89a0",
+        "vietnameseText": "nóng",
+        "englishText": "hot",
+        "image": null,
+        "audio": {
+          "fileName": "optionAudio",
+          "url": "https://drive.google.com/file/d/1371X8mbsoFINQqTIO4CGNSkWsN15unV5/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.888501Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "8b9fd7d9-b4c7-4dbe-94da-2887cee74e45"
         }
-      ]
-    }
+      },
+      {
+        "order": 5,
+        "optionId": "913839e1-bfef-40bd-9fc8-aa76e171596b",
+        "vietnameseText": "đúng",
+        "englishText": "correct",
+        "image": null,
+        "audio": {
+          "fileName": "optionAudio",
+          "url": "https://drive.google.com/file/d/1ldXEs9SLi9csa8CxGJbkp6xH8JjW9A-4/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.841094Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "9e106cf6-5c1f-49e0-affc-687c590ca776"
+        }
+      },
+      {
+        "order": -1,
+        "optionId": "3106a966-de81-422b-a021-2453d625945d",
+        "vietnameseText": "đơn",
+        "englishText": "single",
+        "image": null,
+        "audio": {
+          "fileName": "optionAudio",
+          "url": "https://drive.google.com/file/d/1M8SBEbGNt7F4PZ4pF4ic2LHSLMMRzSAE/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.900049Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "83883b15-27c4-45b2-91b3-c2505ee84e1f"
+        }
+      },
+      {
+        "order": 6,
+        "optionId": "080b1011-de9b-49c4-b02e-c73a1ea7ef14",
+        "vietnameseText": "không",
+        "englishText": "not",
+        "image": null,
+        "audio": {
+          "fileName": "optionAudio",
+          "url": "https://drive.google.com/file/d/1-W1CpUVm278r1O8dGVJHLzLIT08JbK7y/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.872293Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "9ab98e34-22d2-4c8c-88c6-5fbe5a37c406"
+        }
+      },
+      {
+        "order": 1,
+        "optionId": "839962a8-1b68-4988-a4c7-bc0cc7ddb176",
+        "vietnameseText": "Bạn",
+        "englishText": "you",
+        "image": null,
+        "audio": {
+          "fileName": "optionAudio",
+          "url": "https://drive.google.com/file/d/1iYw5t4QB3mn6FU9nKWsn-8N-WJt8ygvo/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.856857Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "204e2d48-3922-4baf-9998-75777dbe7b99"
+        }
+      },
+      {
+        "order": -1,
+        "optionId": "a1b48cb1-e18d-40a6-bd41-ed8f484ce304",
+        "vietnameseText": "giáo viên",
+        "englishText": "teacher",
+        "image": null,
+        "audio": {
+          "fileName": "optionAudio",
+          "url": "https://drive.google.com/file/d/1yAMn1GlG7M6Mpcq8LitCQG79G3QiyvCW/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.848569Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "f5ab5588-654f-41f9-a94e-1183afdffb6d"
+        }
+      },
+      {
+        "order": -1,
+        "optionId": "efbaeebc-fa11-4805-8020-0fffe3fe1632",
+        "vietnameseText": "xe tắc-xi",
+        "englishText": "taxi",
+        "image": null,
+        "audio": {
+          "fileName": "optionAudio",
+          "url": "https://drive.google.com/file/d/1G5U8HAc7pC5tBosfZCNwYATr_XjNcw-_/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.863573Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "869d654a-a830-40a6-96f9-75c7d99dd03d"
+        }
+      },
+      {
+        "order": 2,
+        "optionId": "94dccf14-574a-4118-ab71-a310916c0fa6",
+        "vietnameseText": "muốn",
+        "englishText": "want",
+        "image": null,
+        "audio": {
+          "fileName": "optionAudio",
+          "url": "https://drive.google.com/file/d/1oWnZpcpwpYuJX0Gs6CzNeW_QZUYTNcfw/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.878911Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "bebdfc68-90fc-4cbb-88b4-c115afba1c51"
+        }
+      },
+      {
+        "order": 3,
+        "optionId": "3ab5a7fc-e325-4f9c-b6e7-f20672f1afe8",
+        "vietnameseText": "hai",
+        "englishText": "two",
+        "image": null,
+        "audio": {
+          "fileName": "optionAudio",
+          "url": "https://drive.google.com/file/d/1Ke0NMiJ9P1wh9o-T4P_tXd1U1I42h4Aq/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.701693Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "f2415e19-4ec2-4b76-a19c-a2a86f63b9d9"
+        }
+      },
+      {
+        "order": 4,
+        "optionId": "4f96b7f1-d2b2-4024-bba0-d4f809a9d467",
+        "vietnameseText": "bia",
+        "englishText": "beer",
+        "image": {
+          "fileName": "optionImage",
+          "url": "https://d2pur3iezf4d1j.cloudfront.net/images/2dec4af32d8151fb1af50a25d436bba6",
+          "mimeType": 0,
+          "size": 100000,
+          "createdAt": "2025-02-27T16:17:05.775476Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "5ac7d62f-3e6f-44f9-aab5-7d4887cb6a05"
+        },
+        "audio": {
+          "fileName": "optionAudio",
+          "url": "https://drive.google.com/file/d/1bzS63y8BimtzBWdDkfPoJp9QM-fodTLj/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.77548Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "e162b707-ef29-4bad-90d6-15a3d0aac9ed"
+        }
+      }
+    ],
+    "words": [
+      {
+        "word": "beers",
+        "order": 5,
+        "audio": {
+          "fileName": "wordAudio",
+          "url": "https://drive.google.com/file/d/1ElEV4AchSaQDge-hLApmpccOv8BcQ-BR/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.960169Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "65901c89-6cd5-45d1-b9c8-f562dec581ed"
+        }
+      },
+      {
+        "word": "two",
+        "order": 4,
+        "audio": {
+          "fileName": "wordAudio",
+          "url": "https://drive.google.com/file/d/1Ke0NMiJ9P1wh9o-T4P_tXd1U1I42h4Aq/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.95203Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "aceea4e5-5be3-4aaf-983d-e8746f921423"
+        }
+      },
+      {
+        "word": "right",
+        "order": 6,
+        "audio": {
+          "fileName": "wordAudio",
+          "url": "https://drive.google.com/file/d/1c4GhSjhv4UlH1fVuFmM-AnN9KkWqo1Fi/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.969345Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "21990395-45b8-4bf3-9bc3-825348c3e7df"
+        }
+      },
+      {
+        "word": "you",
+        "order": 1,
+        "audio": {
+          "fileName": "wordAudio",
+          "url": "https://drive.google.com/file/d/1iYw5t4QB3mn6FU9nKWsn-8N-WJt8ygvo/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.917186Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "bfd3da3b-7424-469b-b23c-ac9065af2a65"
+        }
+      },
+      {
+        "word": "would",
+        "order": 2,
+        "audio": {
+          "fileName": "wordAudio",
+          "url": "https://drive.google.com/file/d/1S_x9JrATAzvAmyyIDhVD5Qs3QLmcdN_E/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.929291Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "6c1c1306-a991-4e72-b9af-fa8b29682e26"
+        }
+      },
+      {
+        "word": "like",
+        "order": 3,
+        "audio": {
+          "fileName": "wordAudio",
+          "url": "https://drive.google.com/file/d/1J18d6cRW5Q2R1KBncq15anLyrsEKrR4j/view?usp=drive_link",
+          "mimeType": 1,
+          "size": 10000,
+          "createdAt": "2025-02-27T16:17:05.942181Z",
+          "updatedAt": "0001-01-01T00:00:00",
+          "id": "c3da7bcd-b9c3-4c2f-bc53-6227b95adceb"
+        }
+      }
+    ]
   },
   "isSuccess": true,
   "isFailure": false,

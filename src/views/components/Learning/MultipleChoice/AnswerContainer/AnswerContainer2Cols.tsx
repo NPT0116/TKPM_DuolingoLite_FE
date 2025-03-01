@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MultipleChoiceOption } from "../../../../../interfaces/Options/MultipleChoiceOption";
+import { MultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
 import AnswerCard from "../AnswerCard/AnswerCard";
 
 interface AnswerContainer2ColsProps {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MultipleChoiceOption } from "../../../../../interfaces/Options/MultipleChoiceOption";
+import { MultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
 
 interface AnswerCardProps {
   option: MultipleChoiceOption;

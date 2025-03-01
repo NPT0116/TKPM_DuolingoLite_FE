@@ -1,7 +1,7 @@
 import { Resource } from "../Resource";
-import { BaseOption } from "./BaseOption";
+import { BaseOption } from "./IBaseOption";
 
-export interface MultipleChoiceOption extends BaseOption {
+export interface IMultipleChoiceOption extends BaseOption {
   isCorrect: boolean;
   vietnameseText: string | null;
   englishText: string | null;

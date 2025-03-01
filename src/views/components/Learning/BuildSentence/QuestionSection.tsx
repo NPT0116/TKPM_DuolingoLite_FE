@@ -6,7 +6,7 @@ import { TextAudioPicture } from "../../LearnPage/QuestionType/TextAudioPicture/
 interface QuestionSectionProps {
   questionConfigure: Configure;
   vietnameseText: string | null;
-  pictureId: string | null;
+  picture: Resource | null;
   englishText: string | null;
   audio: Resource | null;
   isBuildSentence?: boolean;
@@ -17,7 +17,7 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
   vietnameseText,
   englishText,
   audio,
-  pictureId,
+  picture,
   isBuildSentence = false,
 }) => {
   return (
@@ -31,7 +31,7 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
         <TextAudioPicture
           vietnameseText={vietnameseText}
           englishText={englishText}
-          pictureId={pictureId}
+          picture={picture}
           isBuildSentence={isBuildSentence}
           audio={audio}
         />

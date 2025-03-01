@@ -1,30 +1,48 @@
 import { useState } from "react";
-import { Configure } from "../../../../interfaces/Configure/Configure";
-import configData from "../../../../services/mock_datas/configure.json";
-import buildSentenceData from "../../../../services/mock_datas/build_sentences.json";
-import { BuildSentenceQuestion } from "../../../../interfaces/Questions/BuildSentenceQuestion";
-import { BuildSentenceOption } from "../../../../interfaces/Options/BuildSentenceOption";
 import Instruction from "../../../components/LearnPage/Instruction/Instruction";
 import QuestionSection from "../../../components/Learning/BuildSentence/QuestionSection";
 import AnswerLine from "../../../components/Learning/BuildSentence/AnswerLine";
 import WordChoice from "../../../components/Learning/BuildSentence/WordChoice";
+import { IBuildSentenceQuestion } from "../../../../interfaces/Questions/IBuildSentenceQuestion";
+import { IBuildSentenceOption } from "../../../../interfaces/Options/IBuildSentenceOption";
 
-const BuildSentencePage: React.FC = () => {
-  const [selectedWords, setSelectedWords] = useState<BuildSentenceOption[]>([]);
+interface BuildSentenceProps {
+  data: IBuildSentenceQuestion;
+  setXp: React.Dispatch<
+    React.SetStateAction<{ accumulated: number; total: number }>
+  >;
+  state: number;
+  setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const BuildSentencePage: React.FC<BuildSentenceProps> = ({
+  setXp,
+  state,
+  setIsButtonActive,
+  data,
+}) => {
+  const [selectedWords, setSelectedWords] = useState<IBuildSentenceOption[]>(
+    []
+  );
   const [wrapCount, setWrapCount] = useState<number>(0);
 
-  const config: Configure = configData.value.configure;
-  const data: BuildSentenceQuestion = buildSentenceData.value
-    .question as BuildSentenceQuestion;
-
-  const handleChooseWord = (option: BuildSentenceOption) => {
+  const handleChooseWord = (option: IBuildSentenceOption) => {
     setSelectedWords((prev) => [...prev, option]);
+    setIsButtonActive(true);
   };
 
-  const handleRemoveWord = (option: BuildSentenceOption) => {
-    setSelectedWords((prev) =>
-      prev.filter((w) => w.optionId !== option.optionId)
-    );
+  const handleRemoveWord = (option: IBuildSentenceOption) => {
+    setSelectedWords((prev) => {
+      const newSelectedWords = prev.filter(
+        (w) => w.optionId !== option.optionId
+      );
+
+      if (newSelectedWords.length === 0) {
+        setIsButtonActive(false);
+      }
+
+      return newSelectedWords;
+    });
   };
 
   return (
@@ -32,20 +50,22 @@ const BuildSentencePage: React.FC = () => {
       <div className=" w-[600px] flex flex-col gap-[20px] text-white">
         <Instruction instruction={data.instruction} />
         <QuestionSection
-          config={config}
-          audioId={data.audioId}
-          pictureId={data.pictureId}
+          questionConfigure={data.questionConfigure}
+          audio={data.audio}
+          picture={data.picture}
           englishText={data.englishText}
           vietnameseText={data.vietnameseText}
           isBuildSentence={true}
         />
         <div className="flex flex-col gap-[60px]">
           <AnswerLine
+            isEnglish={data.optionConfigure.englishText}
             selectedWords={selectedWords}
             onRemoveWord={handleRemoveWord}
             wrapCount={wrapCount}
           />
           <WordChoice
+            isEnglish={data.optionConfigure.englishText}
             selectedWords={selectedWords}
             wordOptions={data.options}
             onWordClick={handleChooseWord}

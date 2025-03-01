@@ -31,11 +31,13 @@ const ContinueButton: React.FC<IContinueButton> = ({
       ${isButtonActivate ? `background: #${hoverColor};` : null}
     }
     &:active {
-      ${!isButtonActivate ? "transform: translateY(-4px); " : null}
+      ${!isButtonActivate && "transform: translateY(-4px)"}
     }
   `;
+
   return (
     <button
+      disabled={!isButtonActivate}
       className={`absolute text-md rounded-2xl font-bold text-white border-b-[4px] cursor-pointer active:border-b-0 active:translate-y-[4px]`}
       style={{ padding: `12px ${paddingWidth}px` }}
       onClick={() => {
