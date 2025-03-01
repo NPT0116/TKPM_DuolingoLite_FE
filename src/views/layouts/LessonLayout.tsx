@@ -52,6 +52,10 @@ const LessonLayout: React.FC = () => {
         );
       case "Pronunciation":
         return <PronunciationPage />;
+      case "MultipleChoice":
+        return <div>Multiple Choice</div>;
+      case "BuildSentence":
+        return <div>Build Sentence</div>;
       default:
         return <div>hiu</div>;
     }
