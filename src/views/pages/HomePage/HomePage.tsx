@@ -1,28 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import DisplayUnit from "../../components/LearnPage/DisplayUnit";
 import { css } from "@emotion/react";
-const te = css`
-  overflow-y: auto;
-  /* Firefox */
-  scrollbar-width: thin;
-  scrollbar-color: #888 #f1f1f1;
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { ICourse, ILesson } from "../../../interfaces/Course";
 
-  /* WebKit */
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 5px;
-    border: 2px solid #f1f1f1;
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-  }
-`;
 const scrollContainerStyle = css`
   scrollbar-width: 0px;
   &::-webkit-scrollbar {
@@ -31,16 +13,24 @@ const scrollContainerStyle = css`
 `;
 
 const HomePage: React.FC = () => {
+  const [data, setData] = useState<ICourse | null>(null);
+  useEffect(() => {
+    axios
+      .get("/mock_datas/course.json")
+      .then((response) => {
+        setData(response.data.value[0]);
+      })
+      .catch((error) => {
+        console.error("Error fetching the mock data:", error);
+      });
+  }, []);
   return (
     <div
       className="w-full h-full flex justify-between"
       css={scrollContainerStyle}
     >
       <div className="w-3/5 h-full overflow-auto" css={scrollContainerStyle}>
-        <DisplayUnit type={1} />
-        <DisplayUnit type={2} />
-        <DisplayUnit type={1} />
-        <DisplayUnit type={2} />
+        <DisplayUnit title={data?.name} type={1} lessons={data?.lessons} />
       </div>
       <div className="w-2/5 h-full">
         <div className="w-[95%] h-full flex flex-col">

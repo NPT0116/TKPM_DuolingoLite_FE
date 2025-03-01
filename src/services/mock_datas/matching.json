@@ -1,0 +1,137 @@
+{
+    "value": {
+      "instruction": "",
+      "questionId": "0ca2c787-3411-486b-b93f-a884bef9ec1d",
+      "vietnameseText": null,
+      "picture": null,
+      "englishText": "",
+      "audio": null,
+      "type": "Matching",
+      "questionConfigure": {
+        "audio": false,
+        "englishText": false,
+        "vietnameseText": false,
+        "instruction": true,
+        "image": false,
+        "id": "96aa32c5-5f25-466c-b8f7-1a0b187f99dc"
+      },
+      "optionConfigure": {
+        "audio": true,
+        "englishText": true,
+        "vietnameseText": true,
+        "instruction": false,
+        "image": false,
+        "id": "041cc6b4-f70f-476d-8bb4-bbb43f799665"
+      },
+      "order": 1,
+      "options": [
+        {
+          "targetType": "EnglishText",
+          "sourceType": "VietnameseText",
+          "optionId": "fa6c06bb-e8ab-4449-ace7-be8d1e9b5e88",
+          "vietnameseText": "thực đơn",
+          "englishText": "menu",
+          "image": {
+            "fileKey": "https://d2pur3iezf4d1j.cloudfront.net/images/016b7b168e175683396980bdcf7cf0e0",
+            "fileName": "optionImage",
+            "url": "https://d2pur3iezf4d1j.cloudfront.net/images/016b7b168e175683396980bdcf7cf0e0",
+            "mimeType": 0,
+            "size": 100000,
+            "createdAt": "2025-02-27T17:41:06.397226Z",
+            "updatedAt": "0001-01-01T00:00:00",
+            "id": "162c21da-e28f-4517-aadc-3e29cb27f1be"
+          },
+          "audio": {
+            "fileKey": "https://drive.google.com/file/d/1MJNy_FHlc6HZIM4aYU5Dc4H0nQfzy9Rm/view?usp=drive_link",
+            "fileName": "optionAudio",
+            "url": "https://drive.google.com/file/d/1MJNy_FHlc6HZIM4aYU5Dc4H0nQfzy9Rm/view?usp=drive_link",
+            "mimeType": 1,
+            "size": 10000,
+            "createdAt": "2025-02-27T17:41:06.397229Z",
+            "updatedAt": "0001-01-01T00:00:00",
+            "id": "173154fe-84eb-4344-b2b9-e281e647723d"
+          }
+        },
+        {
+          "targetType": "EnglishText",
+          "sourceType": "VietnameseText",
+          "optionId": "0dd38967-8690-44e1-bf61-6922e6e575a0",
+          "vietnameseText": "nước ép",
+          "englishText": "juice",
+          "image": null,
+          "audio": {
+            "fileKey": "https://drive.google.com/file/d/1_HVwBE0jK7UPk3v_hYCEy_IwKbrFbJyl/view?usp=drive_link",
+            "fileName": "optionAudio",
+            "url": "https://drive.google.com/file/d/1_HVwBE0jK7UPk3v_hYCEy_IwKbrFbJyl/view?usp=drive_link",
+            "mimeType": 1,
+            "size": 10000,
+            "createdAt": "2025-02-27T17:41:06.527986Z",
+            "updatedAt": "0001-01-01T00:00:00",
+            "id": "64b809c6-5db5-467c-8d3c-87008bfa99b8"
+          }
+        },
+        {
+          "targetType": "EnglishText",
+          "sourceType": "VietnameseText",
+          "optionId": "723c8013-81c9-4a9f-a84a-69778ea44697",
+          "vietnameseText": "chồng",
+          "englishText": "husband",
+          "image": null,
+          "audio": {
+            "fileKey": "https://drive.google.com/file/d/10cc16n3BARH6zuI6CkNJzUh78HZTQSh5/view?usp=drive_link",
+            "fileName": "optionAudio",
+            "url": "https://drive.google.com/file/d/10cc16n3BARH6zuI6CkNJzUh78HZTQSh5/view?usp=drive_link",
+            "mimeType": 1,
+            "size": 10000,
+            "createdAt": "2025-02-27T17:41:06.515016Z",
+            "updatedAt": "0001-01-01T00:00:00",
+            "id": "effc5328-b78b-4020-99b0-7c7d950cbff1"
+          }
+        },
+        {
+          "targetType": "EnglishText",
+          "sourceType": "VietnameseText",
+          "optionId": "36df7234-e58b-47e5-b69c-a3c85ca58cf0",
+          "vietnameseText": "nước Mỹ",
+          "englishText": "America",
+          "image": null,
+          "audio": {
+            "fileKey": "https://drive.google.com/file/d/1ZgnTbPaUVnAXg2KZh6_xwl8NVYEBc7mZ/view?usp=drive_link",
+            "fileName": "optionAudio",
+            "url": "https://drive.google.com/file/d/1ZgnTbPaUVnAXg2KZh6_xwl8NVYEBc7mZ/view?usp=drive_link",
+            "mimeType": 1,
+            "size": 10000,
+            "createdAt": "2025-02-27T17:41:06.418438Z",
+            "updatedAt": "0001-01-01T00:00:00",
+            "id": "14ca6318-4b63-4a73-8bf0-6b59398c33f8"
+          }
+        },
+        {
+          "targetType": "EnglishText",
+          "sourceType": "VietnameseText",
+          "optionId": "f3cc4500-e5d1-454c-a116-76a0a7081f66",
+          "vietnameseText": "con gái",
+          "englishText": "daughter",
+          "image": null,
+          "audio": {
+            "fileKey": "https://drive.google.com/file/d/1VZ8ruf9RDbTZQp55TcuDxo9_U6d88uzI/view?usp=drive_link",
+            "fileName": "optionAudio",
+            "url": "https://drive.google.com/file/d/1VZ8ruf9RDbTZQp55TcuDxo9_U6d88uzI/view?usp=drive_link",
+            "mimeType": 1,
+            "size": 10000,
+            "createdAt": "2025-02-27T17:41:06.520542Z",
+            "updatedAt": "0001-01-01T00:00:00",
+            "id": "2a242663-80da-4b48-8f14-b5cbf2a47443"
+          }
+        }
+      ],
+      "words": []
+    },
+    "isSuccess": true,
+    "isFailure": false,
+    "error": {
+      "code": "",
+      "description": "",
+      "type": 0
+    }
+  }

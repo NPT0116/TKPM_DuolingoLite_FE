@@ -1,0 +1,54 @@
+{
+    "value": [
+      {
+        "name": "English for Beginners",
+        "level": 1,
+        "nextCourse": null,
+        "lessons": [
+          {
+            "title": "Lesson 1",
+            "xpEarned": 100,
+            "order": 1,
+            "questions": [],
+            "id": "13eb4ea2-a451-420a-8499-77df4f25ad3b"
+          },
+          {
+            "title": "Lesson 5",
+            "xpEarned": 100,
+            "order": 5,
+            "questions": [],
+            "id": "4be59cae-8388-4e4a-a3c2-45bde65e40cc"
+          },
+          {
+            "title": "Lesson 4",
+            "xpEarned": 100,
+            "order": 4,
+            "questions": [],
+            "id": "4f052fe3-db6f-4e7c-96ed-208f83f690a0"
+          },
+          {
+            "title": "Lesson 3",
+            "xpEarned": 100,
+            "order": 3,
+            "questions": [],
+            "id": "713111cf-42c2-4edb-90b9-be080fd723a1"
+          },
+          {
+            "title": "Lesson 2",
+            "xpEarned": 100,
+            "order": 2,
+            "questions": [],
+            "id": "a9584931-6001-4f14-9804-4fe2b35bf16e"
+          }
+        ],
+        "id": "39713776-d5cb-4473-bdc7-317d5e13823c"
+      }
+    ],
+    "isSuccess": true,
+    "isFailure": false,
+    "error": {
+      "code": "",
+      "description": "",
+      "type": 0
+    }
+  }
