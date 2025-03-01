@@ -1,4 +1,5 @@
-import { IQuestionConfigure, IOptionConfigure } from "./Configure";
+import { IOptionConfigure, IQuestionConfigure } from "./Configure/Configure";
+
 export interface IError {
   code: string;
   description: string;

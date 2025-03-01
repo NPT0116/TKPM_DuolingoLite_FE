@@ -1,22 +1,25 @@
-import { Outlet } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import XPBar from "../components/XPBar/XPBar";
 import ContinueButton from "../components/Button/ContinueButton";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { IQuestionResponse, IQuestion } from "../../interfaces/IQuestion";
+import mockData from "../../services/mock_datas/build_sentences.json";
+import { IQuestion } from "../../interfaces/IQuestion";
+import { IBuildSentenceQuestion } from "../../interfaces/Questions/IBuildSentenceQuestion";
 import { ILessonInformation, ILessonValue } from "../../interfaces/Course";
-import { div } from "framer-motion/client";
 
 // Import Page Component
 import MatchingLessonPage from "../pages/LearnPage/MatchingWord/MatchingLessonPage";
 import PronunciationPage from "../pages/LearnPage/Pronunciation/PronunciationPage";
+import BuildSentencePage from "../pages/LearnPage/BuildSentencePage/BuildSentencePage";
+import MultipleChoicePage from "../pages/LearnPage/MultipleChoice/MultipleChoicePage";
 
 const LessonLayout: React.FC = () => {
+  const data = mockData.value as IBuildSentenceQuestion;
   const [xp, setXp] = useState({ accumulated: 0, total: 1 });
   const [state, setState] = useState(1);
   const [isButtonActivate, setIsButtonActive] = useState(false);
+  const [isButtonCorrect, setIsButtonCorrect] = useState(false);
   const [quesionList, setQuestionList] = useState<IQuestion[]>([]);
   const location = useLocation();
   const { lessonInformation } = location.state as {
@@ -42,22 +45,29 @@ const LessonLayout: React.FC = () => {
   };
   const handleLesson = (type: string) => {
     switch (type) {
-      case "MultipleChoice":
-        return (
-          <MatchingLessonPage
-            setXp={setXp}
-            state={state}
-            setIsButtonActive={setIsButtonActive}
-          />
-        );
+      case "Matching":
+        return <MatchingLessonPage setIsButtonActive={setIsButtonActive} />;
       case "Pronunciation":
         return <PronunciationPage />;
       case "MultipleChoice":
-        return <div>Multiple Choice</div>;
+        return (
+          <div className="text-white text-center">
+            This is Multiple Choice Page
+          </div>
+          // <MultipleChoicePage
+          //   data={data}
+          //   setIsButtonActive={setIsButtonActive}
+          // />
+        );
       case "BuildSentence":
-        return <div>Build Sentence</div>;
+        return (
+          <BuildSentencePage
+            data={data}
+            setIsButtonActive={setIsButtonActive}
+          />
+        );
       default:
-        return <div>hiu</div>;
+        return <div className="text-white">{state}</div>;
     }
   };
 
@@ -65,10 +75,10 @@ const LessonLayout: React.FC = () => {
     fetchLesson();
   }, [lessonInformation]);
   useEffect(() => {
-    setIsButtonActive(true);
+    setIsButtonActive(false);
+    setIsButtonCorrect(false);
   }, []);
 
-  console.log(quesionList);
   return (
     <div>
       {/* XP Bar */}
@@ -85,10 +95,16 @@ const LessonLayout: React.FC = () => {
         className="w-[100vw] h-[15vh] border-[#37464F] border-t-2 bg-[#131F23]"
         style={{ padding: "10px 0px" }}
       >
+        {state}
         <ContinueButton
+          setXp={setXp}
+          setIsButtonActive={setIsButtonActive}
+          setIsButtonCorrect={setIsButtonCorrect}
+          maxState={quesionList.length}
+          isButtonActivate={isButtonActivate}
+          isButtonCorrect={isButtonCorrect}
           state={state}
           setState={setState}
-          isButtonActivate={isButtonActivate}
           mainColor="3B4EFF"
           borderColor="3F22EC"
           hoverColor="4156FF"

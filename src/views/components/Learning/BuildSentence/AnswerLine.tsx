@@ -1,9 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import React from "react";
-import BSButton from "../Button/BuildSentence/BSWordButton";
-import { BuildSentenceOption } from "../../../interfaces/Options/BuildSentenceOption";
+import { BuildSentenceOption } from "../../../../interfaces/Options/IBuildSentenceOption";
+import BSBWordButton from "../../Button/BuildSentence/BSWordButton";
 
 interface AnswerLineProps {
+  isEnglish: boolean;
   selectedWords: BuildSentenceOption[];
   onRemoveWord: (option: BuildSentenceOption) => void;
   wrapCount: number;
@@ -13,6 +14,7 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
   selectedWords,
   onRemoveWord,
   wrapCount,
+  isEnglish,
 }) => {
   const effectiveWrapCount = wrapCount > 1 ? wrapCount : 1;
   const containerHeight = 64 * effectiveWrapCount + 2; // chiều cao = 60px * effectiveWrapCount
@@ -42,7 +44,9 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
       {hrLines}
       <AnimatePresence>
         {selectedWords.map((option) => {
-          const word: string = option.englishText ?? option.vietnameseText!;
+          const word: string = isEnglish
+            ? option.englishText
+            : option.vietnameseText;
           return (
             <motion.div
               key={option.optionId}
@@ -52,7 +56,10 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
               exit={{ opacity: 0, x: 0, y: -20 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
-              <BSButton label={word} onClick={() => onRemoveWord(option)} />
+              <BSBWordButton
+                label={word}
+                onClick={() => onRemoveWord(option)}
+              />
             </motion.div>
           );
         })}

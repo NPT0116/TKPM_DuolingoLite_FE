@@ -17,18 +17,12 @@ interface IELContent {
   englishText: string;
 }
 interface IMatchingLessonPage {
-  setXp: React.Dispatch<
-    React.SetStateAction<{ accumulated: number; total: number }>
-  >;
-  state: number;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 type PickingQueueItem = IVNContent | IELContent;
 
 const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
-  setXp,
-  state,
   setIsButtonActive,
 }) => {
   const [correctPickingList, setCorrectPickingList] = useState<string[]>([]);
@@ -74,7 +68,7 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
     if (correctPickingList.length === 5) {
       setIsButtonActive(true);
     }
-  }, [correctPickingList, setXp]);
+  }, [correctPickingList]);
 
   const handleScreenClick = () => {
     setPickingQueue([]);

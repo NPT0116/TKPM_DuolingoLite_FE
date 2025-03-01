@@ -12,6 +12,7 @@ import MatchingLessonPage from "../views/pages/LearnPage/MatchingWord/MatchingLe
 import PronunciationPage from "../views/pages/LearnPage/Pronunciation/PronunciationPage";
 import BuildSentencePage from "../views/pages/LearnPage/BuildSentencePage/BuildSentencePage";
 import LessonLayout from "../views/layouts/LessonLayout";
+import MultipleChoicePage from "../views/pages/LearnPage/MultipleChoice/MultipleChoicePage";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -26,6 +27,7 @@ const AppRoutes: React.FC = () => {
           <Route path="matching" element={<MatchingLessonPage />} />
           <Route path="pronunciation" element={<PronunciationPage />} />
           <Route path="build-sentence" element={<BuildSentencePage />} />
+          <Route path="multiple-choice" element={<MultipleChoicePage />} />
         </Route>
 
         {/* For component that have layout */}

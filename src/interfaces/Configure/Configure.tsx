@@ -1,9 +1,10 @@
 export interface Configure {
-  configureId: string;
+  id: string;
   audio: boolean;
   englishText: boolean;
   vietnameseText: boolean;
-  picture: boolean;
+  image: boolean;
+  instruction: boolean;
 }
 export interface IQuestionConfigure {
   id: string;
