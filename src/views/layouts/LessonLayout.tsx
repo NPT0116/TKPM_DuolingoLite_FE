@@ -1,8 +1,12 @@
+/** @jsxImportSource @emotion/react */
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { css } from "@emotion/react";
+import axios from "axios";
+
+//
 import XPBar from "../components/XPBar/XPBar";
 import ContinueButton from "../components/Button/ContinueButton";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
 import mockData from "../../services/mock_datas/build_sentences.json";
 import { IQuestion } from "../../interfaces/IQuestion";
 import { IBuildSentenceQuestion } from "../../interfaces/Questions/IBuildSentenceQuestion";
@@ -13,6 +17,12 @@ import MatchingLessonPage from "../pages/LearnPage/MatchingWord/MatchingLessonPa
 import PronunciationPage from "../pages/LearnPage/Pronunciation/PronunciationPage";
 import BuildSentencePage from "../pages/LearnPage/BuildSentencePage/BuildSentencePage";
 import MultipleChoicePage from "../pages/LearnPage/MultipleChoice/MultipleChoicePage";
+
+const footerWrong = css`
+  background: #202f36;
+  color: #d84948;
+`;
+// https://d35aaqx5ub95lt.cloudfront.net/images/bd13fa941b2407b4914296afe4435646.svg
 
 const LessonLayout: React.FC = () => {
   const data = mockData.value as IBuildSentenceQuestion;
@@ -54,10 +64,6 @@ const LessonLayout: React.FC = () => {
           <div className="text-white text-center">
             This is Multiple Choice Page
           </div>
-          // <MultipleChoicePage
-          //   data={data}
-          //   setIsButtonActive={setIsButtonActive}
-          // />
         );
       case "BuildSentence":
         return (
@@ -75,8 +81,8 @@ const LessonLayout: React.FC = () => {
     fetchLesson();
   }, [lessonInformation]);
   useEffect(() => {
-    setIsButtonActive(false);
-    setIsButtonCorrect(false);
+    setIsButtonActive(true);
+    // setIsButtonCorrect(false);
   }, []);
 
   return (
@@ -94,8 +100,8 @@ const LessonLayout: React.FC = () => {
       <div
         className="w-[100vw] h-[15vh] border-[#37464F] border-t-2 bg-[#131F23]"
         style={{ padding: "10px 0px" }}
+        css={footerWrong}
       >
-        {state}
         <ContinueButton
           setXp={setXp}
           setIsButtonActive={setIsButtonActive}

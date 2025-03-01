@@ -69,7 +69,7 @@ const ContinueButton: React.FC<IContinueButton> = ({
       onClick={() => {
         if (isButtonActivate && state < maxState - 1) {
           setState((prev) => prev + 1);
-          setIsButtonActive(false);
+          // setIsButtonActive(false);
           setXp({ accumulated: state, total: maxState });
         } else if (state == maxState - 1) {
           setXp({ accumulated: state + 1, total: maxState });
@@ -79,9 +79,9 @@ const ContinueButton: React.FC<IContinueButton> = ({
     >
       {isButtonActivate
         ? isButtonCorrect
-          ? "KIỂM TRA"
-          : "TIẾP TỤC"
-        : "TIẾP TỤC"}
+          ? "TIẾP TỤC"
+          : "KIỂM TRA"
+        : "KIỂM TRA"}
     </button>
   );
 };
