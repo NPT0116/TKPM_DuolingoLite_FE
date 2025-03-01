@@ -64,7 +64,9 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
           className={`flex gap-[4.84px] ${
             picture ? "border-2 border-[#37464F]" : ""
           } h-fit rounded-xl items-center `}
-          style={picture ? { paddingLeft: "30px" } : { paddingLeft: "50px" }}
+          style={{
+            paddingLeft: audio ? (picture ? "30px" : "50px") : undefined,
+          }}
         >
           {audio !== null && (
             <div className="w-full h-fit flex items-center cursor-pointer">

@@ -13,15 +13,7 @@
       "id": "a0628181-b240-4a7d-9db6-9ee7944990e5"
     },
     "englishText": "You would like two beers, right?",
-    "audio": {
-      "fileName": "audio",
-      "url": "https://drive.google.com/file/d/16lYIfmEbJe_edHuOZkwHoqbJBdZ4keo9/view?usp=drive_link",
-      "mimeType": 1,
-      "size": 10000,
-      "createdAt": "2025-02-27T16:17:05.839804Z",
-      "updatedAt": "0001-01-01T00:00:00",
-      "id": "2dd20616-365d-4deb-bcb2-fb2760876e5e"
-    },
+    "audio": null,
     "type": "BuildSentence",
     "questionConfigure": {
       "audio": true,
