@@ -1,22 +1,21 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import axios from "axios";
+import { ILessonInformation, ILessonValue } from "../../../interfaces/Course";
 import { useNavigate } from "react-router-dom";
 interface ILessonNode {
   topColor: string;
   botColor: string;
   shadowColor: string;
   transX: string;
-  id: string;
-  order: number;
+  lessonInformation: ILessonInformation;
 }
 const LessonNode: React.FC<ILessonNode> = ({
   topColor,
   botColor,
   shadowColor,
   transX,
-  id,
-  order,
+  lessonInformation,
 }) => {
   const navigate = useNavigate();
   const nodeColor = css`
@@ -25,22 +24,9 @@ const LessonNode: React.FC<ILessonNode> = ({
       background: #${topColor};
     }
   `;
-  // const fetchLesson = () => {
-  //   axios
-  //     .get(
-  //       `/api/Question/questions/list-questions/${id}?questionOrder=${order}`
-  //     )
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error while fetching lesson:", error);
-  //     });
-  // };
   const goToLessonPage = () => {
-    navigate("/lesson", { state: { id } });
+    navigate("/lesson", { state: { lessonInformation } });
   };
-
   return (
     <button
       onClick={goToLessonPage}

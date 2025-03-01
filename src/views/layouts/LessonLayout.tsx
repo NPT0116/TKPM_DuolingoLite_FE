@@ -4,23 +4,39 @@ import ContinueButton from "../components/Button/ContinueButton";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import mockData from "../../services/mock_datas/build_sentences.json";
-import { IQuestionResponse, IQuestion } from "../../interfaces/IQuestion";
-import MultipleChoicePage from "../pages/LearnPage/MultipleChoice/MultipleChoicePage";
-import BuildSentencePage from "../pages/LearnPage/BuildSentencePage/BuildSentencePage";
+import mockData1 from "../../services/mock_datas/multiple_choice.json";
+import { IQuestion } from "../../interfaces/IQuestion";
 import { IBuildSentenceQuestion } from "../../interfaces/Questions/IBuildSentenceQuestion";
+import { ILessonInformation } from "../../interfaces/Course";
+
+// Import Page Component
+import MatchingLessonPage from "../pages/LearnPage/MatchingWord/MatchingLessonPage";
+import PronunciationPage from "../pages/LearnPage/Pronunciation/PronunciationPage";
+import BuildSentencePage from "../pages/LearnPage/BuildSentencePage/BuildSentencePage";
+import { IMultipleChoiceQuestion } from "../../interfaces/Questions/IMultipleChoiceQuestion";
+import MultipleChoicePage from "../pages/LearnPage/MultipleChoice/MultipleChoicePage";
+
 const LessonLayout: React.FC = () => {
   const data = mockData.value as IBuildSentenceQuestion;
+  const data1 = mockData1.value as IMultipleChoiceQuestion;
   const [xp, setXp] = useState({ accumulated: 0, total: 1 });
   const [state, setState] = useState(1);
   const [isButtonActivate, setIsButtonActive] = useState(false);
+  const [isButtonCorrect, setIsButtonCorrect] = useState(false);
   const [quesionList, setQuestionList] = useState<IQuestion[]>([]);
   const location = useLocation();
-  const { id } = location.state || {};
+  const { lessonInformation } = location.state as {
+    lessonInformation: ILessonInformation;
+  };
+  const [lesson, setLesson] = useState(1);
+
   const fetchLesson = async () => {
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < lessonInformation.questionCount; i++) {
       await axios
         .get(
-          `/api/Question/questions/list-questions/${id}?questionOrder=${i + 1}`
+          `/api/Question/questions/list-questions/${
+            lessonInformation.id
+          }?questionOrder=${i + 1}`
         )
         .then((response) => {
           setQuestionList((prev) => [...prev, response.data.value]);
@@ -30,13 +46,40 @@ const LessonLayout: React.FC = () => {
         });
     }
   };
-  console.log(quesionList);
+  const handleLesson = (type: string) => {
+    switch (type) {
+      case "Matching":
+        return <MatchingLessonPage setIsButtonActive={setIsButtonActive} />;
+      case "Pronunciation":
+        return <PronunciationPage />;
+      case "MultipleChoice":
+        return (
+          <MultipleChoicePage
+            data={data1}
+            setIsButtonActive={setIsButtonActive}
+            setIsButtonCorrect={setIsButtonCorrect}
+          />
+        );
+      case "BuildSentence":
+        return (
+          <BuildSentencePage
+            data={data}
+            setIsButtonActive={setIsButtonActive}
+            setIsButtonCorrect={setIsButtonCorrect}
+          />
+        );
+      default:
+        return <div className="text-white">{state}</div>;
+    }
+  };
+
   useEffect(() => {
     fetchLesson();
-  }, [id]);
+  }, [lessonInformation]);
   useEffect(() => {
-    setIsButtonActive(false);
-  }, [state]);
+    setIsButtonActive(true);
+    setIsButtonCorrect(false);
+  }, []);
 
   return (
     <div>
@@ -46,17 +89,7 @@ const LessonLayout: React.FC = () => {
       </div>
       {/* Main Layout */}
       <div className="w-[100vw] h-[75vh]">
-        <BuildSentencePage
-          data={data}
-          setXp={setXp}
-          setIsButtonActive={setIsButtonActive}
-          state={state}
-        />
-        {/* {" "}
-        {state == 1 && <MultipleChoicePage />}
-        {state == 2 && <div className="text-white">hihi</div>}
-        {state == 3 && <div className="text-white">hoho</div>}
-        {state == 4 && <MultipleChoicePage />} */}
+        {quesionList?.[0] ? handleLesson(quesionList[state]?.type) : null}
       </div>
 
       {/* Navigation Bar */}
@@ -64,10 +97,16 @@ const LessonLayout: React.FC = () => {
         className="w-[100vw] h-[15vh] border-[#37464F] border-t-2 bg-[#131F23]"
         style={{ padding: "10px 0px" }}
       >
+        {state}
         <ContinueButton
+          setXp={setXp}
+          setIsButtonActive={setIsButtonActive}
+          setIsButtonCorrect={setIsButtonCorrect}
+          maxState={quesionList.length}
+          isButtonActivate={isButtonActivate}
+          isButtonCorrect={isButtonCorrect}
           state={state}
           setState={setState}
-          isButtonActivate={isButtonActivate}
           mainColor="3B4EFF"
           borderColor="3F22EC"
           hoverColor="4156FF"

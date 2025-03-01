@@ -4,9 +4,15 @@ import AnswerContainer2Cols from "../AnswerContainer/AnswerContainer2Cols";
 
 interface AnswerSection2ColsProps {
   data: IMultipleChoiceQuestion;
+  setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({ data }) => {
+const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({
+  data,
+  setIsButtonActive,
+  setIsButtonCorrect,
+}) => {
   return (
     <div
       className="flex flex-col gap-[24px] h-[50%]"
@@ -21,7 +27,11 @@ const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({ data }) => {
         vietnameseText={data.vietnameseText}
       />
       {/* Answer Section */}
-      <AnswerContainer2Cols options={data.options} />
+      <AnswerContainer2Cols
+        options={data.options}
+        setIsButtonActive={setIsButtonActive}
+        setIsButtonCorrect={setIsButtonCorrect}
+      />
     </div>
   );
 };

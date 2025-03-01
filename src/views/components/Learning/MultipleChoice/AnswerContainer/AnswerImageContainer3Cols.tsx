@@ -6,11 +6,13 @@ import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultip
 interface AnswerImageContainer3ColsProps {
   options: IMultipleChoiceOption[];
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
   options,
   setIsButtonActive,
+  setIsButtonCorrect,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
@@ -25,6 +27,9 @@ const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
           onSelect={() => {
             setSelectedIndex(index);
             setIsButtonActive(true);
+            if (option.isCorrect) {
+              setIsButtonCorrect(true);
+            }
           }}
         />
       ))}

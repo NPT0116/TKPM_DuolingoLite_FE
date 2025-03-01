@@ -1,9 +1,12 @@
 import LessonNode from "./LessonNode";
-import { css } from "@emotion/react";
-import { ICourse, ILesson, IDisplayUnit } from "../../../interfaces/Course";
-import { div } from "framer-motion/client";
+import { IDisplayUnit } from "../../../interfaces/Course";
 
-const DisplayUnit: React.FC<IDisplayUnit> = ({ type, title, lessons }) => {
+const DisplayUnit: React.FC<IDisplayUnit> = ({
+  type,
+  title,
+  lessonsList,
+  lessonsInformation,
+}) => {
   const template1 = {
     topColor: "58CC05",
     botColor: "47A30B",
@@ -36,7 +39,6 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({ type, title, lessons }) => {
     const randomIndex = Math.floor(Math.random() * templates.length);
     return templates[randomIndex];
   };
-
   const randomTemplate = getRandomTemplate();
   if (type == 1) {
     return (
@@ -77,20 +79,20 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({ type, title, lessons }) => {
           </span>
           <hr className="border-[#52656D] border-[1px] w-full rounded-full" />
         </div>
-        {lessons?.map((item, index) => {
-          return (
+        {lessonsInformation
+          ?.slice()
+          .sort((a, b) => a.order - b.order)
+          .map((item, index) => (
             <div key={item.id}>
               <LessonNode
-                id={item.id}
-                order={item.order}
+                lessonInformation={item}
                 topColor={randomTemplate.topColor}
                 botColor={randomTemplate.botColor}
                 shadowColor={randomTemplate.shadowColor}
                 transX={layout1[index]}
               />
             </div>
-          );
-        })}
+          ))}
       </div>
     );
   }
@@ -132,20 +134,22 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({ type, title, lessons }) => {
         </span>
         <hr className="border-[#52656D] border-[1px] w-full rounded-full" />
       </div>
-      {lessons?.map((item, index) => {
-        return (
-          <div key={item.id}>
-            <LessonNode
-              id={item.id}
-              order={item.order}
-              topColor={randomTemplate.topColor}
-              botColor={randomTemplate.botColor}
-              shadowColor={randomTemplate.shadowColor}
-              transX={layout2[index]}
-            />
-          </div>
-        );
-      })}
+      {lessonsInformation
+        ?.slice()
+        .sort((a, b) => a.order - b.order)
+        .map((item, index) => {
+          return (
+            <div key={item.id}>
+              <LessonNode
+                lessonInformation={item}
+                topColor={randomTemplate.topColor}
+                botColor={randomTemplate.botColor}
+                shadowColor={randomTemplate.shadowColor}
+                transX={layout2[index]}
+              />
+            </div>
+          );
+        })}
     </div>
   );
 };

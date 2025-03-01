@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { MultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
+import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
 import AnswerCard from "../AnswerCard/AnswerCard";
 
 interface AnswerContainer2ColsProps {
-  options: MultipleChoiceOption[];
+  options: IMultipleChoiceOption[];
+  setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
   options,
+  setIsButtonActive,
+  setIsButtonCorrect,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   return (
@@ -19,7 +23,13 @@ const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
           option={option}
           index={index}
           isSelected={selectedIndex === index}
-          onSelect={() => setSelectedIndex(index)}
+          onSelect={() => {
+            setSelectedIndex(index);
+            setIsButtonActive(true);
+            if (option.isCorrect) {
+              setIsButtonCorrect(true);
+            }
+          }}
         />
       ))}
     </div>

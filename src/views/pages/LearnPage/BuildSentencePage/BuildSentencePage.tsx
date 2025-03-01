@@ -8,17 +8,13 @@ import { IBuildSentenceOption } from "../../../../interfaces/Options/IBuildSente
 
 interface BuildSentenceProps {
   data: IBuildSentenceQuestion;
-  setXp: React.Dispatch<
-    React.SetStateAction<{ accumulated: number; total: number }>
-  >;
-  state: number;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const BuildSentencePage: React.FC<BuildSentenceProps> = ({
-  setXp,
-  state,
   setIsButtonActive,
+  setIsButtonCorrect,
   data,
 }) => {
   const [selectedWords, setSelectedWords] = useState<IBuildSentenceOption[]>(
@@ -26,8 +22,14 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
   );
   const [wrapCount, setWrapCount] = useState<number>(0);
 
+  const correctWordLength = data.options.reduce(
+    (max, option) => (option.order > max ? option.order : max),
+    1
+  );
+
   const handleChooseWord = (option: IBuildSentenceOption) => {
     setSelectedWords((prev) => [...prev, option]);
+
     setIsButtonActive(true);
   };
 
@@ -47,7 +49,7 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
 
   return (
     <div className="w-full h-full bg-[#131F24] flex justify-center items-center">
-      <div className=" w-[600px] flex flex-col gap-[20px] text-white">
+      <div className="w-[600px] flex flex-col gap-[20px] text-white">
         <Instruction instruction={data.instruction} />
         <QuestionSection
           questionConfigure={data.questionConfigure}
@@ -59,10 +61,12 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
         />
         <div className="flex flex-col gap-[60px]">
           <AnswerLine
+            correctWordLength={correctWordLength}
             isEnglish={data.optionConfigure.englishText}
             selectedWords={selectedWords}
             onRemoveWord={handleRemoveWord}
             wrapCount={wrapCount}
+            setIsButtonCorrect={setIsButtonCorrect}
           />
           <WordChoice
             isEnglish={data.optionConfigure.englishText}

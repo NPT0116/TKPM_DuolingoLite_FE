@@ -6,17 +6,13 @@ import AnswerSectionImage3Cols from "../../../components/Learning/MultipleChoice
 
 interface MultipleChoiceProps {
   data: IMultipleChoiceQuestion;
-  setXp: React.Dispatch<
-    React.SetStateAction<{ accumulated: number; total: number }>
-  >;
-  state: number;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
-  setXp,
-  state,
   setIsButtonActive,
+  setIsButtonCorrect,
 }) => {
   const data = mockData.value;
 
@@ -33,11 +29,16 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
 
         {/* Question & Answer Section */}
         {hasQuestionContent ? (
-          <AnswerSection2Cols data={data} />
+          <AnswerSection2Cols
+            data={data}
+            setIsButtonActive={setIsButtonActive}
+            setIsButtonCorrect={setIsButtonCorrect}
+          />
         ) : (
           <AnswerSectionImage3Cols
             data={data}
             setIsButtonActive={setIsButtonActive}
+            setIsButtonCorrect={setIsButtonCorrect}
           />
         )}
       </div>
