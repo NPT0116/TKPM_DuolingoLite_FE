@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Instruction from "../../../components/LearnPage/Instruction/Instruction";
 import QuestionSection from "../../../components/LearnPage/QuestionSection/QuestionSection";
 import AnswerLine from "../../../components/Learning/BuildSentence/AnswerLine";
@@ -21,6 +21,7 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
     []
   );
   const [wrapCount, setWrapCount] = useState<number>(0);
+  const [isNext, setIsNext] = useState<boolean>(false);
 
   const correctWordLength = data.options.reduce(
     (max, option) => (option.order > max ? option.order : max),
@@ -46,6 +47,9 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
       return newSelectedWords;
     });
   };
+  useEffect(() => {
+    setIsNext(true);
+  }, [data.questionId]);
 
   return (
     <div className="w-full h-full bg-[#131F24] flex justify-center items-center">
@@ -67,6 +71,9 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
             onRemoveWord={handleRemoveWord}
             wrapCount={wrapCount}
             setIsButtonCorrect={setIsButtonCorrect}
+            isNext={isNext}
+            setIsNext={setIsNext}
+            setSelectedWords={setSelectedWords}
           />
           <WordChoice
             isEnglish={data.optionConfigure.englishText}

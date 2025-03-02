@@ -80,7 +80,6 @@ const LessonLayout: React.FC = () => {
         return (
           <MultipleChoicePage
             data={questionData as unknown as IMultipleChoiceQuestion}
-            isNext={isNext}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
           />

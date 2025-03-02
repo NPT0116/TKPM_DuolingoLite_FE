@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { MultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
+import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
 
 interface AnswerImageCardProps {
-  option: MultipleChoiceOption;
+  option: IMultipleChoiceOption;
   index: number;
   isSelected: boolean;
+  isEnglish: boolean;
+
   onSelect: () => void;
 }
 
@@ -13,6 +15,7 @@ const AnswerImageCard: React.FC<AnswerImageCardProps> = ({
   index,
   isSelected,
   onSelect,
+  isEnglish,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
 
@@ -56,7 +59,7 @@ const AnswerImageCard: React.FC<AnswerImageCardProps> = ({
             isSelected ? "text-[#3F85A7]" : "text-white"
           } `}
         >
-          {option.englishText || option.vietnameseText}
+          {isEnglish ? option.englishText : option.vietnameseText}
         </span>
         <span
           className={`text-[15px] font-bold border-2 h-full aspect-square flex items-center justify-center rounded-lg ${

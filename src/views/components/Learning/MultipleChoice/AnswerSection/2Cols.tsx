@@ -7,6 +7,7 @@ interface AnswerSection2ColsProps {
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
   isNext: boolean;
+  setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({
@@ -14,6 +15,7 @@ const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({
   setIsButtonActive,
   setIsButtonCorrect,
   isNext,
+  setIsNext,
 }) => {
   return (
     <div
@@ -34,6 +36,8 @@ const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({
         setIsButtonActive={setIsButtonActive}
         setIsButtonCorrect={setIsButtonCorrect}
         isNext={isNext}
+        setIsNext={setIsNext}
+        isEnglish={data.optionConfigure.englishText}
       />
     </div>
   );

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { MultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
+import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
 
 interface AnswerCardProps {
-  option: MultipleChoiceOption;
+  option: IMultipleChoiceOption;
   index: number;
   isSelected: boolean;
+  isEnglish: boolean;
   onSelect: () => void;
 }
 
@@ -12,6 +13,7 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
   option,
   index,
   isSelected,
+  isEnglish,
   onSelect,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
@@ -58,7 +60,7 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
         } font-bold w-full text-center`}
       >
         {" "}
-        {option.englishText || option.vietnameseText}
+        {isEnglish ? option.englishText : option.vietnameseText}
       </span>
     </div>
   );
