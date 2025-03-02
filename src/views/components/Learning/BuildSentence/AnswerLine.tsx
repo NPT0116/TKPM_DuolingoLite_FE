@@ -41,7 +41,7 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
     if (selectedWords.length === correctWordLength) {
       for (let i = 0; i < selectedWords.length; i++) {
         if (selectedWords[i].order === i + 1) {
-          if (i === selectedWords.length) setIsButtonCorrect(true);
+          if (i === selectedWords.length - 1) setIsButtonCorrect(true);
           else continue;
         } else break;
       }
