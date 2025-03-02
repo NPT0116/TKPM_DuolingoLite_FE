@@ -8,12 +8,14 @@ interface MultipleChoiceProps {
   data: IMultipleChoiceQuestion;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
+  isSubmit: boolean;
 }
 
 const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
   setIsButtonActive,
   setIsButtonCorrect,
   data,
+  isSubmit,
 }) => {
   // const data = mockData.value;
   const hasQuestionContent =
@@ -41,6 +43,7 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
             setIsButtonCorrect={setIsButtonCorrect}
             isNext={isNext}
             setIsNext={setIsNext}
+            isSubmit={isSubmit}
           />
         ) : (
           <AnswerSectionImage3Cols
@@ -49,6 +52,7 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
             setIsButtonCorrect={setIsButtonCorrect}
             isNext={isNext}
             setIsNext={setIsNext}
+            isSubmit={isSubmit}
           />
         )}
       </div>

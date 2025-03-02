@@ -10,6 +10,7 @@ interface AnswerImageContainer3ColsProps {
   isNext: boolean;
   isEnglish: boolean;
   setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
+  isSubmit: boolean;
 }
 
 const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
@@ -19,6 +20,7 @@ const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
   isNext,
   setIsNext,
   isEnglish,
+  isSubmit,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   useEffect(() => {
@@ -45,10 +47,10 @@ const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
             if (option.isCorrect) {
               setIsButtonCorrect(true);
             } else {
-              console.log("false");
               setIsButtonCorrect(false);
             }
           }}
+          isSubmit={isSubmit}
         />
       ))}
     </div>

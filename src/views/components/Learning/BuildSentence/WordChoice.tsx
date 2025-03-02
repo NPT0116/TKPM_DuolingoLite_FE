@@ -10,6 +10,7 @@ interface WordChoiceProps {
   wordOptions: IBuildSentenceOption[];
   onWordClick: (option: IBuildSentenceOption) => void;
   onWrapCountChange?: (count: number) => void;
+  isSubmit: boolean;
 }
 
 const WordChoice: React.FC<WordChoiceProps> = ({
@@ -18,6 +19,7 @@ const WordChoice: React.FC<WordChoiceProps> = ({
   onWordClick,
   onWrapCountChange,
   isEnglish,
+  isSubmit,
 }) => {
   // Ref cho container chứa các nút từ
   const containerRef = useRef<HTMLDivElement>(null);
@@ -69,7 +71,7 @@ const WordChoice: React.FC<WordChoiceProps> = ({
                     onWordClick(option);
                   }
                 }}
-                disabled={isSelected}
+                disabled={isSelected || isSubmit}
                 style={{
                   opacity: isSelected ? 0 : 1,
                   transition: "opacity 0.3s",

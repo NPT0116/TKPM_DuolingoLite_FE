@@ -15,6 +15,7 @@ interface AnswerLineProps {
     React.SetStateAction<IBuildSentenceOption[]>
   >;
   setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
+  isSubmit: boolean;
 }
 
 const AnswerLine: React.FC<AnswerLineProps> = ({
@@ -27,6 +28,7 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
   setSelectedWords,
   isNext,
   setIsNext,
+  isSubmit,
 }) => {
   // Set wrap count
   const effectiveWrapCount = wrapCount > 1 ? wrapCount : 1;
@@ -95,6 +97,7 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
               <BSBWordButton
                 label={word}
                 onClick={() => onRemoveWord(option)}
+                disabled={isSubmit}
               />
             </motion.div>
           );

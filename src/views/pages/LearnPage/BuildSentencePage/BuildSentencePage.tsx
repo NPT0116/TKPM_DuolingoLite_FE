@@ -10,12 +10,14 @@ interface BuildSentenceProps {
   data: IBuildSentenceQuestion;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
+  isSubmit: boolean;
 }
 
 const BuildSentencePage: React.FC<BuildSentenceProps> = ({
   setIsButtonActive,
   setIsButtonCorrect,
   data,
+  isSubmit,
 }) => {
   const [selectedWords, setSelectedWords] = useState<IBuildSentenceOption[]>(
     []
@@ -29,12 +31,14 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
   );
 
   const handleChooseWord = (option: IBuildSentenceOption) => {
+    if (isSubmit) return;
     setSelectedWords((prev) => [...prev, option]);
 
     setIsButtonActive(true);
   };
 
   const handleRemoveWord = (option: IBuildSentenceOption) => {
+    if (isSubmit) return;
     setSelectedWords((prev) => {
       const newSelectedWords = prev.filter(
         (w) => w.optionId !== option.optionId
@@ -74,6 +78,7 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
             isNext={isNext}
             setIsNext={setIsNext}
             setSelectedWords={setSelectedWords}
+            isSubmit={isSubmit}
           />
           <WordChoice
             isEnglish={data.optionConfigure.englishText}
@@ -81,6 +86,7 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
             wordOptions={data.options}
             onWordClick={handleChooseWord}
             onWrapCountChange={(count) => setWrapCount(count)}
+            isSubmit={isSubmit}
           />
         </div>
       </div>
