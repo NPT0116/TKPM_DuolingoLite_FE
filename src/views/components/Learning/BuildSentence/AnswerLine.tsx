@@ -10,6 +10,11 @@ interface AnswerLineProps {
   wrapCount: number;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
   correctWordLength: number;
+  isNext: boolean;
+  setSelectedWords: React.Dispatch<
+    React.SetStateAction<IBuildSentenceOption[]>
+  >;
+  setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AnswerLine: React.FC<AnswerLineProps> = ({
@@ -19,6 +24,9 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
   wrapCount,
   isEnglish,
   setIsButtonCorrect,
+  setSelectedWords,
+  isNext,
+  setIsNext,
 }) => {
   // Set wrap count
   const effectiveWrapCount = wrapCount > 1 ? wrapCount : 1;
@@ -38,6 +46,13 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
   });
 
   useEffect(() => {
+    if (isNext) {
+      setSelectedWords([]);
+      setIsNext(false);
+    }
+  }, [isNext, setSelectedWords, setIsNext]);
+
+  useEffect(() => {
     if (selectedWords.length === correctWordLength) {
       for (let i = 0; i < selectedWords.length; i++) {
         if (selectedWords[i].order === i + 1) {
@@ -51,7 +66,7 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
         }
       }
     } else setIsButtonCorrect(false);
-  }, [selectedWords, correctWordLength, setIsButtonCorrect]);
+  }, [setSelectedWords, selectedWords, correctWordLength, setIsButtonCorrect]);
 
   return (
     <div

@@ -7,6 +7,8 @@ interface AnswerContainer2ColsProps {
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
   isNext: boolean;
+  isEnglish: boolean;
+  setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
@@ -14,16 +16,19 @@ const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
   setIsButtonActive,
   setIsButtonCorrect,
   isNext,
+  isEnglish,
+  setIsNext,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  // ✅ Reset khi `isNext` thay đổi
   useEffect(() => {
     if (isNext) {
+      setIsNext(false);
       setSelectedIndex(null);
-      isNext = false;
+      setIsButtonActive(false);
+      setIsButtonCorrect(false);
     }
-  }, [isNext, setIsButtonActive]);
+  }, [isNext, setIsButtonActive, setIsButtonCorrect, setIsNext]);
 
   return (
     <div className="w-full h-full flex flex-col gap-[8px]">
@@ -32,6 +37,7 @@ const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
         <AnswerCard
           key={index}
           option={option}
+          isEnglish={isEnglish}
           index={index}
           isSelected={selectedIndex === index}
           onSelect={() => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import AnswerImageCard from "../AnswerCard/AnswerImageCard";
 import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
@@ -8,6 +8,8 @@ interface AnswerImageContainer3ColsProps {
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
   isNext: boolean;
+  isEnglish: boolean;
+  setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
@@ -15,8 +17,18 @@ const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
   setIsButtonActive,
   setIsButtonCorrect,
   isNext,
+  setIsNext,
+  isEnglish,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  useEffect(() => {
+    if (isNext) {
+      setSelectedIndex(null);
+      setIsNext(false);
+      setIsButtonActive(false);
+      setIsButtonCorrect(false);
+    }
+  }, [isNext, setIsButtonActive, setIsNext]);
 
   return (
     <div className="h-[500px] w-full flex flex-col-3 gap-[8px] items-center">
@@ -26,6 +38,7 @@ const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
           option={option}
           index={index}
           isSelected={selectedIndex === index}
+          isEnglish={isEnglish}
           onSelect={() => {
             setSelectedIndex(index);
             setIsButtonActive(true);

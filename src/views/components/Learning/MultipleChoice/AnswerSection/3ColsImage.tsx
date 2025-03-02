@@ -6,6 +6,7 @@ interface AnswerSectionImage3ColsProps {
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
   isNext: boolean;
+  setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AnswerSectionImage3Cols: React.FC<AnswerSectionImage3ColsProps> = ({
@@ -13,6 +14,7 @@ const AnswerSectionImage3Cols: React.FC<AnswerSectionImage3ColsProps> = ({
   setIsButtonActive,
   setIsButtonCorrect,
   isNext,
+  setIsNext,
 }) => {
   return (
     <AnswerImageContainer3Cols
@@ -20,6 +22,8 @@ const AnswerSectionImage3Cols: React.FC<AnswerSectionImage3ColsProps> = ({
       setIsButtonActive={setIsButtonActive}
       setIsButtonCorrect={setIsButtonCorrect}
       isNext={isNext}
+      setIsNext={setIsNext}
+      isEnglish={data.optionConfigure.englishText}
     />
   );
 };

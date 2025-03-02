@@ -8,7 +8,6 @@ import { IBuildSentenceOption } from "../../../../interfaces/Options/IBuildSente
 
 interface BuildSentenceProps {
   data: IBuildSentenceQuestion;
-  isNext: boolean;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -17,24 +16,17 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
   setIsButtonActive,
   setIsButtonCorrect,
   data,
-  isNext,
 }) => {
   const [selectedWords, setSelectedWords] = useState<IBuildSentenceOption[]>(
     []
   );
   const [wrapCount, setWrapCount] = useState<number>(0);
+  const [isNext, setIsNext] = useState<boolean>(false);
 
   const correctWordLength = data.options.reduce(
     (max, option) => (option.order > max ? option.order : max),
     1
   );
-
-  useEffect(() => {
-    if (isNext) {
-      setSelectedWords([]); // Reset danh sách từ
-      isNext = false;
-    }
-  }, [isNext]);
 
   const handleChooseWord = (option: IBuildSentenceOption) => {
     setSelectedWords((prev) => [...prev, option]);
@@ -55,6 +47,9 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
       return newSelectedWords;
     });
   };
+  useEffect(() => {
+    setIsNext(true);
+  }, [data.questionId]);
 
   return (
     <div className="w-full h-full bg-[#131F24] flex justify-center items-center">
@@ -76,6 +71,9 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
             onRemoveWord={handleRemoveWord}
             wrapCount={wrapCount}
             setIsButtonCorrect={setIsButtonCorrect}
+            isNext={isNext}
+            setIsNext={setIsNext}
+            setSelectedWords={setSelectedWords}
           />
           <WordChoice
             isEnglish={data.optionConfigure.englishText}
