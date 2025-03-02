@@ -182,7 +182,6 @@ const ContinueButton: React.FC<IContinueButton> = ({
       onClick={() => {
         if (isButtonActivate) {
           if (isButtonCorrect && !isNext) {
-            console.log("ee");
             setIsNext(true);
           } else if (!isButtonCorrect && !isNext) {
             setIsNext(true);

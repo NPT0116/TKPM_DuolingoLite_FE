@@ -15,6 +15,7 @@ import FooterStatus from "../components/FooterBar/FooterStatus";
 import { IBuildSentenceQuestion } from "../../interfaces/Questions/IBuildSentenceQuestion";
 import { IMultipleChoiceQuestion } from "../../interfaces/Questions/IMultipleChoiceQuestion";
 import { IMatchingQuestion } from "../../interfaces/Questions/IMatchingQuestion";
+import { IPronunciationQuestion } from "../../interfaces/Questions/IPronunciationQuesion";
 // Import Page Component
 import MatchingLessonPage from "../pages/LearnPage/MatchingWord/MatchingLessonPage";
 import PronunciationPage from "../pages/LearnPage/Pronunciation/PronunciationPage";
@@ -27,6 +28,7 @@ const LessonLayout: React.FC = () => {
   const [isButtonActivate, setIsButtonActive] = useState(false);
   const [isButtonCorrect, setIsButtonCorrect] = useState(false);
   const [isNext, setIsNext] = useState(false);
+  const [isRetry, setIsRetry] = useState(false);
 
   const [xp, setXp] = useState({ accumulated: 0, total: 1 });
   const [state, setState] = useState(1);
@@ -66,7 +68,10 @@ const LessonLayout: React.FC = () => {
       case "Pronunciation":
         return (
           <PronunciationPage
-            data={questionData}
+            data={questionData as unknown as IPronunciationQuestion}
+            setIsNext={setIsNext}
+            setIsRetry={setIsRetry}
+            isRetry={isRetry}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
           />
@@ -118,6 +123,7 @@ const LessonLayout: React.FC = () => {
       >
         {isNext && isButtonCorrect && <FooterStatus type={0} />}
         {isNext && !isButtonCorrect && <FooterStatus type={1} />}
+        {!isNext && isRetry && <FooterStatus type={2} />}
         <ContinueButton
           setXp={setXp}
           isNext={isNext}

@@ -4,6 +4,7 @@ import { css, keyframes } from "@emotion/react";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { IQuestion } from "../../../../interfaces/IQuestion";
+import { IPronunciationQuestion } from "../../../../interfaces/Questions/IPronunciationQuesion";
 const fluctuate = keyframes`
   0% { transform: scaleY(1); }
   25% { transform: scaleY(1.8); }
@@ -11,70 +12,51 @@ const fluctuate = keyframes`
   75% { transform: scaleY(1.5); }
   100% { transform: scaleY(1); }
 `;
-const questionElements = [
-  {
-    englishText: "Good",
-    vietnameseText: "Có", // Add Vietnamese translation
-    audio: "",
-  },
-  {
-    englishText: "bye",
-    vietnameseText: "cái này", // Add Vietnamese translation
-    audio: "",
-  },
-  {
-    englishText: "have",
-    vietnameseText: "đen", // Add Vietnamese translation
-    audio: "",
-  },
-  {
-    englishText: "a",
-    vietnameseText: "túi", // Add Vietnamese translation
-    audio: "",
-  },
-  {
-    englishText: "nice",
-    vietnameseText: "mười", // Add Vietnamese translation
-    audio: "",
-  },
-  {
-    englishText: "day",
-    vietnameseText: "đô la", // Add Vietnamese translation
-    audio: "",
-  },
-  {
-    englishText: ".",
-    vietnameseText: ".", // Punctuation remains the same
-    audio: "",
-  },
-];
-
+const retryTimes = 4;
 const waveBars = Array(10).fill(null);
 
 interface IPronunciationPage {
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
-  data: IQuestion;
+  setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsRetry: React.Dispatch<React.SetStateAction<boolean>>;
+  isRetry: boolean;
+  data: IPronunciationQuestion;
 }
 
 const PronunciationPage: React.FC<IPronunciationPage> = ({
   setIsButtonActive,
   setIsButtonCorrect,
+  setIsNext,
+  setIsRetry,
   data,
+  isRetry,
 }) => {
+  // Set up data
+  const questionElements = data.words
+    .sort((a, b) => a.order - b.order)
+    .map((word) => ({
+      englishText: word.word,
+      vietnameseText: word.word,
+      audio: word.audio.fileName,
+    }));
   //
   const timeoutRef = useRef<number | null>(null);
   const [result, setResult] = useState("");
   const [answer, setAnswer] = useState("");
-  const [btnState, setBtnState] = useState(0);
   const [isRecord, setIsRecord] = useState(false);
   const [countRetry, setCountRetry] = useState(0);
 
-  if (countRetry < 3) {
-    setIsButtonActive(false);
-  } else {
-    setIsButtonActive(true);
-  }
+  // if (countRetry > 0) {
+  //   console.log(countRetry);
+  //   if (countRetry < 3) {
+  //     setIsButtonActive(false);
+  //     setIsRetry(true);
+  //   } else {
+  //     setIsRetry(false);
+  //     setIsButtonActive(true);
+  //   }
+  // }
 
   useEffect(() => {
     if (data && data.englishText) {
@@ -83,9 +65,21 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
     }
   }, []);
   useEffect(() => {
-    if (result === answer && answer !== "") {
+    if (result.toLowerCase() == answer.toLowerCase() && answer !== "") {
+      console.log("Correct");
+      setIsNext(true);
       setIsButtonCorrect(true);
       setIsButtonActive(true);
+      setIsRetry(false);
+    } else {
+      console.log("Incorrect");
+      if (countRetry >= 1) setIsRetry(true);
+      if (countRetry === retryTimes) {
+        setIsNext(true);
+        setIsButtonCorrect(false);
+        setIsButtonActive(true);
+        setIsRetry(false);
+      }
     }
   }, [answer]);
 
@@ -140,6 +134,15 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
         });
         console.log("Upload response:", response.data);
         setAnswer(response.data.transcript);
+        if (response.data.transcript == "") {
+          setIsRetry(true);
+          if (countRetry === retryTimes) {
+            setIsButtonActive(true);
+            setIsRetry(false);
+            setIsButtonCorrect(false);
+            setIsNext(true);
+          }
+        }
       } catch (error) {
         console.error("Error uploading audio:", error);
       }
@@ -149,6 +152,7 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
   // Record button
   const handleRecordButton = () => {
     setIsRecord(true);
+    setIsRetry(false);
     if (timeoutRef.current != null) {
       stopRecording();
       clearTimeout(timeoutRef.current);

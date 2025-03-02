@@ -30,30 +30,36 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
   setIsNext,
   data,
 }) => {
-  console.log(data.options);
   //
   const [correctPickingList, setCorrectPickingList] = useState<string[]>([]);
   const [pickingQueue, setPickingQueue] = useState<PickingQueueItem[]>([]);
   const [wrongPickingList, setWrongPickingList] = useState<PickingQueueItem[]>(
     []
   );
-
-  const sourceCollection: IVNContent[] = data.options.map(
-    (option: IMatchingOption) => ({
+  const [sourceCollection, setSourceCollection] = useState<IVNContent[]>([]);
+  const [targetCollection, setTargetCollection] = useState<IELContent[]>([]);
+  function shuffleArray<T>(array: T[]): T[] {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+  }
+  useEffect(() => {
+    const sourceCollection = data.options.map((option: IMatchingOption) => ({
       optionId: option.optionId,
       sourceType: option.sourceType,
       vietnameseText: option.vietnameseText,
-    })
-  );
-  const targetCollection: IELContent[] = data.options.map(
-    (option: IMatchingOption) => ({
+    }));
+    const targetCollection = data.options.map((option: IMatchingOption) => ({
       optionId: option.optionId,
       targetType: option.targetType,
       englishText: option.englishText,
-    })
-  );
-
-  const totalItem = targetCollection.length;
+    }));
+    setSourceCollection(shuffleArray(sourceCollection));
+    setTargetCollection(shuffleArray(targetCollection));
+  }, []);
 
   // Process the picking queue whenever it changes.
   useEffect(() => {
