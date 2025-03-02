@@ -7,14 +7,14 @@ import { css, keyframes } from "@emotion/react";
 //
 import XPBar from "../components/XPBar/XPBar";
 import ContinueButton from "../components/Button/ContinueButton";
-import mockData from "../../services/mock_datas/build_sentences.json";
-import mockData1 from "../../services/mock_datas/multiple_choice.json";
 import { IQuestion } from "../../interfaces/IQuestion";
-import { IBuildSentenceQuestion } from "../../interfaces/Questions/IBuildSentenceQuestion";
 import { ILessonInformation } from "../../interfaces/Course";
 import FooterStatus from "../components/FooterBar/FooterStatus";
 
+// Interface
+import { IBuildSentenceQuestion } from "../../interfaces/Questions/IBuildSentenceQuestion";
 import { IMultipleChoiceQuestion } from "../../interfaces/Questions/IMultipleChoiceQuestion";
+import { IMatchingQuestion } from "../../interfaces/Questions/IMatchingQuestion";
 // Import Page Component
 import MatchingLessonPage from "../pages/LearnPage/MatchingWord/MatchingLessonPage";
 import PronunciationPage from "../pages/LearnPage/Pronunciation/PronunciationPage";
@@ -24,8 +24,6 @@ import MultipleChoicePage from "../pages/LearnPage/MultipleChoice/MultipleChoice
 // https://d35aaqx5ub95lt.cloudfront.net/images/bd13fa941b2407b4914296afe4435646.svg
 
 const LessonLayout: React.FC = () => {
-  const dataBuildSentence = mockData.value as IBuildSentenceQuestion;
-  const dataMultipleChoice = mockData1.value as IMultipleChoiceQuestion;
   const [isButtonActivate, setIsButtonActive] = useState(false);
   const [isButtonCorrect, setIsButtonCorrect] = useState(false);
   const [isNext, setIsNext] = useState(false);
@@ -37,7 +35,6 @@ const LessonLayout: React.FC = () => {
   const { lessonInformation } = location.state as {
     lessonInformation: ILessonInformation;
   };
-  const [lesson, setLesson] = useState(1);
 
   const fetchLesson = async () => {
     for (let i = 0; i < lessonInformation.questionCount; i++) {
@@ -56,11 +53,12 @@ const LessonLayout: React.FC = () => {
     }
   };
   const handleLesson = (questionData: IQuestion) => {
-    console.log(questionData);
     switch (questionData?.type) {
       case "Matching":
         return (
           <MatchingLessonPage
+            data={questionData as unknown as IMatchingQuestion}
+            setIsNext={setIsNext}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
           />

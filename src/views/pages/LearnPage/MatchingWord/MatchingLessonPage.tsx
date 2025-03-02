@@ -1,5 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from "react";
+import { IMatchingQuestion } from "../../../../interfaces/Questions/IMatchingQuestion";
+import { IMatchingOption } from "../../../../interfaces/Options/IMatchingOption";
 
 import ButtonMatching from "../../../components/Button/Matching/ButtonMatching";
 
@@ -16,6 +18,8 @@ interface IELContent {
 interface IMatchingLessonPage {
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
+  data: IMatchingQuestion;
 }
 
 type PickingQueueItem = IVNContent | IELContent;
@@ -23,30 +27,32 @@ type PickingQueueItem = IVNContent | IELContent;
 const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
   setIsButtonActive,
   setIsButtonCorrect,
+  setIsNext,
+  data,
 }) => {
+  console.log(data.options);
+  //
   const [correctPickingList, setCorrectPickingList] = useState<string[]>([]);
   const [pickingQueue, setPickingQueue] = useState<PickingQueueItem[]>([]);
   const [wrongPickingList, setWrongPickingList] = useState<PickingQueueItem[]>(
     []
   );
-  // const { setXp, state, setIsButtonActive } =
-  //   useOutletContext<OutletContextType>();
 
-  const sourceCollection: IVNContent[] = [
-    { optionId: "1", sourceType: "VietNamText", vietnameseText: "đắt" },
-    { optionId: "2", sourceType: "VietNamText", vietnameseText: "đô-la" },
-    { optionId: "3", sourceType: "VietNamText", vietnameseText: "bia" },
-    { optionId: "4", sourceType: "VietNamText", vietnameseText: "cái mũ" },
-    { optionId: "5", sourceType: "VietNamText", vietnameseText: "xe hơi" },
-  ];
+  const sourceCollection: IVNContent[] = data.options.map(
+    (option: IMatchingOption) => ({
+      optionId: option.optionId,
+      sourceType: option.sourceType,
+      vietnameseText: option.vietnameseText,
+    })
+  );
+  const targetCollection: IELContent[] = data.options.map(
+    (option: IMatchingOption) => ({
+      optionId: option.optionId,
+      targetType: option.targetType,
+      englishText: option.englishText,
+    })
+  );
 
-  const targetCollection: IELContent[] = [
-    { optionId: "1", targetType: "EnglishText", englishText: "expensive" },
-    { optionId: "2", targetType: "EnglishText", englishText: "dollar" },
-    { optionId: "3", targetType: "EnglishText", englishText: "beer" },
-    { optionId: "4", targetType: "EnglishText", englishText: "hat" },
-    { optionId: "5", targetType: "EnglishText", englishText: "car" },
-  ];
   const totalItem = targetCollection.length;
 
   // Process the picking queue whenever it changes.
@@ -67,6 +73,7 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
     if (correctPickingList.length === 5) {
       setIsButtonActive(true);
       setIsButtonCorrect(true);
+      setIsNext(true);
     }
   }, [correctPickingList]);
 
@@ -111,8 +118,6 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
         </div>
         )
       </div>
-
-      {/* Navigation Button Container */}
     </div>
   );
 };
