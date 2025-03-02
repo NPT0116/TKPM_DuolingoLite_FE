@@ -8,14 +8,16 @@ interface MultipleChoiceProps {
   data: IMultipleChoiceQuestion;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
+  isNext: boolean;
 }
 
 const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
   setIsButtonActive,
   setIsButtonCorrect,
+  isNext,
+  data,
 }) => {
-  const data = mockData.value;
-
+  // const data = mockData.value;
   const hasQuestionContent =
     data.questionConfigure.audio ||
     data.questionConfigure.englishText ||
@@ -33,12 +35,14 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
             data={data}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
+            isNext={isNext}
           />
         ) : (
           <AnswerSectionImage3Cols
             data={data}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
+            isNext={isNext}
           />
         )}
       </div>

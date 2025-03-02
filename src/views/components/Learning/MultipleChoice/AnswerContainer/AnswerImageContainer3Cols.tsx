@@ -7,12 +7,14 @@ interface AnswerImageContainer3ColsProps {
   options: IMultipleChoiceOption[];
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
+  isNext: boolean;
 }
 
 const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
   options,
   setIsButtonActive,
   setIsButtonCorrect,
+  isNext,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
@@ -29,6 +31,9 @@ const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
             setIsButtonActive(true);
             if (option.isCorrect) {
               setIsButtonCorrect(true);
+            } else {
+              console.log("false");
+              setIsButtonCorrect(false);
             }
           }}
         />

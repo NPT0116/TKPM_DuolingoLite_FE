@@ -1,9 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useEffect, useMemo } from "react";
-import { Link, useOutletContext } from "react-router-dom";
-import { css } from "@emotion/react";
-import WelcomeOwl from "../../../components/Learning/Matching/WelcomeOwl";
-import ContinueButton from "../../../components/Button/ContinueButton";
+import React, { useState, useEffect } from "react";
+
 import ButtonMatching from "../../../components/Button/Matching/ButtonMatching";
 
 interface IVNContent {
@@ -18,12 +15,14 @@ interface IELContent {
 }
 interface IMatchingLessonPage {
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 type PickingQueueItem = IVNContent | IELContent;
 
 const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
   setIsButtonActive,
+  setIsButtonCorrect,
 }) => {
   const [correctPickingList, setCorrectPickingList] = useState<string[]>([]);
   const [pickingQueue, setPickingQueue] = useState<PickingQueueItem[]>([]);
@@ -67,6 +66,7 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
   useEffect(() => {
     if (correctPickingList.length === 5) {
       setIsButtonActive(true);
+      setIsButtonCorrect(true);
     }
   }, [correctPickingList]);
 

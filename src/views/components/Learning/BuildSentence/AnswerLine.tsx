@@ -41,9 +41,14 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
     if (selectedWords.length === correctWordLength) {
       for (let i = 0; i < selectedWords.length; i++) {
         if (selectedWords[i].order === i + 1) {
-          if (i === selectedWords.length - 1) setIsButtonCorrect(true);
-          else continue;
-        } else break;
+          if (i === selectedWords.length - 1) {
+            setIsButtonCorrect(true);
+            break;
+          } else continue;
+        } else {
+          setIsButtonCorrect(false);
+          break;
+        }
       }
     }
   }, [selectedWords, correctWordLength, setIsButtonCorrect]);
@@ -55,7 +60,7 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
         alignContent: "flex-start",
         paddingTop: "5px",
       }}
-      className="border-b-2 border-[#37464F] flex flex-wrap items-start gap-3.5 px-4 text-[19px] relative"
+      className="border-b-2 border-[#37464F] flex flex-wrap items-start gap-3.5 px-4 text-[19px] relative "
     >
       {hrLines}
       <AnimatePresence>

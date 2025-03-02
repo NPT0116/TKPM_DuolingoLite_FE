@@ -6,12 +6,14 @@ interface AnswerContainer2ColsProps {
   options: IMultipleChoiceOption[];
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
+  isNext: boolean;
 }
 
 const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
   options,
   setIsButtonActive,
   setIsButtonCorrect,
+  isNext,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   return (
@@ -28,6 +30,10 @@ const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
             setIsButtonActive(true);
             if (option.isCorrect) {
               setIsButtonCorrect(true);
+            } else {
+              console.log("false");
+
+              setIsButtonCorrect(false);
             }
           }}
         />

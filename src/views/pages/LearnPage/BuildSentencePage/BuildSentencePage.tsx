@@ -49,7 +49,7 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
 
   return (
     <div className="w-full h-full bg-[#131F24] flex justify-center items-center">
-      <div className="w-[600px] flex flex-col gap-[20px] text-white">
+      <div className="w-[600px] flex flex-col text-white">
         <Instruction instruction={data.instruction} />
         <QuestionSection
           questionConfigure={data.questionConfigure}
@@ -59,7 +59,7 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
           vietnameseText={data.vietnameseText}
           isBuildSentence={true}
         />
-        <div className="flex flex-col gap-[60px]">
+        <div className="flex flex-col gap-[30px] ">
           <AnswerLine
             correctWordLength={correctWordLength}
             isEnglish={data.optionConfigure.englishText}
