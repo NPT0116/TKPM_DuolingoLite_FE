@@ -50,7 +50,7 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
           break;
         }
       }
-    }
+    } else setIsButtonCorrect(false);
   }, [selectedWords, correctWordLength, setIsButtonCorrect]);
 
   return (

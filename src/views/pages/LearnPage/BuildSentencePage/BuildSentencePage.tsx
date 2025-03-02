@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Instruction from "../../../components/LearnPage/Instruction/Instruction";
 import QuestionSection from "../../../components/LearnPage/QuestionSection/QuestionSection";
 import AnswerLine from "../../../components/Learning/BuildSentence/AnswerLine";
@@ -8,6 +8,7 @@ import { IBuildSentenceOption } from "../../../../interfaces/Options/IBuildSente
 
 interface BuildSentenceProps {
   data: IBuildSentenceQuestion;
+  isNext: boolean;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -16,6 +17,7 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
   setIsButtonActive,
   setIsButtonCorrect,
   data,
+  isNext,
 }) => {
   const [selectedWords, setSelectedWords] = useState<IBuildSentenceOption[]>(
     []
@@ -26,6 +28,13 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
     (max, option) => (option.order > max ? option.order : max),
     1
   );
+
+  useEffect(() => {
+    if (isNext) {
+      setSelectedWords([]); // Reset danh sách từ
+      isNext = false;
+    }
+  }, [isNext]);
 
   const handleChooseWord = (option: IBuildSentenceOption) => {
     setSelectedWords((prev) => [...prev, option]);

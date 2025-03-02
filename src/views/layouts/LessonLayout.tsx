@@ -86,6 +86,7 @@ const LessonLayout: React.FC = () => {
         return (
           <BuildSentencePage
             data={questionData as unknown as IBuildSentenceQuestion}
+            isNext={isNext}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
           />

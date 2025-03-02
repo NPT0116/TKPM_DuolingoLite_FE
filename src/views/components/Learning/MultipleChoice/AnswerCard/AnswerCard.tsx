@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { MultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
+import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
 
 interface AnswerCardProps {
-  option: MultipleChoiceOption;
+  option: IMultipleChoiceOption;
   index: number;
   isSelected: boolean;
   onSelect: () => void;

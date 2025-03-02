@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
 import AnswerCard from "../AnswerCard/AnswerCard";
 
@@ -16,9 +16,18 @@ const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
   isNext,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  // ✅ Reset khi `isNext` thay đổi
+  useEffect(() => {
+    if (isNext) {
+      setSelectedIndex(null);
+      isNext = false;
+    }
+  }, [isNext, setIsButtonActive]);
+
   return (
-    <div className="w-full h-full flex flex-col-s gap-[8px]">
-      {/* Answer Card */}
+    <div className="w-full h-full flex flex-col gap-[8px]">
+      {/* Answer Cards */}
       {options.map((option, index) => (
         <AnswerCard
           key={index}
@@ -28,13 +37,7 @@ const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
           onSelect={() => {
             setSelectedIndex(index);
             setIsButtonActive(true);
-            if (option.isCorrect) {
-              setIsButtonCorrect(true);
-            } else {
-              console.log("false");
-
-              setIsButtonCorrect(false);
-            }
+            setIsButtonCorrect(option.isCorrect);
           }}
         />
       ))}
