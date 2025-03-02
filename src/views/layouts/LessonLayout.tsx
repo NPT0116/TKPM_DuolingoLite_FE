@@ -29,6 +29,7 @@ const LessonLayout: React.FC = () => {
   const [isButtonCorrect, setIsButtonCorrect] = useState(false);
   const [isNext, setIsNext] = useState(false);
   const [isRetry, setIsRetry] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const [xp, setXp] = useState({ accumulated: 0, total: 1 });
   const [state, setState] = useState(1);
@@ -125,6 +126,7 @@ const LessonLayout: React.FC = () => {
         {!isNext && isRetry && <FooterStatus type={2} />}
         <ContinueButton
           setXp={setXp}
+          setIsSubmit={setIsSubmit}
           isNext={isNext}
           setIsButtonActive={setIsButtonActive}
           setIsButtonCorrect={setIsButtonCorrect}
