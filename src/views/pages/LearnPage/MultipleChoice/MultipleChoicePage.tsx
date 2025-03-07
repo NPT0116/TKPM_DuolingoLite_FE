@@ -17,7 +17,6 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
   data,
   isSubmit,
 }) => {
-  // const data = mockData.value;
   const hasQuestionContent =
     data.questionConfigure.audio ||
     data.questionConfigure.englishText ||
@@ -31,7 +30,7 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
 
   return (
     <div className="w-full h-full flex items-center justify-center">
-      <div className="w-[600px] h-[450px] flex flex-col gap-[24px] ">
+      <div className="w-[600px] h-full flex flex-col items-center justify-center">
         {/* Instruction */}
         <Instruction instruction={data.instruction} />
 

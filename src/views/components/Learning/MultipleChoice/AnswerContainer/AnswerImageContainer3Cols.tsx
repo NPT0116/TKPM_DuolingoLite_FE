@@ -33,7 +33,7 @@ const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
   }, [isNext, setIsButtonActive, setIsNext]);
 
   return (
-    <div className="h-[500px] w-full flex flex-col-3 gap-[8px] items-center">
+    <div className="h-full w-full flex flex-col-3 gap-[8px] items-center">
       {options.map((option, index) => (
         <AnswerImageCard
           key={index}

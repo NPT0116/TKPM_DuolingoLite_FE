@@ -1,12 +1,14 @@
 import React from "react";
-import { Resource } from "../../../../../interfaces/IResource";
+import { IResource } from "../../../../../interfaces/IResource";
+import { audio } from "framer-motion/client";
+import { useEffect, useRef, useState } from "react";
 
 interface TextAudioPictureProps {
   vietnameseText: string | null;
-  picture: Resource | null;
+  picture: IResource | null;
   englishText: string | null;
   isBuildSentence?: boolean;
-  audio: Resource | null;
+  audio: IResource | null;
 }
 
 export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
@@ -18,7 +20,23 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
 }) => {
   const textToSplit = vietnameseText || englishText || "";
 
+  const [audioPlay, setAudioPlay] = useState("");
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
   const tokens = textToSplit.split(" ").filter((token) => token !== "");
+
+  const playAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    const playAudio = new Audio(audio?.url);
+    audioRef.current = playAudio;
+    audioRef.current.play();
+    audioRef.current.onended = () => {
+      audioRef.current = null;
+    };
+  };
 
   return (
     <div
@@ -69,7 +87,10 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
           }}
         >
           {audio !== null && (
-            <div className="w-full h-fit flex items-center cursor-pointer">
+            <div
+              className="w-full h-fit flex items-center cursor-pointer "
+              onClick={playAudio}
+            >
               {/* Icon 1 (Loa chính) */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -105,7 +126,7 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
             </div>
           )}
           <div
-            className="flex gap-[4.84px] text-[20px] "
+            className="flex gap-[4.84px] text-[20px]"
             style={{ padding: "10px 14px" }}
           >
             {tokens.map((token, index) => (

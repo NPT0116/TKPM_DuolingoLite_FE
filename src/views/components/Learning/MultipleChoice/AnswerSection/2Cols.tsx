@@ -10,7 +10,6 @@ interface AnswerSection2ColsProps {
   setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
   isSubmit: boolean;
 }
-
 const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({
   data,
   setIsButtonActive,
@@ -19,8 +18,9 @@ const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({
   setIsNext,
   isSubmit,
 }) => {
+  console.log(data);
   return (
-    <div className="flex flex-col gap-[24px] h-[50%]">
+    <div className="flex flex-col gap-[24px] ">
       {/* Question Section */}
       <QuestionSection
         questionConfigure={data.questionConfigure}
