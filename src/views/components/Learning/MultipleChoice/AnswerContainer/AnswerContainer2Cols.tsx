@@ -9,6 +9,7 @@ interface AnswerContainer2ColsProps {
   isNext: boolean;
   isEnglish: boolean;
   setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
+  isSubmit: boolean;
 }
 
 const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
@@ -18,6 +19,7 @@ const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
   isNext,
   isEnglish,
   setIsNext,
+  isSubmit,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
@@ -41,10 +43,12 @@ const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
           index={index}
           isSelected={selectedIndex === index}
           onSelect={() => {
+            if (isSubmit) return;
             setSelectedIndex(index);
             setIsButtonActive(true);
             setIsButtonCorrect(option.isCorrect);
           }}
+          isSubmit={isSubmit}
         />
       ))}
     </div>

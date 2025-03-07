@@ -83,6 +83,7 @@ const LessonLayout: React.FC = () => {
             data={questionData as unknown as IMultipleChoiceQuestion}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
+            isSubmit={isSubmit}
           />
         );
       case "BuildSentence":
@@ -91,6 +92,7 @@ const LessonLayout: React.FC = () => {
             data={questionData as unknown as IBuildSentenceQuestion}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
+            isSubmit={isSubmit}
           />
         );
       default:
