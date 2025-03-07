@@ -15,10 +15,15 @@ const RegisterPage: React.FC = () => {
         >
           Tạo hồ sơ
         </div>
-        <InputField type="text" placeholder="Tuổi" inputMode="numeric" />
-        <InputField type="text" placeholder="Tên (tuỳ chọn)" />
-        <InputField type="email" placeholder="Email" />
-        <InputField type="text" placeholder="Mật khẩu" />
+
+        <div className="w-full flex flex-row gap-4">
+          <InputField width={50} type="text" placeholder="Họ" />
+          <InputField width={50} type="text" placeholder="Tên" />
+        </div>
+
+        <InputField width={100} type="email" placeholder="Email" />
+        <InputField width={100} type="text" placeholder="Tên người dùng" />
+        <InputField width={100} type="password" placeholder="Mật khẩu" />
         <button
           className="bg-[#49C0F8] hover:bg-[#97deff] text-[#19323D] font-bold rounded-xl cursor-pointer active:translate-y-1 transition-all duration-100"
           style={{

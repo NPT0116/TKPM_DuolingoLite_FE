@@ -20,10 +20,7 @@ const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({
   isSubmit,
 }) => {
   return (
-    <div
-      className="flex flex-col gap-[24px] h-[50%]"
-      style={{ margin: "auto 0px" }}
-    >
+    <div className="flex flex-col gap-[24px] h-[50%]">
       {/* Question Section */}
       <QuestionSection
         questionConfigure={data.questionConfigure}
