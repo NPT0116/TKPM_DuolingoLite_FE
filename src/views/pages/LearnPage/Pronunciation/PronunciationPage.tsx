@@ -3,7 +3,6 @@ import QuestionBox from "../../../components/Learning/Pronunciation/QuestionBox"
 import { css, keyframes } from "@emotion/react";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { IQuestion } from "../../../../interfaces/IQuestion";
 import { IPronunciationQuestion } from "../../../../interfaces/Questions/IPronunciationQuesion";
 const fluctuate = keyframes`
   0% { transform: scaleY(1); }

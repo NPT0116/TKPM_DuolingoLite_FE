@@ -7,17 +7,14 @@ interface IItem {
 }
 interface IAnimatedSpeakerIcon {
   mainAudio?: string;
+  onPlay?: () => void; // Callback function for playing audio
 }
 
-const AnimatedSpeakerIcon: React.FC<IAnimatedSpeakerIcon> = ({ mainAudio }) => {
-  const playAudioSequence = async () => {
-    const audio = new Audio(mainAudio);
-    audio.play();
-  };
+const AnimatedSpeakerIcon: React.FC<IAnimatedSpeakerIcon> = ({ onPlay }) => {
   return (
     <span
       className="cursor-pointer"
-      onClick={playAudioSequence}
+      onClick={onPlay} // Call the function when clicking the speaker icon
       style={{ background: "#48C0F8" }}
     >
       <svg
