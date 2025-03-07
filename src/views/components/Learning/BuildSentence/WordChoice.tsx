@@ -23,7 +23,6 @@ const WordChoice: React.FC<WordChoiceProps> = ({
 }) => {
   // Ref cho container chứa các nút từ
   const containerRef = useRef<HTMLDivElement>(null);
-  console.log(wordOptions);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -66,6 +65,7 @@ const WordChoice: React.FC<WordChoiceProps> = ({
             ></div>
             <div className="relative z-10">
               <BSBWordButton
+                isEnglish={isEnglish}
                 option={option}
                 label={word}
                 onClick={() => {

@@ -7,6 +7,7 @@ interface BSWordProps {
   disabled?: boolean;
   style?: React.CSSProperties;
   option: IBuildSentenceOption;
+  isEnglish: boolean;
 }
 
 const BSBWordButton: React.FC<BSWordProps> = ({
@@ -15,11 +16,16 @@ const BSBWordButton: React.FC<BSWordProps> = ({
   disabled,
   style,
   option,
+  isEnglish,
 }) => {
   const playAudio = () => {
-    if (option.audio && option.audio.url) {
-      const audio = new Audio(option.audio.url);
-      audio.play().catch((error) => console.error("Audio play failed", error));
+    if (isEnglish) {
+      if (option.audio && option.audio.url) {
+        const audio = new Audio(option.audio.url);
+        audio
+          .play()
+          .catch((error) => console.error("Audio play failed", error));
+      }
     }
   };
   return (

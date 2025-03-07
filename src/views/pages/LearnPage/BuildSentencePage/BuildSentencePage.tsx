@@ -55,11 +55,14 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
     setIsNext(true);
   }, [data.questionId]);
 
+  console.log(data);
+
   return (
     <div className="w-full h-full bg-[#131F24] flex justify-center items-center">
       <div className="w-[600px] flex flex-col text-white">
         <Instruction instruction={data.instruction} />
         <QuestionSection
+          words={data.words}
           questionConfigure={data.questionConfigure}
           audio={data.audio}
           picture={data.picture}

@@ -1,7 +1,9 @@
 import { Configure } from "../../../../interfaces/Configure/Configure";
 import { IResource } from "../../../../interfaces/IResource";
+import { IBuildSentenceOption } from "../../../../interfaces/Options/IBuildSentenceOption";
 import { OnlyAudio } from "../QuestionType/OnlyAudio/OnlyAudio";
 import { TextAudioPicture } from "../QuestionType/TextAudioPicture/TextAudioPicture";
+import { IWord } from "../../../../interfaces/Questions/IPronunciationQuesion";
 
 interface QuestionSectionProps {
   questionConfigure: Configure;
@@ -10,6 +12,7 @@ interface QuestionSectionProps {
   englishText: string | null;
   audio: IResource | null;
   isBuildSentence?: boolean;
+  words: IWord[];
 }
 
 const QuestionSection: React.FC<QuestionSectionProps> = ({
@@ -19,7 +22,9 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
   audio,
   picture,
   isBuildSentence = false,
+  words,
 }) => {
+  console.log(words);
   return (
     <div>
       {questionConfigure.audio &&
@@ -34,6 +39,7 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
           picture={picture}
           isBuildSentence={isBuildSentence}
           audio={audio}
+          words={words}
         />
       )}
     </div>

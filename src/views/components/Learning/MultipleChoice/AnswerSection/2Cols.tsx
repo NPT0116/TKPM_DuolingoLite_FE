@@ -23,6 +23,7 @@ const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({
     <div className="flex flex-col gap-[24px] ">
       {/* Question Section */}
       <QuestionSection
+        words={data.words}
         questionConfigure={data.questionConfigure}
         audio={data.audio}
         picture={data.picture}

@@ -2,6 +2,8 @@ import React from "react";
 import { IResource } from "../../../../../interfaces/IResource";
 import { audio } from "framer-motion/client";
 import { useEffect, useRef, useState } from "react";
+import { IMatchingOption } from "../../../../../interfaces/Options/IMatchingOption";
+import { IWord } from "../../../../../interfaces/Questions/IPronunciationQuesion";
 
 interface TextAudioPictureProps {
   vietnameseText: string | null;
@@ -9,6 +11,7 @@ interface TextAudioPictureProps {
   englishText: string | null;
   isBuildSentence?: boolean;
   audio: IResource | null;
+  words?: IWord[] | null;
 }
 
 export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
@@ -17,13 +20,30 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
   englishText,
   isBuildSentence = false,
   audio,
+  words,
 }) => {
   const textToSplit = vietnameseText || englishText || "";
+  const isEnglish = englishText ? true : false;
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const tokens = textToSplit.split(" ").filter((token) => token !== "");
-  console.log(textToSplit);
+  const tokens = !isEnglish
+    ? textToSplit
+        .split(" ")
+        .filter((token) => token !== "")
+        .map((token) => ({ word: token, audio: "", hasAudio: false }))
+    : words
+        ?.sort((a, b) => a.order - b.order)
+        .map((word) => ({
+          word: word.word,
+          audio: word.audio.url || "",
+          hasAudio: true,
+        }));
+
+  const handleMouseEnter = (audioUrl: string) => {
+    const audio = new Audio(audioUrl);
+    audio.play();
+  };
 
   const playAudio = () => {
     if (audioRef.current) {
@@ -43,7 +63,6 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
       if (audioRef.current) audioRef.current.pause();
     };
   }, [textToSplit]);
-
   return (
     <div
       className={`flex items-center text-white ${
@@ -132,16 +151,21 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
             </div>
           )}
           <div
-            className="flex gap-[4.84px] text-[20px]"
+            className="flex gap-[4.84px] text-[20px] "
             style={{ padding: "10px 14px" }}
           >
-            {tokens.map((token, index) => (
+            {tokens?.map((token, index) => (
               <span
                 key={index}
-                className="border-b-2 border-dashed border-[#52656D]"
+                className="border-b-2 border-dashed border-[#52656D] cursor-default"
                 style={{ paddingBottom: "4px" }}
+                onMouseEnter={() => {
+                  if (token.hasAudio) {
+                    handleMouseEnter(token.audio);
+                  }
+                }}
               >
-                {token}
+                {token.word}
               </span>
             ))}
           </div>

@@ -18,6 +18,9 @@ export const OnlyAudio: React.FC<OnlyAudioProps> = ({ audio }) => {
   };
   useEffect(() => {
     playAudio();
+    return () => {
+      audioRef.current?.pause();
+    };
   }, []);
   return (
     <div className="flex  justify-center items-end gap-[16px]">
