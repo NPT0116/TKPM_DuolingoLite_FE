@@ -38,25 +38,16 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
     .map((word) => ({
       englishText: word.word,
       vietnameseText: word.word,
-      audio: word.audio.fileName,
+      audio: word.audio.url,
     }));
+  const mainAudio = data.audio?.url;
   //
+  console.log(questionElements);
   const timeoutRef = useRef<number | null>(null);
   const [result, setResult] = useState("");
   const [answer, setAnswer] = useState("");
   const [isRecord, setIsRecord] = useState(false);
   const [countRetry, setCountRetry] = useState(0);
-
-  // if (countRetry > 0) {
-  //   console.log(countRetry);
-  //   if (countRetry < 3) {
-  //     setIsButtonActive(false);
-  //     setIsRetry(true);
-  //   } else {
-  //     setIsRetry(false);
-  //     setIsButtonActive(true);
-  //   }
-  // }
 
   useEffect(() => {
     if (data && data.englishText) {
@@ -194,7 +185,10 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
                 />
                 <div className="w-full h-full flex justify-start items-center">
                   {" "}
-                  <QuestionBox questionElements={questionElements} />
+                  <QuestionBox
+                    questionElements={questionElements}
+                    mainAudio={mainAudio}
+                  />
                 </div>
               </div>
             </div>

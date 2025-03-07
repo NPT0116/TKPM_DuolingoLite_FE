@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import AnimatedSpeakerIcon from "./AnimatedSpearkerIcon";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { css } from "@emotion/react";
 const arrow = css`
   position: absolute;
@@ -41,10 +41,39 @@ interface IItem {
 }
 interface IQuestionBox {
   questionElements: IItem[];
+  mainAudio?: string;
 }
-const QuestionBox: React.FC<IQuestionBox> = ({ questionElements }) => {
+const QuestionBox: React.FC<IQuestionBox> = ({
+  questionElements,
+  mainAudio,
+}) => {
   const [isHover, setIsHover] = useState(false);
   const [hoverItem, setHoverItem] = useState(-1);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const queueRef = useRef<IItem | null>(null);
+
+  const handleMouseEnter = (item: IItem, index: number) => {
+    setHoverItem(index);
+    setIsHover(true);
+
+    if (audioRef.current && !audioRef.current.paused) {
+      queueRef.current = item;
+    } else {
+      playAudio(item);
+    }
+  };
+  const playAudio = (item: IItem) => {
+    const audio = new Audio(item.audio);
+    audioRef.current = audio;
+    audio.onended = () => {
+      if (queueRef.current) {
+        playAudio(queueRef.current);
+        queueRef.current = null;
+      }
+    };
+    audio.play();
+  };
+
   return (
     <div className="relative">
       <div css={arrow}></div>
@@ -53,7 +82,7 @@ const QuestionBox: React.FC<IQuestionBox> = ({ questionElements }) => {
         style={{ padding: "15px 10px" }}
       >
         <div className="w-[30px]">
-          <AnimatedSpeakerIcon questionElements={questionElements} />
+          <AnimatedSpeakerIcon mainAudio={mainAudio} />
         </div>
         <div className="flex flex-row">
           {" "}
@@ -64,10 +93,7 @@ const QuestionBox: React.FC<IQuestionBox> = ({ questionElements }) => {
                   className=" relative font-medium text-white cursor-default border-b-2 border-dashed border-[#52656D]"
                   style={{ marginLeft: "5px", paddingBottom: "5px" }}
                   onMouseEnter={() => {
-                    setHoverItem(index);
-                    setIsHover(true);
-                    const audioElement = new Audio(item.audio);
-                    audioElement.play();
+                    handleMouseEnter(item, index);
                   }}
                   onMouseLeave={() => {
                     setHoverItem(-1);

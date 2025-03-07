@@ -6,24 +6,13 @@ interface IItem {
   vietnameseText: string;
 }
 interface IAnimatedSpeakerIcon {
-  questionElements: IItem[];
+  mainAudio?: string;
 }
 
-const AnimatedSpeakerIcon: React.FC<IAnimatedSpeakerIcon> = ({
-  questionElements,
-}) => {
+const AnimatedSpeakerIcon: React.FC<IAnimatedSpeakerIcon> = ({ mainAudio }) => {
   const playAudioSequence = async () => {
-    for (const item of questionElements) {
-      await new Promise<void>((resolve) => {
-        const audio = new Audio(item.audio);
-        audio.playbackRate = 2;
-        audio.play().catch((err) => {
-          console.log("error playing sound: ", err);
-          resolve();
-        });
-        audio.onended = () => resolve();
-      });
-    }
+    const audio = new Audio(mainAudio);
+    audio.play();
   };
   return (
     <span

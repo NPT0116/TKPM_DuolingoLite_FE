@@ -107,6 +107,19 @@ const LessonLayout: React.FC = () => {
   }, []);
   return (
     <div>
+      <audio
+        autoPlay
+        loop
+        muted
+        // style={{ display: "none" }}
+      >
+        alo
+        <source
+          src="https://drive.google.com/uc?export=download&id=1wSv4wBK2GaLTuv0G_WkoqUj6UOAOFJFr"
+          type="audio/mpeg"
+        />
+        Your browser does not support the audio element.
+      </audio>
       {/* XP Bar */}
       <div className="w-[100vw] h-[10vh] ">
         <XPBar accumulated={xp.accumulated} total={xp.total} />
@@ -115,7 +128,6 @@ const LessonLayout: React.FC = () => {
       <div className="w-[100vw] h-[70vh]">
         {questionList?.[0] ? handleLesson(questionList[state - 1]) : null}
       </div>
-
       {/* Navigation Bar */}
       <div
         className="relative w-[100vw] h-[20vh] border-[#37464F] border-t-2 bg-[#131F23]"
