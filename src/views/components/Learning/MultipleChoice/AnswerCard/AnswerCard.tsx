@@ -21,7 +21,7 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
   const [isClicked, setIsClicked] = useState(false);
   const playAudio = () => {
     if (option.audio && option.audio.url) {
-      const audio = new Audio("../../../../../../tea.mp3");
+      const audio = new Audio(option.audio.url);
       audio.play().catch((error) => console.error("Audio play failed", error));
     }
   };

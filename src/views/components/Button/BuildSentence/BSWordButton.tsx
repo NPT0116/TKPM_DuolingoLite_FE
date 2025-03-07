@@ -1,10 +1,12 @@
 import React from "react";
+import { IBuildSentenceOption } from "../../../../interfaces/Options/IBuildSentenceOption";
 
 interface BSWordProps {
   label: string;
   onClick: () => void;
   disabled?: boolean;
   style?: React.CSSProperties;
+  option: IBuildSentenceOption;
 }
 
 const BSBWordButton: React.FC<BSWordProps> = ({
@@ -12,7 +14,14 @@ const BSBWordButton: React.FC<BSWordProps> = ({
   onClick,
   disabled,
   style,
+  option,
 }) => {
+  const playAudio = () => {
+    if (option.audio && option.audio.url) {
+      const audio = new Audio(option.audio.url);
+      audio.play().catch((error) => console.error("Audio play failed", error));
+    }
+  };
   return (
     <button
       onClick={disabled ? undefined : onClick}
@@ -33,6 +42,7 @@ const BSBWordButton: React.FC<BSWordProps> = ({
       onMouseUp={(e) => {
         if (disabled) return;
         e.currentTarget.style.boxShadow = "0 2.5px 0 0 #37464F";
+        playAudio();
       }}
     >
       <span>{label}</span>

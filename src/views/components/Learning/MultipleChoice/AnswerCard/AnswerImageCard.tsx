@@ -24,7 +24,7 @@ const AnswerImageCard: React.FC<AnswerImageCardProps> = ({
   // Function to play the audio
   const playAudio = () => {
     if (option.audio && option.audio.url) {
-      const audio = new Audio("../../../../../../tea.mp3");
+      const audio = new Audio(option.audio.url);
       audio.play().catch((error) => console.error("Audio play failed", error));
     }
   };
