@@ -1,13 +1,28 @@
-import { Resource } from "../../../../../interfaces/IResource";
-
+import { IResource } from "../../../../../interfaces/IResource";
+import { useEffect, useRef } from "react";
 interface OnlyAudioProps {
-  audio: Resource;
+  audio: IResource;
 }
 
 export const OnlyAudio: React.FC<OnlyAudioProps> = ({ audio }) => {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const playAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    audioRef.current = new Audio(audio.url);
+    audioRef.current.play();
+    audioRef.current.onended = () => {
+      audioRef.current = null;
+    };
+  };
+  useEffect(() => {
+    playAudio();
+  }, []);
   return (
     <div className="flex  justify-center items-end gap-[16px]">
       <button
+        onClick={playAudio}
         className="w-[140px] h-[136px] bg-[#49C0F8] flex items-center justify-center relative rounded-[25%] cursor-pointer active:translate-y-1"
         style={{
           boxShadow: "0 4px 0 0 #1899D6",

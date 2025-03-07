@@ -20,10 +20,10 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
 }) => {
   const textToSplit = vietnameseText || englishText || "";
 
-  const [audioPlay, setAudioPlay] = useState("");
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const tokens = textToSplit.split(" ").filter((token) => token !== "");
+  console.log(textToSplit);
 
   const playAudio = () => {
     if (audioRef.current) {
@@ -37,6 +37,12 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
       audioRef.current = null;
     };
   };
+  useEffect(() => {
+    playAudio();
+    return () => {
+      if (audioRef.current) audioRef.current.pause();
+    };
+  }, [textToSplit]);
 
   return (
     <div
