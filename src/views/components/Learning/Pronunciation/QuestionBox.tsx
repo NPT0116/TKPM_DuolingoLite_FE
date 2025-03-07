@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import AnimatedSpeakerIcon from "./AnimatedSpearkerIcon";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { css } from "@emotion/react";
 
 const arrowVietnamese = css`
@@ -35,7 +35,7 @@ const QuestionBox: React.FC<IQuestionBox> = ({
   const queueRef = useRef<IItem | null>(null);
   const isMainAudioPlayingRef = useRef(false);
 
-  // Function to play an audio file
+  // Function to play an audio file with an optional callback when finished
   const playAudio = (src: string, callback?: () => void) => {
     if (audioRef.current) {
       audioRef.current.pause();
@@ -43,31 +43,37 @@ const QuestionBox: React.FC<IQuestionBox> = ({
     const audio = new Audio(src);
     audioRef.current = audio;
     audio.onended = () => {
-      if (callback) callback();
+      if (callback) {
+        callback();
+      }
     };
-    audio.play();
+    audio.play().catch((error) => {
+      console.error("Audio playback error:", error);
+    });
   };
 
-  // Handle hover event
+  // Handle mouse hover on an item
   const handleMouseEnter = (item: IItem, index: number) => {
     setHoverItem(index);
     setIsHover(true);
 
     if (isMainAudioPlayingRef.current) {
       queueRef.current = item;
-    } else if (!audioRef.current || audioRef.current.paused) {
-      playAudio(item.audio);
     } else {
-      queueRef.current = item;
+      playAudio(item.audio, () => {
+        if (queueRef.current) {
+          const nextItem = queueRef.current;
+          queueRef.current = null;
+          playAudio(nextItem.audio);
+        }
+      });
     }
   };
 
-  // Play the main audio when clicking on the speaker
+  // Handle playing the main audio when clicking on the speaker icon
   const handleMainAudioPlay = () => {
     if (!mainAudio) return;
-
     isMainAudioPlayingRef.current = true;
-
     playAudio(mainAudio, () => {
       isMainAudioPlayingRef.current = false;
       if (queueRef.current) {
@@ -76,6 +82,17 @@ const QuestionBox: React.FC<IQuestionBox> = ({
       }
     });
   };
+  useEffect(() => {
+    console.log("Playing audio");
+    const playAudio = setTimeout(() => {
+      const audio = new Audio(mainAudio);
+      console.log(audio);
+      audio.play();
+    }, 1000);
+    return () => {
+      clearTimeout(playAudio);
+    };
+  }, []);
 
   return (
     <div className="relative">
