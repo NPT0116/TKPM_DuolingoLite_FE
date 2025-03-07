@@ -1,16 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from "@emotion/react";
 import { useEffect, useState } from "react";
-interface IVNContent {
-  optionId: string;
-  sourceType: string;
-  vietnameseText: string;
-}
-interface IELContent {
-  optionId: string;
-  targetType: string;
-  englishText: string;
-}
+import {
+  IVNContent,
+  IELContent,
+} from "../../../../interfaces/Options/IMatchingOption";
 type Content = IELContent | IVNContent;
 interface IButtonMatching {
   setPickingQueue: React.Dispatch<React.SetStateAction<any>>;
@@ -115,12 +109,19 @@ const ButtonMatching: React.FC<IButtonMatching> = ({
   wrongPickingList,
   setWrongPickingList,
 }) => {
+  const playAudio = () => {
+    if (isIELContent(content)) {
+      const audio = new Audio(content.audio.url);
+      audio.play();
+    }
+  };
   const [tempWrong, setTempWrong] = useState(false);
   useEffect(() => {
     const isWrong = wrongPickingList.some((item) => {
       return item.optionId == content.optionId && checkSameType(item, content);
     });
     if (isWrong) {
+      console.log("wrong");
       setTempWrong(true);
       const timer = setTimeout(() => {
         setWrongPickingList([]);
@@ -133,13 +134,12 @@ const ButtonMatching: React.FC<IButtonMatching> = ({
         clearTimeout(timer);
       };
     }
-  }, [content]);
+  }, [wrongPickingList]);
 
   const displayText = isVietnameseContent(content)
     ? content.vietnameseText
     : content.englishText;
   const isCorrect = correctPickingList.includes(content.optionId);
-
   return (
     <button
       css={
@@ -147,6 +147,7 @@ const ButtonMatching: React.FC<IButtonMatching> = ({
       }
       onClick={(e) => {
         e.stopPropagation();
+        playAudio();
         setPickingQueue((prev: any) => {
           const isSelf = prev.some(
             (item: Content) => JSON.stringify(item) === JSON.stringify(content)

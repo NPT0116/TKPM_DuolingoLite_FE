@@ -37,6 +37,7 @@ const QuestionBox: React.FC<IQuestionBox> = ({
 
   // Function to play an audio file with an optional callback when finished
   const playAudio = (src: string, callback?: () => void) => {
+    // Stop the previous hover play
     if (audioRef.current) {
       audioRef.current.pause();
     }
@@ -60,36 +61,37 @@ const QuestionBox: React.FC<IQuestionBox> = ({
     if (isMainAudioPlayingRef.current) {
       queueRef.current = item;
     } else {
-      playAudio(item.audio, () => {
-        if (queueRef.current) {
-          const nextItem = queueRef.current;
-          queueRef.current = null;
-          playAudio(nextItem.audio);
-        }
-      });
+      playAudio(item.audio);
     }
   };
 
   // Handle playing the main audio when clicking on the speaker icon
   const handleMainAudioPlay = () => {
     if (!mainAudio) return;
-    isMainAudioPlayingRef.current = true;
-    playAudio(mainAudio, () => {
-      isMainAudioPlayingRef.current = false;
-      if (queueRef.current) {
-        playAudio(queueRef.current.audio);
-        queueRef.current = null;
-      }
-    });
+    if (!isMainAudioPlayingRef.current) {
+      isMainAudioPlayingRef.current = true;
+      playAudio(mainAudio, () => {
+        isMainAudioPlayingRef.current = false;
+        if (queueRef.current) {
+          playAudio(queueRef.current.audio);
+          queueRef.current = null;
+        }
+      });
+    }
   };
   useEffect(() => {
-    console.log("Playing audio");
+    console.log("Auto play audio at first");
+    isMainAudioPlayingRef.current = true;
     const playAudio = setTimeout(() => {
       const audio = new Audio(mainAudio);
-      console.log(audio);
+      audio.onended = () => {
+        isMainAudioPlayingRef.current = false;
+      };
       audio.play();
     }, 1000);
     return () => {
+      isMainAudioPlayingRef.current = false;
+
       clearTimeout(playAudio);
     };
   }, []);

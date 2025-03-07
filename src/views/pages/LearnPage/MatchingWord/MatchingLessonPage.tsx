@@ -4,17 +4,11 @@ import { IMatchingQuestion } from "../../../../interfaces/Questions/IMatchingQue
 import { IMatchingOption } from "../../../../interfaces/Options/IMatchingOption";
 
 import ButtonMatching from "../../../components/Button/Matching/ButtonMatching";
+import {
+  IVNContent,
+  IELContent,
+} from "../../../../interfaces/Options/IMatchingOption";
 
-interface IVNContent {
-  optionId: string;
-  sourceType: string;
-  vietnameseText: string;
-}
-interface IELContent {
-  optionId: string;
-  targetType: string;
-  englishText: string;
-}
 interface IMatchingLessonPage {
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
@@ -56,11 +50,11 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
       optionId: option.optionId,
       targetType: option.targetType,
       englishText: option.englishText,
+      audio: option.audio,
     }));
     setSourceCollection(shuffleArray(sourceCollection));
     setTargetCollection(shuffleArray(targetCollection));
   }, []);
-
   // Process the picking queue whenever it changes.
   useEffect(() => {
     if (pickingQueue.length === 2) {
@@ -105,7 +99,7 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
                 wrongPickingList={wrongPickingList}
                 correctPickingList={correctPickingList}
                 setPickingQueue={setPickingQueue}
-                content={content}
+                content={content as IVNContent}
               />
             ))}
           </div>
@@ -117,7 +111,7 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
                 wrongPickingList={wrongPickingList}
                 correctPickingList={correctPickingList}
                 setPickingQueue={setPickingQueue}
-                content={content}
+                content={content as IELContent}
               />
             ))}
           </div>
