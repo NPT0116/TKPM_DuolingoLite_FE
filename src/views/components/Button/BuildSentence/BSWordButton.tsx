@@ -21,6 +21,8 @@ const BSBWordButton: React.FC<BSWordProps> = ({
   const playAudio = () => {
     if (isEnglish) {
       if (option.audio && option.audio.url) {
+        console.log("a");
+        console.log(option?.audio?.url);
         const audio = new Audio(option.audio.url);
         audio
           .play()

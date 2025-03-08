@@ -66,7 +66,6 @@ const WordChoice: React.FC<WordChoiceProps> = ({
             <div className="relative z-10">
               <BSBWordButton
                 isEnglish={isEnglish}
-                option={option}
                 label={word}
                 onClick={() => {
                   if (!isSelected) {
@@ -78,6 +77,7 @@ const WordChoice: React.FC<WordChoiceProps> = ({
                   opacity: isSelected ? 0 : 1,
                   transition: "opacity 0.3s",
                 }}
+                option={option}
               />
             </div>
           </motion.div>

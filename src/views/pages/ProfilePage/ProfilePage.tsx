@@ -1,4 +1,28 @@
+import { useEffect, useState } from "react";
+import { getUserProfile } from "../../../services/Authentication/AuthService";
+import { UserProfile } from "../../../interfaces/Auth/UserProfile";
+import AvatarSection from "../../components/Profile/AvatarSection";
+import InfoDetailSection from "../../components/Profile/InfoDetailSection";
+import StatisticSection from "../../components/Profile/StatisticSection";
+
 const ProfilePage: React.FC = () => {
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      console.log("a");
+      try {
+        const userData = await getUserProfile();
+        setUser(userData.value);
+      } catch (err) {
+        setError("Failed to fetch user profile");
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
   return (
     <div
       className="w-full flex justify-center min-h-screen overflow-y-auto"
@@ -7,138 +31,23 @@ const ProfilePage: React.FC = () => {
       <div className="w-[1008px] flex">
         {/* Profile Section */}
         <div className="w-[592px] flex flex-col gap-y-[20px]">
-          {/* Avartar Section */}
-          <div className="w-full h-[224px] bg-[#202F36] rounded-2xl relative overflow-y-hidden">
-            <button
-              className="border-2 border-[#172227] rounded-2xl absolute top-[14px] right-[14px] w-[46px] h-[44px] flex justify-center items-center cursor-pointer hover:bg-[#1d2b31] active:translate-y-0.5"
-              style={{
-                boxShadow: "0 3px 0 0 #172227",
-              }}
-              onMouseDown={(e) => {
-                e.currentTarget.style.boxShadow = "0 2px 0 0 #172227";
-              }}
-              onMouseUp={(e) => {
-                e.currentTarget.style.boxShadow = "0 3px 0 0 #172227";
-              }}
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M10.8637 2.28623L12.1531 1.00038C13.4906 -0.33346 15.659 -0.333457 16.9965 1.00038C18.3339 2.33421 18.3339 4.49679 16.9965 5.83062L15.7071 7.11648L10.8637 2.28623ZM9.34202 3.80383L0.902018 12.2209C0.0785876 13.0421 -0.354215 16.9413 0.363097 17.6567C1.08041 18.3722 4.90788 17.8864 5.7454 17.0512L14.1854 8.63408L9.34202 3.80383Z"
-                  fill="currentColor"
-                ></path>
-              </svg>
-            </button>
-            <div className="absolute bottom-[-80px] left-[35%]">
-              <img
-                src="	https://d35aaqx5ub95lt.cloudfront.net/images/05147135350f5234cbf147813eee4db8.svg"
-                alt="Profile Picture"
-              />
-            </div>
-          </div>
-          {/* Info Detail Section */}
-          <div className="h-[134px] border-b-2 border-[#37464F] relative">
-            <img
-              src="https://d35aaqx5ub95lt.cloudfront.net/images/borderlessFlags/b9817d83179e278c91771d903953bfc6.svg"
-              alt=""
-              className="w-[31px] h-[24px] absolute right-0 bottom-[26px]"
-            />
-            {/* Name */}
-            <div className="text-[28px] font-bold">Huy Trần</div>
-            {/* Nick name */}
-            <div className="text-[#52656D] font-semibold text-[17px] transform translate-y-[-4px]">
-              HuyTrn916781
-            </div>
-            {/* Date Join */}
-            <div className="text-white text-[17px]  transform translate-y-[-4px]">
-              Đã tham gia Tháng Hai 2025
-            </div>
-          </div>
-          {/* Statistic Section */}
-          <div>
-            <div className="text-[28px] font-bold">Thống kê</div>
-            <div className="grid grid-cols-2 w-full gap-3">
-              <div
-                className="border-2 border-[#37464F] rounded-2xl h-[78px] flex items-start"
-                style={{ padding: "15px 24px" }}
-              >
-                <img
-                  src="	https://d35aaqx5ub95lt.cloudfront.net/images/profile/8a6dca76019d059a81c4c7c1145aa7a4.svg"
-                  alt=""
-                  className="w-[21px]"
-                  style={{ marginRight: "15px" }}
-                />
-                <div className="transition translate-y-[-6px]">
-                  <div className="font-bold text-[20px] ">1</div>
-                  <div className="text-[#52656D] font-semibold text-[16px]">
-                    Ngày streak
-                  </div>
-                </div>
-              </div>
-              <div
-                className="border-2 border-[#37464F] rounded-2xl h-[78px] flex items-start"
-                style={{ padding: "15px 24px" }}
-              >
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/profile/01ce3a817dd01842581c3d18debcbc46.svg"
-                  alt=""
-                  className="w-[21px]"
-                  style={{ marginRight: "15px" }}
-                />
-                <div className="transition translate-y-[-6px]">
-                  <div className="font-bold text-[20px] ">78</div>
-                  <div className="text-[#52656D] font-semibold text-[16px]">
-                    Tổng điểm KN
-                  </div>
-                </div>
-              </div>
-              <div
-                className="border-2 border-[#37464F] rounded-2xl h-[78px] flex items-start"
-                style={{ padding: "15px 24px" }}
-              >
-                <img
-                  src="	https://d35aaqx5ub95lt.cloudfront.net/images/leagues/0f2ec3b0ead032476829f47c4157a4fd.svg"
-                  alt=""
-                  className="w-[21px]"
-                  style={{ marginRight: "15px" }}
-                />
-                <div className="transition translate-y-[-6px]">
-                  <div className="font-bold text-[20px] text-[#52656D]">
-                    Chưa có xếp hạng
-                  </div>
-                  <div className="text-[#52656D] font-semibold text-[16px]">
-                    Giải đấu hiện tại
-                  </div>
-                </div>
-              </div>
-              <div
-                className="border-2 border-[#37464F] rounded-2xl h-[78px] flex items-start"
-                style={{ padding: "15px 24px" }}
-              >
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/profile/96e056d06fd492261f98901b53ccc256.svg"
-                  alt=""
-                  className="w-[21px]"
-                  style={{ marginRight: "15px" }}
-                />
-                <div className="transition translate-y-[-6px]">
-                  <div className="font-bold text-[20px] text-[#52656D] ">0</div>
-                  <div className="text-[#52656D] font-semibold text-[16px]">
-                    Số lần đạt top 3
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <AvatarSection profileImageUrl="https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/480599581_628294509907140_7591753771768341862_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeH51vsEchcl53mbqjozwAHYpn4MQT1eYzqmfgxBPV5jOlBB7FY2_caGPUUEhXxUNQzhb0jAbdvf13Y2wDIUjhDC&_nc_ohc=9Q5ZEwKxYBwQ7kNvgEYTKkC&_nc_oc=AdhRSkWfIErzPWdU13g2nuNrgLON0tCgZj3jTSufJD7XA_a_g7ccTfl7OW8u-OVLDpJgF1acUg2qde5VSVVvfSbN&_nc_zt=23&_nc_ht=scontent.fsgn8-3.fna&_nc_gid=A-9kpryQUtQoTCdnXtLsYgD&oh=00_AYEw-bz8c406IbcJeUNpnIoLh-JGAPzH65gZfm--3Xd6bA&oe=67D1DE9B" />
+          <InfoDetailSection
+            firstName={user?.firstName ?? ""}
+            lastName={user?.lastName ?? ""}
+            nickName={user?.nickName ?? ""}
+            userActivity={
+              user?.userActivities?.[0] ?? {
+                userId: "",
+                date: "",
+                isActive: false,
+                id: "",
+              }
+            }
+          />
+          <StatisticSection userStats={user?.userStats ?? null} />
           {/* Achievement Section */}
-          <div>
+          <div style={{ marginBottom: "50px" }}>
             <div
               className="flex justify-between items-end"
               style={{ marginBottom: "12px" }}
@@ -227,7 +136,7 @@ const ProfilePage: React.FC = () => {
                   </div>
                 </li>
                 <li
-                  className="flex w-full items-center border-b-2 border-[#37464F]"
+                  className="flex w-full items-center"
                   style={{ padding: "20px" }}
                 >
                   <div className="relative w-fit">
