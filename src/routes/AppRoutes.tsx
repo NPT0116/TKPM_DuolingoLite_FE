@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { PATH } from "../configs/path";
+import { Navigate } from "react-router-dom";
 import RegisterPage from "../views/pages/AuthPage/RegisterPage/RegisterPage";
 import NotFoundPage from "../views/pages/NotFoundPage/NotFoundPage";
 import NavigationLayout from "../views/layouts/NavigationLayout";
@@ -8,13 +9,19 @@ import WelcomePage from "../views/pages/WelcomePages/WelcomePage";
 import HomePage from "../views/pages/HomePage/HomePage";
 import LoginPage from "../views/pages/AuthPage/LoginPage/LoginPage";
 import ProfilePage from "../views/pages/ProfilePage/ProfilePage";
-import MatchingLessonPage from "../views/pages/LearnPage/MatchingWord/MatchingLessonPage";
-import PronunciationPage from "../views/pages/LearnPage/Pronunciation/PronunciationPage";
-import BuildSentencePage from "../views/pages/LearnPage/BuildSentencePage/BuildSentencePage";
 import LessonLayout from "../views/layouts/LessonLayout";
-import MultipleChoicePage from "../views/pages/LearnPage/MultipleChoice/MultipleChoicePage";
+
+interface ProtectedRouteProps {
+  children: JSX.Element;
+}
+
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+  const token = localStorage.getItem("authToken");
+  return token ? children : <Navigate to={PATH.LOGIN.index} />;
+};
 
 const AppRoutes: React.FC = () => {
+  const token = localStorage.getItem("authToken");
   return (
     <div>
       <Routes>
@@ -28,8 +35,22 @@ const AppRoutes: React.FC = () => {
         {/* For component that have layout */}
         <Route element={<NavigationLayout />}>
           <Route path={PATH.USER.index} element={<GuestPage />} />
-          <Route path={PATH.USER.outlets.home} element={<HomePage />} />
-          <Route path={PATH.USER.outlets.profile} element={<ProfilePage />} />
+          <Route
+            path={PATH.USER.outlets.home}
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={PATH.USER.outlets.profile}
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </div>

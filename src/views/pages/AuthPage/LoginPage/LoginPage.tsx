@@ -1,9 +1,36 @@
 import { InputField } from "../../../components/Auth/Input";
 import { Navbar } from "../../../components/Auth/NavBar";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import facebook_icon from "../../../../assets/imgs/login/facebook_icon.png";
 import google_icon from "../../../../assets/imgs/login/google_icon.png";
 
-const LoginPage: React.FC = () => {
+export const LoginPage: React.FC = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigation = useNavigate();
+
+  const handleLogin = async () => {
+    const payload = {
+      email: username,
+      password: password,
+    };
+
+    try {
+      const response = await axios.post("/api/Authentication/login", payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Login Successfully:", response);
+      localStorage.setItem("authToken", response.data.value);
+      navigation("/home");
+    } catch (err) {
+      console.error("Error while login:", err);
+    }
+  };
+
   return (
     <div
       className="w-full h-[100vh] pt-[31px] bg-[#131f24] flex flex-col items-center justify-center"
@@ -20,9 +47,21 @@ const LoginPage: React.FC = () => {
         >
           Đăng nhập
         </div>
-        <InputField type="text" placeholder="Email hoặc tên đăng nhập" />
+        <InputField
+          type="text"
+          placeholder="Email hoặc tên đăng nhập"
+          width={100}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
         <div className="relative">
-          <InputField type="password" placeholder="Mật khẩu" />
+          <InputField
+            type="password"
+            placeholder="Mật khẩu"
+            width={100}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <div className="absolute right-4 top-4 text-[#4D6068] hover:text-white font-bold cursor-pointer">
             QUÊN?
           </div>
@@ -39,6 +78,7 @@ const LoginPage: React.FC = () => {
           onMouseUp={(e) => {
             e.currentTarget.style.boxShadow = "0 4px 0 0 #1899D6";
           }}
+          onClick={handleLogin}
         >
           ĐĂNG NHẬP
         </button>
@@ -82,5 +122,3 @@ const LoginPage: React.FC = () => {
     </div>
   );
 };
-
-export default LoginPage;

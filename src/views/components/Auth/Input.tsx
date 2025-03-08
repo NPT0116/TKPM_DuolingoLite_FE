@@ -5,6 +5,9 @@ interface InputProps {
   placeholder: string;
   inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
   width: number;
+  value: string;
+  // onChange: React.Dispatch<React.SetStateAction<string>>;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const InputField: React.FC<InputProps> = ({
@@ -12,12 +15,22 @@ export const InputField: React.FC<InputProps> = ({
   placeholder,
   inputMode,
   width,
+  value,
+  onChange,
 }) => {
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const { key } = event;
-    // Allow only numeric keys and control keys like Backspace
-    if (!/^[0-9]$/.test(key) && key !== "Backspace") {
-      event.preventDefault();
+    if (type === "number") {
+      const { key } = event;
+      // Allow numeric digits and common control keys
+      if (
+        !/^[0-9]$/.test(key) &&
+        key !== "Backspace" &&
+        key !== "ArrowLeft" &&
+        key !== "ArrowRight" &&
+        key !== "Delete"
+      ) {
+        event.preventDefault();
+      }
     }
   };
   const inputStyle = {
@@ -27,6 +40,8 @@ export const InputField: React.FC<InputProps> = ({
 
   return (
     <input
+      value={value}
+      onChange={onChange}
       style={inputStyle}
       type={type}
       placeholder={placeholder}

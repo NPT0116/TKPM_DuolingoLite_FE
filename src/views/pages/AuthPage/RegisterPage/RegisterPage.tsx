@@ -1,7 +1,44 @@
 import facebook_icon from "../../../../assets/imgs/login/facebook_icon.png";
 import { InputField } from "../../../components/Auth/Input";
 import { Navbar } from "../../../components/Auth/NavBar";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 const RegisterPage: React.FC = () => {
+  const navigate = useNavigate();
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleRegister = async () => {
+    const formData = new FormData();
+    formData.append("UserRegisterDto.FirstName", firstName);
+    formData.append("UserRegisterDto.LastName", lastName);
+    formData.append("UserRegisterDto.Email", email);
+    formData.append("UserRegisterDto.UserName", username);
+    formData.append("UserRegisterDto.Password", password);
+
+    try {
+      const { data } = await axios.post(
+        "/api/Authentication/register",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Registration successful:", data);
+      navigate("/login");
+    } catch (error) {
+      console.error("Error registering:", error);
+    }
+  };
+
   return (
     <div className="w-full h-[100vh] pt-[31px] bg-[#131f24] flex flex-col items-center justify-center">
       {/* Navigate bar */}
@@ -17,19 +54,50 @@ const RegisterPage: React.FC = () => {
         </div>
 
         <div className="w-full flex flex-row gap-4">
-          <InputField width={50} type="text" placeholder="Họ" />
-          <InputField width={50} type="text" placeholder="Tên" />
+          <InputField
+            width={50}
+            type="text"
+            placeholder="Tên"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <InputField
+            width={50}
+            type="text"
+            placeholder="Họ"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
         </div>
 
-        <InputField width={100} type="email" placeholder="Email" />
-        <InputField width={100} type="text" placeholder="Tên người dùng" />
-        <InputField width={100} type="password" placeholder="Mật khẩu" />
+        <InputField
+          width={100}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <InputField
+          width={100}
+          type="text"
+          placeholder="Tên người dùng"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <InputField
+          width={100}
+          type="password"
+          placeholder="Mật khẩu"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <button
           className="bg-[#49C0F8] hover:bg-[#97deff] text-[#19323D] font-bold rounded-xl cursor-pointer active:translate-y-1 transition-all duration-100"
           style={{
             padding: "10px 0px",
             boxShadow: "0 4px 0 0 #1899D6",
           }}
+          onClick={handleRegister}
           onMouseDown={(e) => {
             e.currentTarget.style.boxShadow = "none";
           }}
