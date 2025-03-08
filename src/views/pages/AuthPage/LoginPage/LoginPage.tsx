@@ -6,7 +6,7 @@ import axios from "axios";
 import facebook_icon from "../../../../assets/imgs/login/facebook_icon.png";
 import google_icon from "../../../../assets/imgs/login/google_icon.png";
 
-export const LoginPage: React.FC = () => {
+const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigate();
@@ -122,3 +122,5 @@ export const LoginPage: React.FC = () => {
     </div>
   );
 };
+
+export default LoginPage;

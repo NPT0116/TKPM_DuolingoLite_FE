@@ -10,6 +10,7 @@ import HomePage from "../views/pages/HomePage/HomePage";
 import LoginPage from "../views/pages/AuthPage/LoginPage/LoginPage";
 import ProfilePage from "../views/pages/ProfilePage/ProfilePage";
 import LessonLayout from "../views/layouts/LessonLayout";
+import { JSX } from "react";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
