@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { getUserProfile } from "../../../services/Authentication/AuthService";
-import { UserProfile } from "../../../interfaces/Auth/UserProfile";
+import { IUserProfile } from "../../../interfaces/Auth/IUserProfile";
 import AvatarSection from "../../components/Profile/AvatarSection";
 import InfoDetailSection from "../../components/Profile/InfoDetailSection";
 import StatisticSection from "../../components/Profile/StatisticSection";
 
 const ProfilePage: React.FC = () => {
-  const [user, setUser] = useState<UserProfile | null>(null);
+  const [user, setUser] = useState<IUserProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      console.log("a");
       try {
         const userData = await getUserProfile();
         setUser(userData.value);

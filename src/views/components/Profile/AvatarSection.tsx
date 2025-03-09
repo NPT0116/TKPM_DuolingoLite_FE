@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import EditButton from "../Button/EditButton";
 
 interface AvatarSectionProps {
@@ -5,10 +6,33 @@ interface AvatarSectionProps {
 }
 
 const AvatarSection: React.FC<AvatarSectionProps> = ({ profileImageUrl }) => {
+  const [selectedImage, setSelectedImage] = useState<string | null>(
+    profileImageUrl
+  );
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleEditClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      const imageUrl = URL.createObjectURL(file);
+      setSelectedImage(imageUrl);
+    }
+  };
   return (
     <div className="w-full h-[224px] bg-[#202F36] relative rounded-2xl overflow-y-hidden">
       <div className="absolute top-[14px] right-[14px]">
-        <EditButton />
+        <EditButton onClick={handleEditClick} />
+        <input
+          type="file"
+          ref={fileInputRef}
+          accept="image/*"
+          className="hidden"
+          onChange={handleFileChange}
+        />
       </div>
       {profileImageUrl !== null ? (
         <div className="w-full h-full flex justify-center items-center">

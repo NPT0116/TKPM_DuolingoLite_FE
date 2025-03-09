@@ -1,11 +1,11 @@
-export interface UserActivity {
+export interface IUserActivity {
   userId: string;
   date: string;
   isActive: boolean;
   id: string;
 }
 
-export interface UserStats {
+export interface IUserStats {
   userId: string;
   experiencePoint: number;
   heart: number;
@@ -15,7 +15,7 @@ export interface UserStats {
   id: string;
 }
 
-export interface UserProfile {
+export interface IUserProfile {
   id: string;
   firstName: string;
   lastName: string;
@@ -23,11 +23,6 @@ export interface UserProfile {
   nickName: string;
   profileImageUrl: string | null;
   subscription: any | null;
-  userActivities: UserActivity[];
-  userStats: UserStats;
-}
-
-export interface ApiResponse<T> {
-  value: T;
-  isSuccess: boolean;
+  userActivities: IUserActivity[];
+  userStats: IUserStats;
 }

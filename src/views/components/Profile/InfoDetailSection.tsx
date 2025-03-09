@@ -1,11 +1,11 @@
-import { UserActivity } from "../../../interfaces/Auth/UserProfile";
+import { IUserActivity } from "../../../interfaces/Auth/IUserProfile";
 import { format } from "date-fns";
 
 interface InfoDetailSectionProps {
   firstName: string;
   lastName: string;
   nickName: string;
-  userActivity: UserActivity;
+  userActivity: IUserActivity;
 }
 
 const InfoDetailSection: React.FC<InfoDetailSectionProps> = ({

@@ -1,7 +1,7 @@
-import { UserStats } from "../../../interfaces/Auth/UserProfile";
+import { IUserStats } from "../../../interfaces/Auth/IUserProfile";
 
 interface StatisticSectionProps {
-  userStats: UserStats | null;
+  userStats: IUserStats | null;
 }
 
 const StatisticSection: React.FC<StatisticSectionProps> = ({ userStats }) => {

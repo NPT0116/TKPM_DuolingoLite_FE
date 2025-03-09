@@ -13,6 +13,7 @@ import PronunciationPage from "../views/pages/LearnPage/Pronunciation/Pronunciat
 import BuildSentencePage from "../views/pages/LearnPage/BuildSentencePage/BuildSentencePage";
 import LessonLayout from "../views/layouts/LessonLayout";
 import MultipleChoicePage from "../views/pages/LearnPage/MultipleChoice/MultipleChoicePage";
+import LeaderboardPage from "../views/pages/LeaderboardPage/LeaderboardPage";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -30,6 +31,10 @@ const AppRoutes: React.FC = () => {
           <Route path={PATH.USER.index} element={<GuestPage />} />
           <Route path={PATH.USER.outlets.home} element={<HomePage />} />
           <Route path={PATH.USER.outlets.profile} element={<ProfilePage />} />
+          <Route
+            path={PATH.USER.outlets.leaderboard}
+            element={<LeaderboardPage />}
+          ></Route>
         </Route>
       </Routes>
     </div>
