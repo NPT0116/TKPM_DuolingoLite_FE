@@ -2,12 +2,9 @@
 import DisplayUnit from "../../components/LearnPage/DisplayUnit";
 import { css } from "@emotion/react";
 import { Dispatch, useEffect, useState } from "react";
-import axios from "axios";
-import {
-  ICourse,
-  ILesson,
-  ILessonInformation,
-} from "../../../interfaces/Course";
+import api from "../../../configs/axiosConfig";
+import Streaking from "./StreakComponent/Streaking";
+import { ICourse, ILessonInformation } from "../../../interfaces/Course";
 
 const scrollContainerStyle = css`
   scrollbar-width: 0px;
@@ -19,8 +16,8 @@ const scrollContainerStyle = css`
 const fetchCourse = async (
   setCourse: React.Dispatch<React.SetStateAction<ICourse | null>>
 ) => {
-  await axios
-    .get("/api/Course")
+  await api
+    .get("/Course")
     .then((response) => {
       setCourse(response.data);
     })
@@ -35,8 +32,8 @@ const fetchLessonDetail = async (
     React.SetStateAction<ILessonInformation[]>
   >
 ) => {
-  await axios
-    .get(`/api/Lesson/${courseId}`)
+  await api
+    .get(`/Lesson/${courseId}`)
     .then((response) => {
       setLessonsInformation(response.data.value);
     })
@@ -71,21 +68,15 @@ const HomePage: React.FC = () => {
           lessonsInformation={lessonsInformation}
         />
       </div>
-      <div className="w-2/5 h-full">
-        <div className="w-[95%] h-full flex flex-col">
-          <div className="w-ful h-[12%]  flex justify-evenly items-center gap-10 ">
+      <div className=" w-2/5 h-full bg">
+        <div className="relative w-[95%] h-full flex flex-col">
+          <div className=" w-full h-[12%]  flex justify-evenly items-center gap-10 ">
             <img
               src="https://static.wikia.nocookie.net/duolingo/images/5/59/American_flag.png"
               alt="america flag"
               width="40"
             />
-            <div className="flex justify-center items-center gap-2">
-              <img
-                src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/398e4298a3b39ce566050e5c041949ef.svg"
-                alt="streaking icon"
-              />
-              <span className="text-[#FFAB32] font-bold">123</span>
-            </div>
+            <Streaking />
           </div>
           <div
             className="flex flex-col border-2 border-[#37464f] rounded-2xl gap-4"

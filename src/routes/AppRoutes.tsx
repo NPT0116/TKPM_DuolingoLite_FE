@@ -9,7 +9,6 @@ import WelcomePage from "../views/pages/WelcomePages/WelcomePage";
 import HomePage from "../views/pages/HomePage/HomePage";
 import LoginPage from "../views/pages/AuthPage/LoginPage/LoginPage";
 import ProfilePage from "../views/pages/ProfilePage/ProfilePage";
-import LessonLayout from "../views/layouts/LessonLayout";
 import { JSX } from "react";
 
 interface ProtectedRouteProps {
@@ -18,26 +17,23 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const token = localStorage.getItem("authToken");
-  return token ? children : <Navigate to={PATH.LOGIN.index} />;
+  return token ? children : <Navigate to="/login" />;
 };
 
 const AppRoutes: React.FC = () => {
-  const token = localStorage.getItem("authToken");
   return (
     <div>
       <Routes>
-        <Route path={PATH.LOGIN.index} element={<LoginPage />} />
-        <Route path={PATH.REGISTER.index} element={<RegisterPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/welcome" element={<WelcomePage />} />
-        {/* Route for lesson */}
-        <Route path="/lesson" element={<LessonLayout />}></Route>
-
-        {/* For component that have layout */}
+        {/* Authentication */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        {/* For component that have layout, only access when have authToken */}
         <Route element={<NavigationLayout />}>
           <Route path={PATH.USER.index} element={<GuestPage />} />
           <Route
-            path={PATH.USER.outlets.home}
+            path="/home"
             element={
               <ProtectedRoute>
                 <HomePage />
@@ -45,7 +41,7 @@ const AppRoutes: React.FC = () => {
             }
           />
           <Route
-            path={PATH.USER.outlets.profile}
+            path="/profile"
             element={
               <ProtectedRoute>
                 <ProfilePage />

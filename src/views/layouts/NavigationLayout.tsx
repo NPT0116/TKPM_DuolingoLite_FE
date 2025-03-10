@@ -1,13 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import NavigationButton from "../components/Button/NavigationButton";
-
-const scrollBarCSS = css`
-  overflow: hidden;
-`;
+import { useNavigate } from "react-router-dom";
 
 const NavigationLayout: React.FC = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    navigate("/login");
+  };
   return (
     <div
       className="flex flex-row text-white bg-primary "
@@ -61,31 +62,31 @@ const NavigationLayout: React.FC = () => {
             content="HỒ SƠ"
             path="/profile"
           />
-
-          <NavigationButton
-            isAvatar={false}
-            iconLink="https://simg-ssl.duolingo.com/ssr-avatars/1288943247/SSR-Dnq9imvO9g/medium"
-            content="Matching"
-            path="/lesson/matching"
-          />
-          <NavigationButton
-            isAvatar={false}
-            iconLink="https://simg-ssl.duolingo.com/ssr-avatars/1288943247/SSR-Dnq9imvO9g/medium"
-            content="Pronunciation"
-            path="/lesson/pronunciation"
-          />
-          <NavigationButton
-            isAvatar={false}
-            iconLink="https://simg-ssl.duolingo.com/ssr-avatars/1288943247/SSR-Dnq9imvO9g/medium"
-            content="Multiple Choice"
-            path="/lesson/multiple-choice"
-          />
-          <NavigationButton
-            isAvatar={false}
-            iconLink="https://simg-ssl.duolingo.com/ssr-avatars/1288943247/SSR-Dnq9imvO9g/medium"
-            content="Build Sentence"
-            path="/lesson/build-sentence"
-          />
+          <div className="rounded-xl">
+            <div
+              onClick={handleLogout}
+              className="flex font-bold  rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
+              style={{
+                padding: "8px 4px 8px 4px",
+              }}
+            >
+              <span className="flex flex-row">
+                <div>
+                  <img
+                    src="https://images.freeimages.com/clg/images/26/261833/white-clarity-shutdown-icon_f?h=350"
+                    alt="Logo navigation button"
+                    width="32px"
+                    style={{
+                      margin: "0px 20px 0px 10px",
+                    }}
+                  />
+                </div>
+                <span className=" flex justify-center items-center">
+                  ĐĂNG XUẤT
+                </span>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 

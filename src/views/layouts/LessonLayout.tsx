@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import axios from "axios";
+import api from "../../configs/axiosConfig";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { css, keyframes } from "@emotion/react";
@@ -41,9 +41,9 @@ const LessonLayout: React.FC = () => {
 
   const fetchLesson = async () => {
     for (let i = 0; i < lessonInformation.questionCount; i++) {
-      await axios
+      await api
         .get(
-          `/api/Question/questions/list-questions/${
+          `/Question/questions/list-questions/${
             lessonInformation.id
           }?questionOrder=${i + 1}`
         )

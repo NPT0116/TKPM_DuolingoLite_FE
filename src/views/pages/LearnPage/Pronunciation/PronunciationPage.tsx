@@ -2,7 +2,7 @@
 import QuestionBox from "../../../components/Learning/Pronunciation/QuestionBox";
 import { css, keyframes } from "@emotion/react";
 import { useState, useRef, useEffect } from "react";
-import axios from "axios";
+import api from "../../../../configs/axiosConfig";
 import { IPronunciationQuestion } from "../../../../interfaces/Questions/IPronunciationQuesion";
 const fluctuate = keyframes`
   0% { transform: scaleY(1); }
@@ -42,7 +42,7 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
   const mainAudio = data.audio?.url;
   //
   console.log(questionElements);
-  const timeoutRef = useRef<number | null>(null);
+  const timeoutRef = useRef<any>(null);
   const [result, setResult] = useState("");
   const [answer, setAnswer] = useState("");
   const [isRecord, setIsRecord] = useState(false);
@@ -117,7 +117,7 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
       // The key 'audioFile' must match your backend’s requirement
       formData.append("audioFile", audioBlob, "recording.webm");
       try {
-        const response = await axios.post("/api/Speech/upload", formData, {
+        const response = await api.post("/Speech/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

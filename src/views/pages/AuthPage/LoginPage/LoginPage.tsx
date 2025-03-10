@@ -2,32 +2,67 @@ import { InputField } from "../../../components/Auth/Input";
 import { Navbar } from "../../../components/Auth/NavBar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../../../configs/axiosConfig";
 import facebook_icon from "../../../../assets/imgs/login/facebook_icon.png";
 import google_icon from "../../../../assets/imgs/login/google_icon.png";
 
 const LoginPage: React.FC = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const navigation = useNavigate();
+
+  const earlyCheck = () => {
+    let count = 0;
+    // Early check
+    if (!email) {
+      setErrors((prev) => ({ ...prev, email: "Email is required" }));
+      count++;
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+      setErrors((prev) => ({ ...prev, email: "Invalid email address" }));
+      count++;
+    }
+    if (!password) {
+      setErrors((prev) => ({ ...prev, password: "Password is required" }));
+      count++;
+    }
+    return count > 0 ? false : true;
+  };
 
   const handleLogin = async () => {
     const payload = {
-      email: username,
+      email: email,
       password: password,
     };
-
-    try {
-      const response = await axios.post("/api/Authentication/login", payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log("Login Successfully:", response);
-      localStorage.setItem("authToken", response.data.value);
-      navigation("/home");
-    } catch (err) {
-      console.error("Error while login:", err);
+    if (!earlyCheck()) {
+      console.log(errors);
+    } else {
+      try {
+        const response = await api.post("/Authentication/login", payload, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("Login Successfully:", response);
+        localStorage.setItem("authToken", response.data.value);
+        navigation("/home");
+      } catch (error: any) {
+        if (error.response) {
+          console.error("Error status:", error.response.status);
+          console.error("Error details:", error.response.data);
+          if (error.response.data.title.toLowerCase().includes("password")) {
+            setErrors({ password: error.response.data.detail });
+          } else if (
+            error.response.data.title.toLowerCase().includes("email")
+          ) {
+            setErrors({ email: error.response.data.detail });
+          }
+        } else if (error.request) {
+          console.error("No response received:", error.request);
+        } else {
+          console.error("Error:", error.message);
+        }
+      }
     }
   };
 
@@ -48,23 +83,25 @@ const LoginPage: React.FC = () => {
           Đăng nhập
         </div>
         <InputField
+          error={errors.email}
           type="text"
-          placeholder="Email hoặc tên đăng nhập"
+          placeholder="Email"
           width={100}
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <div className="relative">
           <InputField
+            error={errors.password}
             type="password"
             placeholder="Mật khẩu"
             width={100}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <div className="absolute right-4 top-4 text-[#4D6068] hover:text-white font-bold cursor-pointer">
+          {/* <div className="absolute right-4 top-4 text-[#4D6068] hover:text-white font-bold cursor-pointer">
             QUÊN?
-          </div>
+          </div> */}
         </div>
         <button
           className="bg-[#49C0F8] hover:bg-[#97deff] text-[#19323D] font-bold rounded-xl cursor-pointer active:translate-y-1 transition-all duration-100"
