@@ -12,18 +12,18 @@ export const Navbar: React.FC<NavbarProps> = ({ pageName }) => {
 
   return (
     <div
-      className="w-full flex justify-between absolute top-[31px]"
+      className="w-full flex flex-row justify-end absolute top-[31px]"
       style={{ padding: "0 28px" }}
     >
       {/* Close Button */}
-      <div>
+      {/* <div>
         <img
           src="https://d35aaqx5ub95lt.cloudfront.net/images/48b38c250a652878bc0c779a07f2ca48.svg"
           alt="Close"
         />
-      </div>
+      </div> */}
       {/* Navigate Button */}
-      <Link to={linkTo} className="text-[14px] w-">
+      <Link to={linkTo} className="text-[14px]">
         <button
           className="font-bold border-2 border-b-4 border-[#37464F] text-[#49C0F8] 
           hover:text-[#49c1f8c5] rounded-2xl hover:bg-[#2b131f42] cursor-pointer 

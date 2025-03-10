@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import axios from "axios";
 import { ILessonInformation, ILessonValue } from "../../../interfaces/Course";
 import { useNavigate } from "react-router-dom";
 interface ILessonNode {
