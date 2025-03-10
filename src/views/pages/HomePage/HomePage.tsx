@@ -57,10 +57,10 @@ const HomePage: React.FC = () => {
   }, [course]);
   return (
     <div
-      className="w-full h-full flex justify-between"
+      className="w-3/5 h-full flex justify-between"
       css={scrollContainerStyle}
     >
-      <div className="w-3/5 h-full overflow-auto" css={scrollContainerStyle}>
+      <div className="w-full h-full overflow-auto" css={scrollContainerStyle}>
         <DisplayUnit
           title={course?.value[0].name}
           type={1}
@@ -68,40 +68,6 @@ const HomePage: React.FC = () => {
           lessonsInformation={lessonsInformation}
         />
       </div>
-      {/* <div className=" w-2/5 h-full bg">
-        <div className="relative w-[95%] h-full flex flex-col">
-          <div className=" w-full h-[12%]  flex justify-evenly items-center gap-10 ">
-            <img
-              src="https://static.wikia.nocookie.net/duolingo/images/5/59/American_flag.png"
-              alt="america flag"
-              width="40"
-            />
-            <Streaking />
-          </div>
-          <div
-            className="flex flex-col border-2 border-[#37464f] rounded-2xl gap-4"
-            style={{ padding: "25px 25px" }}
-          >
-            <div className="w-full flex justify-between">
-              <span className=" font-bold text-white">Giải đấu Kim Cương</span>
-              <span className=" font-bold text-[#50D3FF]">XEM GIẢI ĐẤU</span>
-            </div>
-
-            <div className="flex flex-row gap-8">
-              <img
-                src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/afe5c7067cd5fb7de936d3928ea7add6.svg"
-                alt="Logo leaderboard"
-              />
-              <div className="flex flex-col justify-start items-start gap-2">
-                <span className="font-bold">Bạn đã đạt vị trí thứ 8</span>
-                <span className="font-medium text-[#DCE6EC]">
-                  Tuần này bạn đã kiếm được tổng cộng 899 KN
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };

@@ -4,9 +4,12 @@ const LeaderboardPage: React.FC = () => {
   return (
     <div className="max-w-[592px] w-[70%] relative">
       {/* Introduce Section */}
-      <div className="w-full  sticky top-0 z-10 bg-[#131F24]">
+      <div
+        className="w-full  sticky top-0 z-20 bg-[#131F24]"
+        style={{ paddingTop: "20px" }}
+      >
         <div className="flex justify-center">
-          <img src={trophyImg} alt="medal image" className="w-[80px h-[91px]" />
+          <img src={trophyImg} alt="medal image" className="w-auto h-[91px]" />
         </div>
         <span
           className="flex justify-center text-[25px] font-bold"
