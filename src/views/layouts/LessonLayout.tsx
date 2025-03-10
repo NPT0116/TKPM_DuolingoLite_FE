@@ -2,7 +2,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { css, keyframes } from "@emotion/react";
 
 //
 import XPBar from "../components/XPBar/XPBar";
@@ -21,10 +20,14 @@ import MatchingLessonPage from "../pages/LearnPage/MatchingWord/MatchingLessonPa
 import PronunciationPage from "../pages/LearnPage/Pronunciation/PronunciationPage";
 import BuildSentencePage from "../pages/LearnPage/BuildSentencePage/BuildSentencePage";
 import MultipleChoicePage from "../pages/LearnPage/MultipleChoice/MultipleChoicePage";
+import { getUserProfile } from "../../services/Authentication/AuthService";
+import { IUserProfile } from "../../interfaces/Auth/IUserProfile";
 
 // https://d35aaqx5ub95lt.cloudfront.net/images/bd13fa941b2407b4914296afe4435646.svg
 
 const LessonLayout: React.FC = () => {
+  const [user, setUser] = useState<IUserProfile | null>(null);
+
   const [isButtonActivate, setIsButtonActive] = useState(false);
   const [isButtonCorrect, setIsButtonCorrect] = useState(false);
   const [isNext, setIsNext] = useState(false);
@@ -38,6 +41,20 @@ const LessonLayout: React.FC = () => {
   const { lessonInformation } = location.state as {
     lessonInformation: ILessonInformation;
   };
+
+  // Get user hearts:
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const userData = await getUserProfile();
+        setUser(userData.value);
+      } catch (err) {
+        console.log("Failed to fetch user profile in RightSideLayout" + err);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const fetchLesson = async () => {
     for (let i = 0; i < lessonInformation.questionCount; i++) {
@@ -108,7 +125,7 @@ const LessonLayout: React.FC = () => {
     setIsButtonCorrect(false);
   }, []);
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <audio
         autoPlay
         loop
@@ -122,9 +139,23 @@ const LessonLayout: React.FC = () => {
         />
         Your browser does not support the audio element.
       </audio>
-      {/* XP Bar */}
-      <div className="w-[100vw] h-[10vh] ">
+      {/* XP Bar & Heart*/}
+      <div
+        className="w-[70%] h-[10vh] flex items-center gap-[20px] max-w[1000px] justify-center"
+        style={{ padding: "0 200px" }}
+      >
         <XPBar accumulated={xp.accumulated} total={xp.total} />
+        <div
+          className="flex  h-[40px] items-center justify-center gap-2 text-[#EE5555]"
+          style={{ padding: "0 16px 0 10px", marginTop: "48px" }}
+        >
+          <img
+            src="https://d35aaqx5ub95lt.cloudfront.net/images/hearts/7631e3ee734dd4fe7792626b59457fa4.svg"
+            alt="heart"
+            className="w-[32px] h-[32px]"
+          />
+          <span>{user?.userStats.heart}</span>
+        </div>
       </div>
       {/* Main Layout */}
       <div className="w-[100vw] h-[70vh]">

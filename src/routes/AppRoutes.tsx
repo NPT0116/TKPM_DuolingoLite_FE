@@ -8,11 +8,7 @@ import WelcomePage from "../views/pages/WelcomePages/WelcomePage";
 import HomePage from "../views/pages/HomePage/HomePage";
 import LoginPage from "../views/pages/AuthPage/LoginPage/LoginPage";
 import ProfilePage from "../views/pages/ProfilePage/ProfilePage";
-import MatchingLessonPage from "../views/pages/LearnPage/MatchingWord/MatchingLessonPage";
-import PronunciationPage from "../views/pages/LearnPage/Pronunciation/PronunciationPage";
-import BuildSentencePage from "../views/pages/LearnPage/BuildSentencePage/BuildSentencePage";
 import LessonLayout from "../views/layouts/LessonLayout";
-import MultipleChoicePage from "../views/pages/LearnPage/MultipleChoice/MultipleChoicePage";
 import LeaderboardPage from "../views/pages/LeaderboardPage/LeaderboardPage";
 
 const AppRoutes: React.FC = () => {

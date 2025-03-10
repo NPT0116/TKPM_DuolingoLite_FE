@@ -2,6 +2,7 @@
 import { css } from "@emotion/react";
 import { Link, Outlet } from "react-router-dom";
 import NavigationButton from "../components/Button/NavigationButton";
+import RightSideBar from "../components/SideBar/RightSideBar";
 
 const scrollBarCSS = css`
   overflow: hidden;
@@ -89,8 +90,12 @@ const NavigationLayout: React.FC = () => {
         </div>
       </div>
 
-      <div className="h-full w-4/5 ">
+      <div
+        className="w-full flex justify-center gap-[40px] h-full overflow-y-auto"
+        style={{ paddingTop: "25px" }}
+      >
         <Outlet />
+        <RightSideBar />
       </div>
     </div>
   );
