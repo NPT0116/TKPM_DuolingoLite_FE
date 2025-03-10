@@ -1,28 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getUserProfile } from "../../../services/Authentication/AuthService";
 import { IUserProfile } from "../../../interfaces/Auth/IUserProfile";
 import { useLocation } from "react-router-dom";
+import Streaking from "../../pages/HomePage/StreakComponent/Streaking";
 
 const RightSideBar: React.FC = () => {
   const [user, setUser] = useState<IUserProfile | null>(null);
   const location = useLocation();
+  const fetched = useRef(false);
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const userData = await getUserProfile();
-        setUser(userData.value);
-      } catch (err) {
-        console.log("Failed to fetch user profile in RightSideLayout" + err);
-      }
-    };
+    if (!fetched.current) {
+      fetched.current = true; // Đánh dấu rằng API đã được gọi
+      const fetchUserProfile = async () => {
+        try {
+          const userData = await getUserProfile();
+          setUser(userData.value);
+        } catch (err) {
+          console.log("Failed to fetch user profile: " + err);
+        }
+      };
 
-    fetchUserProfile();
+      fetchUserProfile();
+    }
   }, []);
 
   return (
-    <div className=" w-2/5 max-w-[368px] flex flex-col sticky top-0 gap-[20px] font-bold">
-      <div className="w-ful h-[12%]  flex justify-evenly items-center gap-10 max-h-[44px]">
+    <div
+      className=" w-2/5 max-w-[368px] flex flex-col  sticky top-[20px] gap-[20px] font-bold"
+      style={{ marginTop: "20px" }}
+    >
+      <div className="w-full h-[12%]  flex justify-evenly items-center gap-10 max-h-[44px]">
         {/* America flag */}
         <div className="flex-1">
           {" "}
@@ -34,13 +42,7 @@ const RightSideBar: React.FC = () => {
         </div>
         {/* Streak */}
         <div className="flex flex-1 justify-center items-center gap-2">
-          <img
-            src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/398e4298a3b39ce566050e5c041949ef.svg"
-            alt="streaking icon"
-          />
-          <span className="text-[#FFAB32] font-bold">
-            {user?.userStats.currentStreak}
-          </span>
+          <Streaking streakNumber={user?.userStats.currentStreak} />
         </div>
         {/* XP */}
         <div className="flex flex-1 h-full items-center justify-center  text-[#FFD900]">

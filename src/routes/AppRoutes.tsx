@@ -11,6 +11,7 @@ import LoginPage from "../views/pages/AuthPage/LoginPage/LoginPage";
 import ProfilePage from "../views/pages/ProfilePage/ProfilePage";
 import LeaderboardPage from "../views/pages/LeaderboardPage/LeaderboardPage";
 import { JSX } from "react";
+import LessonLayout from "../views/layouts/LessonLayout";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -56,6 +57,14 @@ const AppRoutes: React.FC = () => {
             }
           />
         </Route>
+        <Route
+          path="/lesson"
+          element={
+            <ProtectedRoute>
+              <LessonLayout />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </div>
   );
