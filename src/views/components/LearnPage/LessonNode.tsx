@@ -1,25 +1,34 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import { ILessonInformation, ILessonValue } from "../../../interfaces/Course";
+import { useNavigate } from "react-router-dom";
 interface ILessonNode {
   topColor: string;
   botColor: string;
   shadowColor: string;
   transX: string;
+  lessonInformation: ILessonInformation;
 }
 const LessonNode: React.FC<ILessonNode> = ({
   topColor,
   botColor,
   shadowColor,
   transX,
+  lessonInformation,
 }) => {
+  const navigate = useNavigate();
   const nodeColor = css`
     background: #${botColor};
     &::before {
       background: #${topColor};
     }
   `;
+  const goToLessonPage = () => {
+    navigate("/lesson", { state: { lessonInformation } });
+  };
   return (
     <button
+      onClick={goToLessonPage}
       css={nodeColor}
       style={{ transform: `translateX(${transX}px)` }}
       className={`cursor-pointer group hover:before:translate-y-[-8px] relative flex justify-center items-center w-[70px] h-[58px] rounded-[100%] rounded-tr-[50px] rounded-tl-[50px] before:absolute before:translate-y-[-10px]  before:flex before:justify-center before:items-center before:w-[70px] before:h-[58px] before:rounded-[100%]`}

@@ -1,57 +1,96 @@
-import { useState } from "react";
-import AnswerLine from "../../../components/BuildSentence/AnswerLine";
-import Instruction from "../../../components/BuildSentence/Instruction";
-import QuestionSection from "../../../components/BuildSentence/QuestionSection";
-import WordChoice from "../../../components/BuildSentence/WordChoice";
-import { Configure } from "../../../../interfaces/Configure";
-import configData from "../../../../services/mock_datas/configure.json";
-import buildSentenceData from "../../../../services/mock_datas/build_sentences.json";
-import { BuildSentenceQuestion } from "../../../../interfaces/Questions/BuildSentenceQuestion";
-import { BuildSentenceOption } from "../../../../interfaces/Options/BuildSentenceOption";
+import { useEffect, useState } from "react";
+import Instruction from "../../../components/LearnPage/Instruction/Instruction";
+import QuestionSection from "../../../components/LearnPage/QuestionSection/QuestionSection";
+import AnswerLine from "../../../components/Learning/BuildSentence/AnswerLine";
+import WordChoice from "../../../components/Learning/BuildSentence/WordChoice";
+import { IBuildSentenceQuestion } from "../../../../interfaces/Questions/IBuildSentenceQuestion";
+import { IBuildSentenceOption } from "../../../../interfaces/Options/IBuildSentenceOption";
 
-const BuildSentencePage: React.FC = () => {
-  const [selectedWords, setSelectedWords] = useState<BuildSentenceOption[]>([]);
+interface BuildSentenceProps {
+  data: IBuildSentenceQuestion;
+  setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
+  isSubmit: boolean;
+}
+
+const BuildSentencePage: React.FC<BuildSentenceProps> = ({
+  setIsButtonActive,
+  setIsButtonCorrect,
+  data,
+  isSubmit,
+}) => {
+  const [selectedWords, setSelectedWords] = useState<IBuildSentenceOption[]>(
+    []
+  );
   const [wrapCount, setWrapCount] = useState<number>(0);
+  const [isNext, setIsNext] = useState<boolean>(false);
 
-  const config: Configure = configData.value.configure;
-  const data: BuildSentenceQuestion = buildSentenceData.value
-    .question as BuildSentenceQuestion;
+  const correctWordLength = data.options.reduce(
+    (max, option) => (option.order > max ? option.order : max),
+    1
+  );
 
-  const handleChooseWord = (option: BuildSentenceOption) => {
+  const handleChooseWord = (option: IBuildSentenceOption) => {
+    if (isSubmit) return;
     setSelectedWords((prev) => [...prev, option]);
+
+    setIsButtonActive(true);
   };
 
-  const handleRemoveWord = (option: BuildSentenceOption) => {
-    setSelectedWords((prev) =>
-      prev.filter((w) => w.optionId !== option.optionId)
-    );
+  const handleRemoveWord = (option: IBuildSentenceOption) => {
+    if (isSubmit) return;
+    setSelectedWords((prev) => {
+      const newSelectedWords = prev.filter(
+        (w) => w.optionId !== option.optionId
+      );
+
+      if (newSelectedWords.length === 0) {
+        setIsButtonActive(false);
+      }
+
+      return newSelectedWords;
+    });
   };
+  useEffect(() => {
+    setIsNext(true);
+  }, [data.questionId]);
+
+  console.log(data);
 
   return (
-    <div className="w-full h-[100vh] flex items-center">
-      <div className="w-full h-[671px] bg-[#131F24] flex items-center justify-center">
-        <div className="h-[671px] w-[600px] flex flex-col justify-center gap-[20px] text-white">
-          <Instruction instruction={data.instruction} />
-          <QuestionSection
-            config={config}
-            audioId={data.audioId}
-            pictureId={data.pictureId}
-            englishText={data.englishText}
-            vietnameseText={data.vietnameseText}
+    <div className="w-full h-full bg-[#131F24] flex justify-center items-center">
+      <div className="w-[600px] flex flex-col text-white">
+        <Instruction instruction={data.instruction} />
+        <QuestionSection
+          words={data.words}
+          questionConfigure={data.questionConfigure}
+          audio={data.audio}
+          picture={data.picture}
+          englishText={data.englishText}
+          vietnameseText={data.vietnameseText}
+          isBuildSentence={true}
+        />
+        <div className="flex flex-col gap-[30px] ">
+          <AnswerLine
+            correctWordLength={correctWordLength}
+            isEnglish={data.optionConfigure.englishText}
+            selectedWords={selectedWords}
+            onRemoveWord={handleRemoveWord}
+            wrapCount={wrapCount}
+            setIsButtonCorrect={setIsButtonCorrect}
+            isNext={isNext}
+            setIsNext={setIsNext}
+            setSelectedWords={setSelectedWords}
+            isSubmit={isSubmit}
           />
-          <div className="flex flex-col gap-[60px]">
-            <AnswerLine
-              selectedWords={selectedWords}
-              onRemoveWord={handleRemoveWord}
-              wrapCount={wrapCount}
-            />
-            <WordChoice
-              selectedWords={selectedWords}
-              wordOptions={data.options}
-              onWordClick={handleChooseWord}
-              onWrapCountChange={(count) => setWrapCount(count)}
-            />
-          </div>
+          <WordChoice
+            isEnglish={data.optionConfigure.englishText}
+            selectedWords={selectedWords}
+            wordOptions={data.options}
+            onWordClick={handleChooseWord}
+            onWrapCountChange={(count) => setWrapCount(count)}
+            isSubmit={isSubmit}
+          />
         </div>
       </div>
     </div>

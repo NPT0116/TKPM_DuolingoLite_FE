@@ -1,25 +1,25 @@
 export const PATH = {
-    LOGIN: {
-        index: "/login"
+  LOGIN: {
+    index: "/login",
+  },
+  REGISTER: {
+    index: "/register",
+  },
+  LESSON: {
+    index: "/lesson",
+    outlets: {
+      slug: "/lesson/:id",
+      new: "/lesson/new",
+      matching: "/lesson/matching",
     },
-    REGISTER: {
-        index: "/register"
+  },
+  USER: {
+    index: "/",
+    outlets: {
+      home: "/home",
+      profile: "/profile",
+      learn: "/learn",
+      leaderboard: "/leaderboard",
     },
-    LESSON: {
-        index: "/lesson",
-        outlets: {
-            slug: "/lesson/:id",
-            new: "/lesson/new",
-            matching: "/lesson/matching"
-        }
-    },
-    USER: {
-        index: "/",
-        outlets: {
-            leaderBoard: "/leaderboard",
-            profile: "/profile",
-            learn: "/learn"
-        }
-    },
-
-}
+  },
+};

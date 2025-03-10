@@ -1,9 +1,18 @@
-import { Link, Outlet } from "react-router-dom";
+/** @jsxImportSource @emotion/react */
+import { Outlet } from "react-router-dom";
+import NavigationButton from "../components/Button/NavigationButton";
+import { useNavigate } from "react-router-dom";
+import RightSideBar from "../components/SideBar/RightSideBar";
 
 const NavigationLayout: React.FC = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    navigate("/login");
+  };
   return (
     <div
-      className="flex flex-row text-white bg-primary"
+      className="flex flex-row text-white bg-primary "
       style={{
         width: "100vw",
         height: "100vh",
@@ -29,10 +38,34 @@ const NavigationLayout: React.FC = () => {
           />
         </div>
 
-        <div className="w-full h-full relative flex flex-col gap-2">
+        <div className="w-full relative flex flex-col gap-2">
+          <NavigationButton
+            isAvatar={false}
+            iconLink="https://d35aaqx5ub95lt.cloudfront.net/vendor/784035717e2ff1d448c0f6cc4efc89fb.svg"
+            content="HỌC"
+            path="/learn"
+          />
+          <NavigationButton
+            isAvatar={false}
+            iconLink="https://d35aaqx5ub95lt.cloudfront.net/vendor/5187f6694476a769d4a4e28149867e3e.svg"
+            content="LUYỆN TẬP"
+            path="/learn"
+          />
+          <NavigationButton
+            isAvatar={false}
+            iconLink="https://d35aaqx5ub95lt.cloudfront.net/vendor/ca9178510134b4b0893dbac30b6670aa.svg"
+            content="BẢNG XẾP HẠNG"
+            path="/leaderboard"
+          />
+          <NavigationButton
+            isAvatar={true}
+            iconLink="https://simg-ssl.duolingo.com/ssr-avatars/1288943247/SSR-Dnq9imvO9g/medium"
+            content="HỒ SƠ"
+            path="/profile"
+          />
           <div className="rounded-xl">
-            <Link
-              to="/learn"
+            <div
+              onClick={handleLogout}
               className="flex font-bold  rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
               style={{
                 padding: "8px 4px 8px 4px",
@@ -41,88 +74,29 @@ const NavigationLayout: React.FC = () => {
               <span className="flex flex-row">
                 <div>
                   <img
-                    src="https://d35aaqx5ub95lt.cloudfront.net/vendor/784035717e2ff1d448c0f6cc4efc89fb.svg"
-                    alt="Logo of Lesson Mode"
-                    style={{
-                      margin: "0px 20px 0px 10px",
-                    }}
-                  />
-                </div>
-                <span className=" flex justify-center items-center">HỌC</span>
-              </span>
-            </Link>
-          </div>
-          <div className="rounded-xl">
-            <Link
-              to="#"
-              className="flex font-bold rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
-              style={{ padding: "8px 4px 8px 4px" }}
-            >
-              <span className="flex flex-row">
-                <div>
-                  <img
-                    src="https://d35aaqx5ub95lt.cloudfront.net/vendor/5187f6694476a769d4a4e28149867e3e.svg"
-                    alt="Logo of Practice Center"
+                    src="https://images.freeimages.com/clg/images/26/261833/white-clarity-shutdown-icon_f?h=350"
+                    alt="Logo navigation button"
                     width="32px"
                     style={{
                       margin: "0px 20px 0px 10px",
                     }}
                   />
                 </div>
-                <span className="flex justify-center items-center">
-                  LUYỆN TẬP
+                <span className=" flex justify-center items-center">
+                  ĐĂNG XUẤT
                 </span>
               </span>
-            </Link>
-          </div>
-          <div className="rounded-xl">
-            <Link
-              to="/leaderboard"
-              className="flex font-bold rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
-              style={{ padding: "8px 4px 8px 4px" }}
-            >
-              <span className="flex flex-row">
-                <div>
-                  <img
-                    src="https://d35aaqx5ub95lt.cloudfront.net/vendor/ca9178510134b4b0893dbac30b6670aa.svg"
-                    alt="Logo of Ranking Table"
-                    width="64px"
-                    style={{ padding: "0px 20px 0px 10px" }}
-                  />
-                </div>
-                <span className="flex justify-center items-center">
-                  BẢNG XẾP HẠNG
-                </span>
-              </span>
-            </Link>
-          </div>
-          <div className="rounded-xl">
-            <Link
-              to="/profile"
-              className="flex font-bold rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
-              style={{ padding: "8px 4px 8px 4px" }}
-            >
-              <span className="flex flex-row">
-                <div>
-                  <img
-                    src="https://simg-ssl.duolingo.com/ssr-avatars/1288943247/SSR-Dnq9imvO9g/medium"
-                    alt="logo of Profile"
-                    width="32px"
-                    style={{
-                      margin: "0px 20px 0px 10px",
-                      borderRadius: "100%",
-                    }}
-                  />
-                </div>
-                <span className="flex justify-center items-center">HỒ SƠ</span>
-              </span>
-            </Link>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="h-full w-4/5">
+      <div
+        className="w-full flex justify-center gap-[40px] h-full overflow-y-auto"
+        style={{ paddingTop: "25px" }}
+      >
         <Outlet />
+        <RightSideBar />
       </div>
     </div>
   );

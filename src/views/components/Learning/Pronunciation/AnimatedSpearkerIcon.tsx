@@ -1,10 +1,20 @@
 import React from "react";
 
-const AnimatedSpeakerIcon = () => {
+interface IItem {
+  audio: string;
+  englishText: string;
+  vietnameseText: string;
+}
+interface IAnimatedSpeakerIcon {
+  mainAudio?: string;
+  onPlay?: () => void; // Callback function for playing audio
+}
+
+const AnimatedSpeakerIcon: React.FC<IAnimatedSpeakerIcon> = ({ onPlay }) => {
   return (
     <span
       className="cursor-pointer"
-      onClick={() => {}}
+      onClick={onPlay} // Call the function when clicking the speaker icon
       style={{ background: "#48C0F8" }}
     >
       <svg
