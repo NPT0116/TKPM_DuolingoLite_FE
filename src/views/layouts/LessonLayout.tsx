@@ -144,7 +144,7 @@ const LessonLayout: React.FC = () => {
   }, [isSubmit, isNext, isRetry]);
 
   useEffect(() => {
-    if (state === questionList.length) {
+    if (questionList.length !== 1 && state === questionList.length) {
       setIsFinished(true);
     }
   }, [state, setIsFinished, questionList]);
@@ -164,7 +164,7 @@ const LessonLayout: React.FC = () => {
         Your browser does not support the audio element.
       </audio>
       {/* XP Bar & Heart*/}
-      <div className="w-[70%] h-[10vh] flex items-center gap-[20px] max-w-[1000px] justify-center">
+      <div className="flex h-[10vh] justify-center w-[70%] gap-[20px] items-center max-w-[1000px]">
         <XPBar accumulated={xp.accumulated} total={xp.total} />
         <LessonHeart
           heartNumber={user?.userStats.heart}
@@ -173,12 +173,12 @@ const LessonLayout: React.FC = () => {
         />
       </div>
       {/* Main Layout */}
-      <div className="w-[100vw] h-[70vh]">
+      <div className="h-[70vh] w-[100vw]">
         {questionList?.[0] ? handleLesson(questionList[state - 1]) : null}
       </div>
       {/* Navigation Bar */}
       <div
-        className="relative w-[100vw] h-[20vh] border-[#37464F] border-t-2 bg-[#131F23]"
+        className="bg-[#131F23] border-[#37464F] border-t-2 h-[20vh] w-[100vw] relative"
         // style={{ background: isNext ? "#202F36" : "" }}
       >
         {isNext && isButtonCorrect && <FooterStatus type={0} />}

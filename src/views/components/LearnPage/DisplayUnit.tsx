@@ -118,7 +118,7 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
                   ],
                 }}
                 transition={{
-                  duration: 5,
+                  duration: 2,
                   repeat: Infinity,
                   ease: "easeInOut",
                   type: "tween",

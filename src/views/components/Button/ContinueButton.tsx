@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { finishLesson } from "../../../services/Course/FinishLessonService";
 interface IContinueButton {
   setXp: React.Dispatch<
     React.SetStateAction<{ accumulated: number; total: number }>
@@ -22,6 +24,11 @@ interface IContinueButton {
   isNext: boolean;
   isFinished: boolean;
 }
+
+const handleFinishLesson = async (navigate: ReturnType<typeof useNavigate>) => {
+  await finishLesson("courseId");
+  navigate("/home");
+};
 
 const ContinueButton: React.FC<IContinueButton> = ({
   setXp,
@@ -85,7 +92,6 @@ const ContinueButton: React.FC<IContinueButton> = ({
   `;
 
   const navigate = useNavigate();
-
   return (
     <button
       disabled={!isButtonActivate}
@@ -108,6 +114,9 @@ const ContinueButton: React.FC<IContinueButton> = ({
               setState((prev) => prev + 1);
             }
             setXp({ accumulated: state, total: maxState });
+          }
+          if (isFinished) {
+            handleFinishLesson(navigate);
           }
         }
       }}
