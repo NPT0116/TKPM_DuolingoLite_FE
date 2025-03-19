@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "../../configs/apiConfig";
 
-export const GetCourseListService = async (): Promise<any> => {
+export const getCourseList = async (): Promise<any> => {
   try {
     const token = localStorage.getItem("authToken");
     if (!token) {

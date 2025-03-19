@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "../../configs/apiConfig";
 
-export const registerCourse = async (courseId: string): Promise<any> => {
+export const finishLesson = async (courseId: string) => {
   try {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -10,7 +10,7 @@ export const registerCourse = async (courseId: string): Promise<any> => {
     }
 
     const response = await axios.post(
-      `${API_BASE_URL}Course/register`,
+      `${API_BASE_URL}Course/finish-lesson`,
       { courseId: courseId },
       {
         headers: {
@@ -23,7 +23,7 @@ export const registerCourse = async (courseId: string): Promise<any> => {
 
     return response.data;
   } catch (error) {
-    console.error("Error registering course:", error);
+    console.log("Error finishing lesson:", error);
     return null;
   }
 };

@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import { useNavigate } from "react-router-dom";
 interface IContinueButton {
   setXp: React.Dispatch<
     React.SetStateAction<{ accumulated: number; total: number }>
@@ -19,6 +20,7 @@ interface IContinueButton {
   state: number;
   maxState: number;
   isNext: boolean;
+  isFinished: boolean;
 }
 
 const ContinueButton: React.FC<IContinueButton> = ({
@@ -29,6 +31,7 @@ const ContinueButton: React.FC<IContinueButton> = ({
   setIsNext,
   setIsSubmit,
   isNext,
+  isFinished,
   isButtonCorrect,
   isButtonActivate,
   mainColor,
@@ -80,6 +83,8 @@ const ContinueButton: React.FC<IContinueButton> = ({
       ${!isButtonActivate && "transform: translateY(-4px)"}
     }
   `;
+
+  const navigate = useNavigate();
 
   return (
     <button

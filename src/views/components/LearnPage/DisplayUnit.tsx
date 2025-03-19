@@ -1,12 +1,32 @@
 import LessonNode from "./LessonNode";
 import { IDisplayUnit } from "../../../interfaces/Course";
+import { motion } from "framer-motion";
 
 const DisplayUnit: React.FC<IDisplayUnit> = ({
   type,
   title,
   lessonsList,
   lessonsInformation,
+  lessonOrder,
 }) => {
+  const whiteIcon = [
+    "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg",
+    "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/7aa61c3f60bd961a60a46fb36e76c72f.svg",
+    "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg",
+    "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg",
+    "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/fc078bfeb8d2d1b1146e9b17d8f12d8e.svg",
+    "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/7aa61c3f60bd961a60a46fb36e76c72f.svg",
+    "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg",
+  ];
+  const grayIcon = [
+    "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/cbb0e971ac10030a120848c71c419892.svg",
+    "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/3ea75bf2164eed9218a7163be002af82.svg",
+    "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/cbb0e971ac10030a120848c71c419892.svg",
+    "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/cbb0e971ac10030a120848c71c419892.svg",
+    "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/7ebf5ec1643d186b7edb283966329b2f.svg",
+    "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/3ea75bf2164eed9218a7163be002af82.svg",
+    "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/cbb0e971ac10030a120848c71c419892.svg",
+  ];
   const template1 = {
     topColor: "58CC05",
     botColor: "47A30B",
@@ -83,13 +103,48 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
         ?.slice()
         .sort((a, b) => a.order - b.order)
         .map((item, index) => (
-          <div key={item.id}>
+          <div key={item.id} className="relative">
+            {lessonOrder == item.order && (
+              <motion.div
+                className={`absolute top-[-80px] left-[-10px] whitespace-nowrap rounded-2xl border-2 border-[#37464F] bg-[#131F23]`}
+                style={{
+                  color: `#${randomTemplate.shadowColor}`,
+                  padding: "10px 10px 15px 10px",
+                }}
+                animate={{
+                  y: [0, -4, -6, -4, 0],
+                }}
+                transition={{
+                  duration: 1, // Chạy chậm trong 5 giây
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  type: "tween",
+                }}
+              >
+                <div className="relative">
+                  <div>
+                    <span>BẮT ĐẦU</span>
+                  </div>
+                  <div
+                    className="w-4 h-4 bg-[#131F23] border-l-2 border-t-2 border-[#37464F] absolute bottom-[-25px] left-[25px]"
+                    style={{
+                      transform: "rotate(-135deg)",
+                      marginTop: "20px",
+                    }}
+                  />
+                </div>
+              </motion.div>
+            )}
             <LessonNode
               lessonInformation={item}
               topColor={randomTemplate.topColor}
               botColor={randomTemplate.botColor}
               shadowColor={randomTemplate.shadowColor}
               transX={layouts[type][index]}
+              isEnable={lessonOrder == item.order}
+              isFinished={lessonOrder > item.order}
+              whiteIcon={whiteIcon[index]}
+              grayIcon={grayIcon[index]}
             />
           </div>
         ))}

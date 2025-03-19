@@ -5,11 +5,12 @@ import React, { useEffect, useState } from "react";
 import api from "../../../configs/axiosConfig";
 import {
   ICourseValue,
-  ICurrentCourseValue,
+  IUserCourseValue,
   ILessonInformation,
 } from "../../../interfaces/Course";
 import { useNavigate } from "react-router-dom";
 import { getUserCurrentCourse } from "../../../services/Course/GetUserCourseService";
+import { getCourseById } from "../../../services/Course/GetCourseByIdService";
 
 const scrollContainerStyle = css`
   scrollbar-width: 0px;
@@ -47,11 +48,13 @@ const fetchLessonDetail = async (
     });
 };
 
-const fetchUserProfile = async (
+// Lấy course hiện tại của user và course detail của course đó
+const fetchUserCourse = async (
   navigate: ReturnType<typeof useNavigate>,
   setSelectedCourse: React.Dispatch<
-    React.SetStateAction<ICurrentCourseValue | null>
-  >
+    React.SetStateAction<IUserCourseValue | null>
+  >,
+  setCourseDetail: React.Dispatch<React.SetStateAction<ICourseValue | null>>
 ) => {
   try {
     const courseData = await getUserCurrentCourse();
@@ -59,6 +62,12 @@ const fetchUserProfile = async (
       navigate("/courses");
     } else if (courseData.value) {
       setSelectedCourse(courseData.value);
+      try {
+        const courseDetail = await getCourseById(courseData.value.courseId);
+        setCourseDetail(courseDetail.value);
+      } catch (err) {
+        console.error("Failed to fetch course detail:", err);
+      }
     }
   } catch (err) {
     console.error("Failed to fetch user profile:", err);
@@ -67,14 +76,16 @@ const fetchUserProfile = async (
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
-  const [selectedCourse, setSelectedCourse] =
-    useState<ICurrentCourseValue | null>(null);
+  const [selectedCourse, setSelectedCourse] = useState<IUserCourseValue | null>(
+    null
+  );
+  const [courseDetail, setCourseDetail] = useState<ICourseValue | null>(null);
   const [lessonsInformation, setLessonsInformation] = useState<
     ILessonInformation[]
   >([]);
 
   useEffect(() => {
-    fetchUserProfile(navigate, setSelectedCourse);
+    fetchUserCourse(navigate, setSelectedCourse, setCourseDetail);
   }, [navigate]);
 
   useEffect(() => {
@@ -92,10 +103,11 @@ const HomePage: React.FC = () => {
     >
       <div className="w-full h-full overflow-auto" css={scrollContainerStyle}>
         <DisplayUnit
-          title={selectedCourse?.name}
+          title={courseDetail?.name}
           type={1}
           lessonsList={selectedCourse?.lessons}
           lessonsInformation={lessonsInformation}
+          lessonOrder={selectedCourse?.lessonOrder || 0}
         />
       </div>
     </div>

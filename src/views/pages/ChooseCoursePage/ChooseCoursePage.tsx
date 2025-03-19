@@ -3,8 +3,8 @@ import { use, useEffect, useState } from "react";
 import { ICourseValue } from "../../../interfaces/Course";
 import { Link, useNavigate } from "react-router-dom";
 import HomePage from "../HomePage/HomePage";
-import { GetCourseListService } from "../../../services/Course/GetCourseListService";
-import { registerCourseService } from "../../../services/Course/RegisterCourseService";
+import { getCourseList } from "../../../services/Course/GetCourseListService";
+import { registerCourse } from "../../../services/Course/RegisterCourseService";
 
 const ChooseCoursePage: React.FC = () => {
   const [courses, setCourses] = useState<ICourseValue[]>([]);
@@ -13,7 +13,7 @@ const ChooseCoursePage: React.FC = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const courseList = await GetCourseListService();
+        const courseList = await getCourseList();
         setCourses(courseList.value);
       } catch (err) {
         console.log("Failed to fetch course list: " + err);
@@ -77,7 +77,7 @@ const ChooseCoursePage: React.FC = () => {
           {/* Course Card Grid */}
           <div className="w-full flex justify-center ">
             <div
-              className="flex lg:flex-cols-5 md:flex-cols-3 flex-wrap justify-around gap-5 mt-10 w-full"
+              className="flex lg:flex-cols-5 md:flex-cols-3 flex-wrap justify-center gap-5 mt-10 w-full"
               style={{ margin: "100px auto" }}
             >
               {courses.map((course, index) => (
@@ -149,7 +149,7 @@ const ChooseCoursePage: React.FC = () => {
           disabled={selectedIndex === null}
           onClick={() => {
             if (selectedIndex !== null) {
-              registerCourseService(courses[selectedIndex].id);
+              registerCourse(courses[selectedIndex].id);
               navigate("/home");
             }
           }}

@@ -25,7 +25,7 @@ export interface ICourseValue {
   lessons: ILessonValue[];
 }
 
-export interface ICurrentCourseValue {
+export interface IUserCourseValue {
   courseId: string;
   lessonOrder: number;
   userId: string;
@@ -36,6 +36,7 @@ export interface IDisplayUnit {
   title?: string;
   lessonsList?: ILessonValue[];
   lessonsInformation?: ILessonInformation[];
+  lessonOrder: number;
 }
 export interface IError {
   code: string;

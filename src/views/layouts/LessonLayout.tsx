@@ -25,6 +25,7 @@ import MultipleChoicePage from "../pages/LearnPage/MultipleChoice/MultipleChoice
 import { getUserProfile } from "../../services/Authentication/AuthService";
 import { IUserProfile } from "../../interfaces/Auth/IUserProfile";
 import LessonHeart from "../components/LessonHeart/LessonHeart";
+import { set } from "date-fns";
 
 // https://d35aaqx5ub95lt.cloudfront.net/images/bd13fa941b2407b4914296afe4435646.svg
 
@@ -36,6 +37,7 @@ const LessonLayout: React.FC = () => {
   const [isNext, setIsNext] = useState(false);
   const [isRetry, setIsRetry] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
 
   const [xp, setXp] = useState({ accumulated: 0, total: 1 });
   const [state, setState] = useState(1);
@@ -132,8 +134,20 @@ const LessonLayout: React.FC = () => {
     if (isSubmit) {
       const sound = new Audio(isButtonCorrect ? correctSound : incorrectSound);
       sound.play();
+    } else if (isNext) {
+      const sound = new Audio(isButtonCorrect ? correctSound : incorrectSound);
+      sound.play();
+    } else if (isRetry) {
+      const sound = new Audio(incorrectSound);
+      sound.play();
     }
-  }, [isSubmit]);
+  }, [isSubmit, isNext, isRetry]);
+
+  useEffect(() => {
+    if (state === questionList.length) {
+      setIsFinished(true);
+    }
+  }, [state, setIsFinished, questionList]);
   return (
     <div className="flex flex-col items-center">
       <audio
@@ -174,6 +188,7 @@ const LessonLayout: React.FC = () => {
           setXp={setXp}
           setIsSubmit={setIsSubmit}
           isNext={isNext}
+          isFinished={isFinished}
           setIsButtonActive={setIsButtonActive}
           setIsButtonCorrect={setIsButtonCorrect}
           setIsNext={setIsNext}
