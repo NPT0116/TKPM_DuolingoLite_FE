@@ -1,6 +1,6 @@
 import Instruction from "../../../components/LearnPage/Instruction/Instruction";
 import { IMultipleChoiceQuestion } from "../../../../interfaces/Questions/IMultipleChoiceQuestion";
-import AnswerSection2Cols from "../../../components/Learning/MultipleChoice/AnswerSection/2Cols";
+import AnswerSection from "../../../components/Learning/MultipleChoice/AnswerSection/2Cols";
 import AnswerSectionImage3Cols from "../../../components/Learning/MultipleChoice/AnswerSection/3ColsImage";
 import { useEffect, useState } from "react";
 
@@ -29,14 +29,14 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
   }, [data.questionId]);
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="w-[600px] h-full flex flex-col items-center justify-center">
+    <div className="w-full h-full flex justify-center items-center">
+      <div className="w-full sm:w-full md:w-[600px] min-w-[600px] max-h-[450px] flex flex-col justify-center  ">
         {/* Instruction */}
         <Instruction instruction={data.instruction} />
 
         {/* Question & Answer Section */}
         {hasQuestionContent ? (
-          <AnswerSection2Cols
+          <AnswerSection
             data={data}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}

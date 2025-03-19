@@ -1,8 +1,8 @@
 import { IMultipleChoiceQuestion } from "../../../../../interfaces/Questions/IMultipleChoiceQuestion";
 import QuestionSection from "../../../LearnPage/QuestionSection/QuestionSection";
-import AnswerContainer2Cols from "../AnswerContainer/AnswerContainer2Cols";
+import AnswerContainer from "../AnswerContainer/AnswerContainer";
 
-interface AnswerSection2ColsProps {
+interface AnswerSectionProps {
   data: IMultipleChoiceQuestion;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,7 +10,7 @@ interface AnswerSection2ColsProps {
   setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
   isSubmit: boolean;
 }
-const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({
+const AnswerSection: React.FC<AnswerSectionProps> = ({
   data,
   setIsButtonActive,
   setIsButtonCorrect,
@@ -18,9 +18,13 @@ const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({
   setIsNext,
   isSubmit,
 }) => {
-  console.log(data);
+  const onlyAudio =
+    data.audio != null &&
+    data.englishText.length === 0 &&
+    // data.vietnameseText?.length === 0 &&
+    !data.picture;
   return (
-    <div className="flex flex-col gap-[24px] ">
+    <div className="flex flex-col gap-[24px] w-full h-full ">
       {/* Question Section */}
       <QuestionSection
         words={data.words}
@@ -31,7 +35,7 @@ const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({
         vietnameseText={data.vietnameseText}
       />
       {/* Answer Section */}
-      <AnswerContainer2Cols
+      <AnswerContainer
         options={data.options}
         setIsButtonActive={setIsButtonActive}
         setIsButtonCorrect={setIsButtonCorrect}
@@ -39,9 +43,10 @@ const AnswerSection2Cols: React.FC<AnswerSection2ColsProps> = ({
         setIsNext={setIsNext}
         isEnglish={data.optionConfigure.englishText}
         isSubmit={isSubmit}
+        onlyAudio={onlyAudio}
       />
     </div>
   );
 };
 
-export default AnswerSection2Cols;
+export default AnswerSection;

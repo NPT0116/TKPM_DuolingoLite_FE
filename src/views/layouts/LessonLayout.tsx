@@ -2,6 +2,8 @@
 import api from "../../configs/axiosConfig";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import correctSound from "../../assets/sounds/duo_correct_sound.mp4";
+import incorrectSound from "../../assets/sounds/duo_incorrect_sound.mp4";
 
 //
 import XPBar from "../components/XPBar/XPBar";
@@ -125,6 +127,13 @@ const LessonLayout: React.FC = () => {
     setIsButtonActive(false);
     setIsButtonCorrect(false);
   }, []);
+
+  useEffect(() => {
+    if (isSubmit) {
+      const sound = new Audio(isButtonCorrect ? correctSound : incorrectSound);
+      sound.play();
+    }
+  }, [isSubmit]);
   return (
     <div className="flex flex-col items-center">
       <audio

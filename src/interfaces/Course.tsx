@@ -8,7 +8,7 @@ export interface ILessonValue {
   id: string;
   title: string;
   order: number;
-  questionCount: number;
+  questions: any[];
   epEarned: number;
 }
 export interface ICourse {
@@ -24,6 +24,13 @@ export interface ICourseValue {
   nextCourse: string | null;
   lessons: ILessonValue[];
 }
+
+export interface ICurrentCourseValue {
+  courseId: string;
+  lessonOrder: number;
+  userId: string;
+}
+
 export interface IDisplayUnit {
   type: number;
   title?: string;

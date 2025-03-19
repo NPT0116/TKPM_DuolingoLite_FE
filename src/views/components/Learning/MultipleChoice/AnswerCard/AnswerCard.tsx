@@ -62,13 +62,13 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
       }}
     >
       <span
-        className={`text-[15px] border-2 ${
+        className={`text-[15px] border-2 w-[30px] ${
           isSelected
             ? isSubmit && option.isCorrect
               ? "border-[#5F8428] text-[#5F8428]"
               : "border-[#3F85A7] text-[#3F85A7]"
             : "border-[#37464F] text-[#52656D] "
-        } h-full aspect-square flex items-center justify-center rounded-lg`}
+        } h-full aspect-square flex items-center justify-center rounded-lg font-bold`}
       >
         {index + 1}
       </span>

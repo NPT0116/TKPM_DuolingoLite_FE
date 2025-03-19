@@ -32,7 +32,7 @@ const AnswerImageCard: React.FC<AnswerImageCardProps> = ({
 
   return (
     <div
-      className={`h-[70%] w-full border-2 rounded-xl flex flex-col items-center justify-center  ${
+      className={`h-full w-full border-2 rounded-xl flex flex-col items-center justify-center  ${
         isSubmit ? "" : "cursor-pointer hover:bg-[#202F36]"
       } ${
         isSelected

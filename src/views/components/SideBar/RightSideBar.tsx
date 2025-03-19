@@ -27,7 +27,7 @@ const RightSideBar: React.FC = () => {
 
   return (
     <div
-      className=" w-2/5 max-w-[368px] flex flex-col  sticky top-[20px] gap-[20px] font-bold"
+      className=" w-[368px] flex flex-col shrink-0  sticky top-[20px] gap-[20px] font-bold"
       style={{ marginTop: "20px" }}
     >
       <div className="w-full h-[12%]  flex justify-evenly items-center gap-10 max-h-[44px]">
