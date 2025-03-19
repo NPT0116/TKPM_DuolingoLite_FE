@@ -106,16 +106,19 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
           <div key={item.id} className="relative">
             {lessonOrder == item.order && (
               <motion.div
-                className={`absolute top-[-80px] left-[-10px] whitespace-nowrap rounded-2xl border-2 border-[#37464F] bg-[#131F23]`}
+                className={`absolute top-[-60px] left-[-10px] whitespace-nowrap rounded-2xl border-2 border-[#37464F] bg-[#131F23] z-10`}
                 style={{
                   color: `#${randomTemplate.shadowColor}`,
-                  padding: "10px 10px 15px 10px",
+                  padding: "10px 10px 12px 10px",
                 }}
                 animate={{
-                  y: [0, -4, -6, -4, 0],
+                  y: [
+                    0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -9, -8, -7, -6,
+                    -5, -4, -3, -2, -1, 0,
+                  ],
                 }}
                 transition={{
-                  duration: 1, // Chạy chậm trong 5 giây
+                  duration: 5,
                   repeat: Infinity,
                   ease: "easeInOut",
                   type: "tween",
@@ -125,8 +128,9 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
                   <div>
                     <span>BẮT ĐẦU</span>
                   </div>
+                  {/* Hình thoi */}
                   <div
-                    className="w-4 h-4 bg-[#131F23] border-l-2 border-t-2 border-[#37464F] absolute bottom-[-25px] left-[25px]"
+                    className="w-4 h-4 bg-[#131F23] border-l-2 border-t-2 border-[#37464F] absolute bottom-[-22px] left-[25px]"
                     style={{
                       transform: "rotate(-135deg)",
                       marginTop: "20px",
