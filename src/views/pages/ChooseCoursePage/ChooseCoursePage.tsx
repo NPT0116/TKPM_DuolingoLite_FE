@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ICourseValue } from "../../../interfaces/Course";
-import { Link, useNavigate } from "react-router-dom";
-import HomePage from "../HomePage/HomePage";
+import { useNavigate } from "react-router-dom";
 import { getCourseList } from "../../../services/Course/GetCourseListService";
 import { registerCourse } from "../../../services/Course/RegisterCourseService";
 
