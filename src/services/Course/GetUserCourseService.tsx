@@ -3,21 +3,15 @@ import { API_BASE_URL } from "../../configs/apiConfig";
 import { getUserProfile } from "../Authentication/AuthService";
 import { IUserProfile } from "../../interfaces/Auth/IUserProfile";
 
-export const getUserCurrentCourse = async (): Promise<any> => {
+export const getUserCurrentCourse = async (
+  userProfile: IUserProfile
+): Promise<any> => {
   try {
     const token = localStorage.getItem("authToken");
     if (!token) {
       console.warn("No authentication token found");
       return null;
     }
-
-    const userProfiledData = await getUserProfile();
-    if (!userProfiledData || !userProfiledData.value) {
-      console.warn("No user profile found");
-      return null;
-    }
-
-    const userProfile: IUserProfile = userProfiledData.value;
 
     const response = await axios.get(
       `${API_BASE_URL}Course/current/${userProfile.id}`,

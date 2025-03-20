@@ -8,6 +8,7 @@ interface ILessonNode {
   shadowColor: string;
   transX: string;
   lessonInformation: ILessonInformation;
+  courseId?: string;
   isEnable: boolean;
   isFinished: boolean;
   whiteIcon: string;
@@ -19,6 +20,7 @@ const LessonNode: React.FC<ILessonNode> = ({
   shadowColor,
   transX,
   lessonInformation,
+  courseId,
   isEnable,
   isFinished,
   whiteIcon,
@@ -32,7 +34,7 @@ const LessonNode: React.FC<ILessonNode> = ({
     }
   `;
   const goToLessonPage = () => {
-    navigate("/lesson", { state: { lessonInformation } });
+    navigate("/lesson", { state: { lessonInformation, courseId } });
   };
   return (
     <button
@@ -49,10 +51,10 @@ const LessonNode: React.FC<ILessonNode> = ({
             ? whiteIcon
             : grayIcon
         }
-        className="translate-y-[-8px] w-[60%] h-[60%] z-50 group-hover:translate-y-[-6px]"
+        className="h-[60%] w-[60%] group-hover:translate-y-[-6px] translate-y-[-8px] z-50"
         alt=""
       />
-      <span className="w-[56px] h-[46px] group-hover:translate-y-[-8px] absolute translate-y-[-10px] translate-x-[-1px] rounded-[100%]">
+      <span className="h-[46px] rounded-[100%] w-[56px] absolute group-hover:translate-y-[-8px] translate-x-[-1px] translate-y-[-10px]">
         <svg
           width="56"
           height="46"

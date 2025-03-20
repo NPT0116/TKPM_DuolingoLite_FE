@@ -17,6 +17,6 @@ export const getUserProfile = async (): Promise<any> => {
     return response.data;
   } catch (error) {
     console.error("Error fetching user profile:", error);
-    throw error;
+    return null;
   }
 };

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 const DisplayUnit: React.FC<IDisplayUnit> = ({
   type,
   title,
+  courseId,
   lessonsList,
   lessonsInformation,
   lessonOrder,
@@ -62,9 +63,9 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
   };
   const randomTemplate = getRandomTemplate();
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center gap-8 font-bold">
+    <div className="flex flex-col h-full justify-center w-full font-bold gap-8 items-center">
       <div
-        className="w-[90%] h-[100px] flex justify-between items-center rounded-2xl"
+        className="flex h-[100px] justify-between rounded-2xl w-[90%] items-center"
         style={{
           backgroundColor: `#${randomTemplate.topColor}`,
           padding: "0px 40px",
@@ -76,7 +77,7 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
           <span className="text-xl"> {title}</span>
         </div>
         <div
-          className="border-2 border-b-4  rounded-2xl hover:opacity-80 flex justify-between items-center gap-4 cursor-pointer"
+          className="flex border-2 border-b-4 justify-between rounded-2xl cursor-pointer gap-4 hover:opacity-80 items-center"
           style={{
             padding: "12px 10px",
             borderColor: `#${randomTemplate.botColor}`,
@@ -90,14 +91,14 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
         </div>
       </div>
       <div
-        className="text-white font-bold w-full  flex flex-row justify-center items-center"
+        className="flex flex-row justify-center text-white w-full font-bold items-center"
         style={{ padding: "0px 40px" }}
       >
-        <hr className="border-[#52656D] border-[1px] w-full rounded-full" />
-        <span className="w-full text-center" style={{ padding: "0px 10px" }}>
+        <hr className="border-[#52656D] border-[1px] rounded-full w-full" />
+        <span className="text-center w-full" style={{ padding: "0px 10px" }}>
           {title}
         </span>
-        <hr className="border-[#52656D] border-[1px] w-full rounded-full" />
+        <hr className="border-[#52656D] border-[1px] rounded-full w-full" />
       </div>
       {lessonsInformation
         ?.slice()
@@ -106,8 +107,9 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
           <div key={item.id} className="relative">
             {lessonOrder == item.order && (
               <motion.div
-                className={`absolute top-[-60px] left-[-10px] whitespace-nowrap rounded-2xl border-2 border-[#37464F] bg-[#131F23] z-10`}
+                className={`absolute top-[-60px] whitespace-nowrap rounded-2xl border-2 border-[#37464F] bg-[#131F23] z-10`}
                 style={{
+                  left: `${-10 + parseInt(layouts[type][index], 10)}px`,
                   color: `#${randomTemplate.shadowColor}`,
                   padding: "10px 10px 12px 10px",
                 }}
@@ -130,7 +132,7 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
                   </div>
                   {/* Hình thoi */}
                   <div
-                    className="w-4 h-4 bg-[#131F23] border-l-2 border-t-2 border-[#37464F] absolute bottom-[-22px] left-[25px]"
+                    className="bg-[#131F23] border-[#37464F] border-l-2 border-t-2 h-4 w-4 absolute bottom-[-22px] left-[25px]"
                     style={{
                       transform: "rotate(-135deg)",
                       marginTop: "20px",
@@ -140,12 +142,13 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
               </motion.div>
             )}
             <LessonNode
+              courseId={courseId}
               lessonInformation={item}
               topColor={randomTemplate.topColor}
               botColor={randomTemplate.botColor}
               shadowColor={randomTemplate.shadowColor}
               transX={layouts[type][index]}
-              isEnable={lessonOrder == item.order}
+              isEnable={lessonOrder >= item.order}
               isFinished={lessonOrder > item.order}
               whiteIcon={whiteIcon[index]}
               grayIcon={grayIcon[index]}

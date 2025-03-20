@@ -11,6 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { getUserCurrentCourse } from "../../../services/Course/GetUserCourseService";
 import { getCourseById } from "../../../services/Course/GetCourseByIdService";
+import { getUserProfile } from "../../../services/Authentication/AuthService";
 
 const scrollContainerStyle = css`
   scrollbar-width: 0px;
@@ -57,7 +58,12 @@ const fetchUserCourse = async (
   setCourseDetail: React.Dispatch<React.SetStateAction<ICourseValue | null>>
 ) => {
   try {
-    const courseData = await getUserCurrentCourse();
+    const userProfiledData = await getUserProfile();
+    if (!userProfiledData) {
+      navigate("/login");
+    }
+
+    const courseData = await getUserCurrentCourse(userProfiledData.value);
     if (courseData === null) {
       navigate("/courses");
     } else if (courseData.value) {
@@ -89,8 +95,8 @@ const HomePage: React.FC = () => {
   }, [navigate]);
 
   useEffect(() => {
-    console.log(selectedCourse);
     if (selectedCourse?.courseId) {
+      console.log(selectedCourse.courseId);
       fetchLessonDetail(selectedCourse.courseId, setLessonsInformation);
       console.log("length", lessonsInformation.length);
     }
@@ -98,11 +104,12 @@ const HomePage: React.FC = () => {
 
   return (
     <div
-      className="w-3/5 h-full flex justify-between"
+      className="flex h-full justify-between w-3/5"
       css={scrollContainerStyle}
     >
-      <div className="w-full h-full overflow-auto" css={scrollContainerStyle}>
+      <div className="h-full w-full overflow-auto" css={scrollContainerStyle}>
         <DisplayUnit
+          courseId={selectedCourse?.courseId}
           title={courseDetail?.name}
           type={1}
           lessonsList={selectedCourse?.lessons}

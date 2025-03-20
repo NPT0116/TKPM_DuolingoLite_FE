@@ -41,16 +41,16 @@ const ChooseCoursePage: React.FC = () => {
   ];
 
   return (
-    <div className="w-full h-[100vh] overflow-auto flex flex-col  text-white font-bold">
+    <div className="flex flex-col h-[100vh] text-white w-full font-bold overflow-auto">
       {/* Duolingo Introduce */}
       <div className="flex gap-4" style={{ margin: "20px 100px" }}>
         <img
           src="https://design.duolingo.com/f432eb8c3e03de216d20.svg"
           alt="duoicon"
-          className="w-[140px] h-auto"
+          className="h-auto w-[140px]"
         />
         <div
-          className="relative border-2 border-[#37464f] h-fit rounded-2xl p-4"
+          className="border-[#37464f] border-2 h-fit p-4 rounded-2xl relative"
           style={{ padding: "20px" }}
         >
           <img
@@ -73,11 +73,11 @@ const ChooseCoursePage: React.FC = () => {
         </div>
       </div>
       <div className="flex flex-col items-center">
-        <div className="w-[80%] flex flex-col">
+        <div className="flex flex-col w-[80%]">
           {/* Course Card Grid */}
-          <div className="w-full flex justify-center ">
+          <div className="flex justify-center w-full">
             <div
-              className="flex lg:flex-cols-5 md:flex-cols-3 flex-wrap justify-center gap-5 mt-10 w-full"
+              className="flex flex-wrap justify-center w-full gap-5 lg:flex-cols-5 md:flex-cols-3 mt-10"
               style={{ margin: "100px auto" }}
             >
               {courses.map((course, index) => (
@@ -121,7 +121,7 @@ const ChooseCoursePage: React.FC = () => {
                     <span>{course.name}</span>
                   </div>
                   <div
-                    className="flex items-center justify-center gap-4 p-4"
+                    className="flex justify-center p-4 gap-4 items-center"
                     style={{ padding: "20px 0" }}
                   >
                     <img
@@ -138,7 +138,7 @@ const ChooseCoursePage: React.FC = () => {
         </div>
       </div>
       {/* Bottom nav */}
-      <div className="border-t-2 border-[#37464f] w-full flex justify-end p-5">
+      <div className="flex border-[#37464f] border-t-2 justify-end p-5 w-full">
         <button
           className={`font-[500] border-2 rounded-2xl text-[25px] transition-all duration-150 ${
             selectedIndex !== null
@@ -147,9 +147,9 @@ const ChooseCoursePage: React.FC = () => {
           }`}
           style={{ padding: "10px 40px", marginRight: "20px" }}
           disabled={selectedIndex === null}
-          onClick={() => {
-            if (selectedIndex !== null) {
-              registerCourse(courses[selectedIndex].id);
+          onClick={async () => {
+            {
+              await registerCourse(courses[selectedIndex!].id);
               navigate("/home");
             }
           }}

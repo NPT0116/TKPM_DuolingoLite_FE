@@ -32,6 +32,7 @@ export interface IUserCourseValue {
 }
 
 export interface IDisplayUnit {
+  courseId?: string;
   type: number;
   title?: string;
   lessonsList?: ILessonValue[];

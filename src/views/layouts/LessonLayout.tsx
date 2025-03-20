@@ -43,8 +43,9 @@ const LessonLayout: React.FC = () => {
   const [state, setState] = useState(1);
   const [questionList, setQuestionList] = useState<IQuestion[]>([]);
   const location = useLocation();
-  const { lessonInformation } = location.state as {
+  const { lessonInformation, courseId } = location.state as {
     lessonInformation: ILessonInformation;
+    courseId: string;
   };
 
   // Get user hearts:
@@ -144,10 +145,14 @@ const LessonLayout: React.FC = () => {
   }, [isSubmit, isNext, isRetry]);
 
   useEffect(() => {
-    if (questionList.length !== 1 && state === questionList.length) {
+    if (
+      questionList.length !== 1 &&
+      state === questionList.length &&
+      isSubmit
+    ) {
       setIsFinished(true);
     }
-  }, [state, setIsFinished, questionList]);
+  }, [state, setIsFinished, questionList, isSubmit]);
   return (
     <div className="flex flex-col items-center">
       <audio
@@ -202,6 +207,7 @@ const LessonLayout: React.FC = () => {
           hoverColor="4156FF"
           paddingWidth={80}
           positionRight={250}
+          courseId={courseId}
         />
       </div>
     </div>
