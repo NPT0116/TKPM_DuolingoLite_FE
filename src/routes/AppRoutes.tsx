@@ -12,6 +12,7 @@ import ProfilePage from "../views/pages/ProfilePage/ProfilePage";
 import LeaderboardPage from "../views/pages/LeaderboardPage/LeaderboardPage";
 import { JSX } from "react";
 import LessonLayout from "../views/layouts/LessonLayout";
+import ChooseCoursePage from "../views/pages/ChooseCoursePage/ChooseCoursePage";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -31,6 +32,8 @@ const AppRoutes: React.FC = () => {
         {/* Authentication */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        {/* Choose Course for user after login*/}
+        <Route path="/courses" element={<ChooseCoursePage />} />
         {/* For component that have layout, only access when have authToken */}
         <Route element={<NavigationLayout />}>
           <Route path={PATH.USER.index} element={<GuestPage />} />

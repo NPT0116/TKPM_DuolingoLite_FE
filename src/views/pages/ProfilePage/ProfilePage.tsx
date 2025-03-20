@@ -23,10 +23,13 @@ const ProfilePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="">
+    <div
+      className="w-3/5 max-w-[592px] min-w-[348px] flex-grow justify-center"
+      style={{ paddingTop: "25px" }}
+    >
       {/* Profile Section */}
-      <div className="w-[592px] flex flex-col gap-y-[20px]">
-        <AvatarSection profileImageUrl="https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/480599581_628294509907140_7591753771768341862_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeH51vsEchcl53mbqjozwAHYpn4MQT1eYzqmfgxBPV5jOlBB7FY2_caGPUUEhXxUNQzhb0jAbdvf13Y2wDIUjhDC&_nc_ohc=9Q5ZEwKxYBwQ7kNvgEYTKkC&_nc_oc=AdhRSkWfIErzPWdU13g2nuNrgLON0tCgZj3jTSufJD7XA_a_g7ccTfl7OW8u-OVLDpJgF1acUg2qde5VSVVvfSbN&_nc_zt=23&_nc_ht=scontent.fsgn8-3.fna&_nc_gid=A-9kpryQUtQoTCdnXtLsYgD&oh=00_AYEw-bz8c406IbcJeUNpnIoLh-JGAPzH65gZfm--3Xd6bA&oe=67D1DE9B" />
+      <div className="w-[full] max-w-[592px] flex flex-col gap-y-[20px]">
+        <AvatarSection profileImageUrl="https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-1/476089152_2304444693270147_6055804767055466994_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=108&ccb=1-7&_nc_sid=e99d92&_nc_ohc=j_Ua3IKkfjUQ7kNvgEONGnI&_nc_oc=Adhi2DX6WoWui6bt1RAXKRcQEBd6OqoqMCShdhVThiaeiPv94SAgRB4rWgLm1OKYScpbllJx1bv-5fapKYIzKGb3&_nc_zt=24&_nc_ht=scontent.fsgn8-4.fna&_nc_gid=AMFOJXx7SleIl1ldqfiEQnC&oh=00_AYHVYQiB3h2F3XYTy7xcZa2d-HoZKK7VyurXf93Ivxk2Bg&oe=67D8B9AC" />
         <InfoDetailSection
           firstName={user?.firstName ?? ""}
           lastName={user?.lastName ?? ""}
@@ -53,7 +56,7 @@ const ProfilePage: React.FC = () => {
             </a>
           </div>
           <div className="w-full">
-            <ul className="h-[415px] border-2 border-[#37464F] rounded-2xl overflow-y-auto">
+            <ul className="h-[415px] border-2 border-[#37464F] rounded-2xl">
               <li
                 className="flex w-full items-center border-b-2 border-[#37464F]"
                 style={{ padding: "20px" }}

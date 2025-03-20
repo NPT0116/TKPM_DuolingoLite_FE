@@ -12,7 +12,7 @@ const NavigationLayout: React.FC = () => {
   };
   return (
     <div
-      className="flex flex-row text-white bg-primary relative overflow-auto"
+      className="flex flex-row text-white bg-primary relative overflow-auto w-full"
       style={{
         width: "100vw",
         height: "100vh",
@@ -92,8 +92,14 @@ const NavigationLayout: React.FC = () => {
         </div>
       </div>
 
-      <div className="w-full flex justify-center gap-[40px] h-full relative overflow-auto">
+      <div
+        className="w-full min-w-[812px] flex justify-center gap-[40px] h-full relative overflow-y-auto flex-nowrap"
+        style={{
+          padding: "0px 24px 24px 24px",
+        }}
+      >
         <Outlet />
+
         <RightSideBar />
       </div>
     </div>

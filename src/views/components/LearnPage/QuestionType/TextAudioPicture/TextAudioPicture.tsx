@@ -78,7 +78,7 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
       )}
 
       {/* Text */}
-      <div className="flex transform translate-x-[-20px]">
+      <div className="flex transform translate-x-[-12px]">
         <div
           className="transform translate-x-[1px] "
           style={{ marginTop: "25px" }}
@@ -157,7 +157,9 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
             {tokens?.map((token, index) => (
               <span
                 key={index}
-                className="border-b-2 border-dashed border-[#52656D] cursor-default"
+                className={`${
+                  englishText?.length != 0 ? "border-b-2 border-dashed" : ""
+                } border-[#52656D] cursor-default`}
                 style={{ paddingBottom: "4px" }}
                 onMouseEnter={() => {
                   if (token.hasAudio) {

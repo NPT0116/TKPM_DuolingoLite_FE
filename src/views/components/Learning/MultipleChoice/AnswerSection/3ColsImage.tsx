@@ -1,4 +1,5 @@
 import { IMultipleChoiceQuestion } from "../../../../../interfaces/Questions/IMultipleChoiceQuestion";
+import QuestionSection from "../../../LearnPage/QuestionSection/QuestionSection";
 import AnswerImageContainer3Cols from "../AnswerContainer/AnswerImageContainer3Cols";
 
 interface AnswerSectionImage3ColsProps {
@@ -19,15 +20,25 @@ const AnswerSectionImage3Cols: React.FC<AnswerSectionImage3ColsProps> = ({
   isSubmit,
 }) => {
   return (
-    <AnswerImageContainer3Cols
-      options={data.options}
-      setIsButtonActive={setIsButtonActive}
-      setIsButtonCorrect={setIsButtonCorrect}
-      isNext={isNext}
-      setIsNext={setIsNext}
-      isEnglish={data.optionConfigure.englishText}
-      isSubmit={isSubmit}
-    />
+    <div className="flex flex-col gap-[24px] w-full h-full ">
+      <QuestionSection
+        words={data.words}
+        questionConfigure={data.questionConfigure}
+        audio={data.audio}
+        picture={data.picture}
+        englishText={data.englishText}
+        vietnameseText={data.vietnameseText}
+      />
+      <AnswerImageContainer3Cols
+        options={data.options}
+        setIsButtonActive={setIsButtonActive}
+        setIsButtonCorrect={setIsButtonCorrect}
+        isNext={isNext}
+        setIsNext={setIsNext}
+        isEnglish={data.optionConfigure.englishText}
+        isSubmit={isSubmit}
+      />
+    </div>
   );
 };
 

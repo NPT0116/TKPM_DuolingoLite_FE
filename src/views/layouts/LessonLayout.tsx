@@ -2,6 +2,8 @@
 import api from "../../configs/axiosConfig";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import correctSound from "../../assets/sounds/duo_correct_sound.mp4";
+import incorrectSound from "../../assets/sounds/duo_incorrect_sound.mp4";
 
 //
 import XPBar from "../components/XPBar/XPBar";
@@ -23,6 +25,7 @@ import MultipleChoicePage from "../pages/LearnPage/MultipleChoice/MultipleChoice
 import { getUserProfile } from "../../services/Authentication/AuthService";
 import { IUserProfile } from "../../interfaces/Auth/IUserProfile";
 import LessonHeart from "../components/LessonHeart/LessonHeart";
+import { set } from "date-fns";
 
 // https://d35aaqx5ub95lt.cloudfront.net/images/bd13fa941b2407b4914296afe4435646.svg
 
@@ -34,13 +37,15 @@ const LessonLayout: React.FC = () => {
   const [isNext, setIsNext] = useState(false);
   const [isRetry, setIsRetry] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
 
   const [xp, setXp] = useState({ accumulated: 0, total: 1 });
   const [state, setState] = useState(1);
   const [questionList, setQuestionList] = useState<IQuestion[]>([]);
   const location = useLocation();
-  const { lessonInformation } = location.state as {
+  const { lessonInformation, courseId } = location.state as {
     lessonInformation: ILessonInformation;
+    courseId: string;
   };
 
   // Get user hearts:
@@ -125,6 +130,29 @@ const LessonLayout: React.FC = () => {
     setIsButtonActive(false);
     setIsButtonCorrect(false);
   }, []);
+
+  useEffect(() => {
+    if (isSubmit) {
+      const sound = new Audio(isButtonCorrect ? correctSound : incorrectSound);
+      sound.play();
+    } else if (isNext) {
+      const sound = new Audio(isButtonCorrect ? correctSound : incorrectSound);
+      sound.play();
+    } else if (isRetry) {
+      const sound = new Audio(incorrectSound);
+      sound.play();
+    }
+  }, [isSubmit, isNext, isRetry]);
+
+  useEffect(() => {
+    if (
+      questionList.length !== 1 &&
+      state === questionList.length &&
+      isSubmit
+    ) {
+      setIsFinished(true);
+    }
+  }, [state, setIsFinished, questionList, isSubmit]);
   return (
     <div className="flex flex-col items-center">
       <audio
@@ -141,7 +169,7 @@ const LessonLayout: React.FC = () => {
         Your browser does not support the audio element.
       </audio>
       {/* XP Bar & Heart*/}
-      <div className="w-[70%] h-[10vh] flex items-center gap-[20px] max-w-[1000px] justify-center">
+      <div className="flex h-[10vh] justify-center w-[70%] gap-[20px] items-center max-w-[1000px]">
         <XPBar accumulated={xp.accumulated} total={xp.total} />
         <LessonHeart
           heartNumber={user?.userStats.heart}
@@ -150,12 +178,12 @@ const LessonLayout: React.FC = () => {
         />
       </div>
       {/* Main Layout */}
-      <div className="w-[100vw] h-[70vh]">
+      <div className="h-[70vh] w-[100vw]">
         {questionList?.[0] ? handleLesson(questionList[state - 1]) : null}
       </div>
       {/* Navigation Bar */}
       <div
-        className="relative w-[100vw] h-[20vh] border-[#37464F] border-t-2 bg-[#131F23]"
+        className="bg-[#131F23] border-[#37464F] border-t-2 h-[20vh] w-[100vw] relative"
         // style={{ background: isNext ? "#202F36" : "" }}
       >
         {isNext && isButtonCorrect && <FooterStatus type={0} />}
@@ -165,6 +193,7 @@ const LessonLayout: React.FC = () => {
           setXp={setXp}
           setIsSubmit={setIsSubmit}
           isNext={isNext}
+          isFinished={isFinished}
           setIsButtonActive={setIsButtonActive}
           setIsButtonCorrect={setIsButtonCorrect}
           setIsNext={setIsNext}
@@ -178,6 +207,7 @@ const LessonLayout: React.FC = () => {
           hoverColor="4156FF"
           paddingWidth={80}
           positionRight={250}
+          courseId={courseId}
         />
       </div>
     </div>

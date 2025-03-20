@@ -1,5 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { finishLesson } from "../../../services/Course/FinishLessonService";
 interface IContinueButton {
   setXp: React.Dispatch<
     React.SetStateAction<{ accumulated: number; total: number }>
@@ -19,7 +22,17 @@ interface IContinueButton {
   state: number;
   maxState: number;
   isNext: boolean;
+  isFinished: boolean;
+  courseId?: string;
 }
+
+const handleFinishLesson = async (
+  navigate: ReturnType<typeof useNavigate>,
+  courseId?: string
+) => {
+  await finishLesson(courseId ? courseId : "");
+  navigate("/home");
+};
 
 const ContinueButton: React.FC<IContinueButton> = ({
   setXp,
@@ -29,6 +42,7 @@ const ContinueButton: React.FC<IContinueButton> = ({
   setIsNext,
   setIsSubmit,
   isNext,
+  isFinished,
   isButtonCorrect,
   isButtonActivate,
   mainColor,
@@ -38,6 +52,7 @@ const ContinueButton: React.FC<IContinueButton> = ({
   positionRight,
   state,
   maxState,
+  courseId,
 }) => {
   const CSS = css`
     background-color: #${isButtonActivate ? mainColor : "37464F"};
@@ -81,6 +96,7 @@ const ContinueButton: React.FC<IContinueButton> = ({
     }
   `;
 
+  const navigate = useNavigate();
   return (
     <button
       disabled={!isButtonActivate}
@@ -103,6 +119,9 @@ const ContinueButton: React.FC<IContinueButton> = ({
               setState((prev) => prev + 1);
             }
             setXp({ accumulated: state, total: maxState });
+          }
+          if (isFinished) {
+            handleFinishLesson(navigate, courseId);
           }
         }
       }}

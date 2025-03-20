@@ -1,14 +1,13 @@
 import axios from "axios";
 import { API_BASE_URL } from "../../configs/apiConfig";
 
-export const getUserProfile = async (): Promise<any> => {
+export const getCourseList = async (): Promise<any> => {
   try {
     const token = localStorage.getItem("authToken");
     if (!token) {
       throw new Error("No authentication token found");
     }
-
-    const response = await axios.get(`${API_BASE_URL}Authentication/me`, {
+    const response = await axios.get(`${API_BASE_URL}Course`, {
       headers: {
         accept: "*/*",
         Authorization: `Bearer ${token}`,
@@ -16,7 +15,7 @@ export const getUserProfile = async (): Promise<any> => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching user profile:", error);
-    return null;
+    console.error("Error fetching course list:", error);
+    throw error;
   }
 };

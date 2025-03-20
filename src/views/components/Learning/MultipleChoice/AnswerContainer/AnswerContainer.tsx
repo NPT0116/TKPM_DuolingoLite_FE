@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
 import AnswerCard from "../AnswerCard/AnswerCard";
 
-interface AnswerContainer2ColsProps {
+interface AnswerContainerProps {
   options: IMultipleChoiceOption[];
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,9 +10,10 @@ interface AnswerContainer2ColsProps {
   isEnglish: boolean;
   setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
   isSubmit: boolean;
+  onlyAudio: boolean;
 }
 
-const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
+const AnswerContainer: React.FC<AnswerContainerProps> = ({
   options,
   setIsButtonActive,
   setIsButtonCorrect,
@@ -20,6 +21,7 @@ const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
   isEnglish,
   setIsNext,
   isSubmit,
+  onlyAudio,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
@@ -31,9 +33,10 @@ const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
       setIsButtonCorrect(false);
     }
   }, [isNext, setIsButtonActive, setIsButtonCorrect, setIsNext]);
-
   return (
-    <div className="w-full h-full flex flex-col gap-[8px]">
+    <div
+      className={`w-full h-full flex ${onlyAudio ? "" : "flex-col"} gap-[8px]`}
+    >
       {/* Answer Cards */}
       {options.map((option, index) => (
         <AnswerCard
@@ -55,4 +58,4 @@ const AnswerContainer2Cols: React.FC<AnswerContainer2ColsProps> = ({
   );
 };
 
-export default AnswerContainer2Cols;
+export default AnswerContainer;
