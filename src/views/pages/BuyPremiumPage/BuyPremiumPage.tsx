@@ -96,7 +96,7 @@ const BuyPremiumPage = () => {
         </div>
       ) : (
         <div
-          className="flex flex-col h-full gap-[40px] w-[35%] justify-start items-center"
+          className="flex flex-col h-full gap-[40px] w-[650px] justify-start items-center"
           style={{ margin: "5% auto" }}
         >
           <h2 className="font-bold text-[40px] text-center ">
