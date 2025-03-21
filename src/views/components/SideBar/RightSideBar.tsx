@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { getUserProfile } from "../../../services/Authentication/AuthService";
 import { IUserProfile } from "../../../interfaces/Auth/IUserProfile";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Streaking from "../../pages/HomePage/StreakComponent/Streaking";
 
 const RightSideBar: React.FC = () => {
   const [user, setUser] = useState<IUserProfile | null>(null);
   const location = useLocation();
   const fetched = useRef(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!fetched.current) {
@@ -65,6 +66,47 @@ const RightSideBar: React.FC = () => {
           />
           <span>{user?.userStats.heart}</span>
         </div>
+      </div>
+      {/* Premium box */}
+      <div
+        className="flex flex-col border-2 border-[#37464f] rounded-2xl gap-4"
+        style={{ padding: "25px 25px" }}
+      >
+        <div className="flex items-start">
+          <div>
+            <img
+              src="https://d35aaqx5ub95lt.cloudfront.net/images/super/2e50c3e8358914df5285dc8cf45d0b4c.svg"
+              alt=""
+            />
+            <h2 className="text-[19px] font-bold" style={{ margin: "8px 0px" }}>
+              Try Super from now!
+            </h2>
+            <div style={{ margin: "8px 0px 24px 0px" }}>
+              <span className="font-[500]">
+                Unlimited hearts, personalized practice
+              </span>
+            </div>
+          </div>
+          <img
+            src="https://d35aaqx5ub95lt.cloudfront.net/images/super/fb7130289a205fadd2e196b9cc866555.svg"
+            alt=""
+          />
+        </div>
+        <button
+          className="bg-[#3B4CFC] rounded-2xl cursor-pointer hover:bg-[#4255FF] active:translate-y-1"
+          style={{ padding: "10px 0", boxShadow: "0 4px 0 0 #3F22EB" }}
+          onMouseDown={(e) => {
+            e.currentTarget.style.boxShadow = "0 0 0 0 #3F22EB";
+          }}
+          onMouseUp={(e) => {
+            e.currentTarget.style.boxShadow = "0 4px 0 0 #3F22EB";
+          }}
+          onClick={() => {
+            navigate("/buy-premium");
+          }}
+        >
+          <span className="font-bold">BUY PREMIUM</span>
+        </button>
       </div>
       {location.pathname === "/leaderboard" ? (
         //  Emoji box

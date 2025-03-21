@@ -13,6 +13,7 @@ import LeaderboardPage from "../views/pages/LeaderboardPage/LeaderboardPage";
 import { JSX } from "react";
 import LessonLayout from "../views/layouts/LessonLayout";
 import ChooseCoursePage from "../views/pages/ChooseCoursePage/ChooseCoursePage";
+import BuyPremiumPage from "../views/pages/BuyPremiumPage/BuyPremiumPage";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -28,6 +29,7 @@ const AppRoutes: React.FC = () => {
     <div>
       <Routes>
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/welcome" element={<WelcomePage />} />
         {/* Authentication */}
         <Route path="/login" element={<LoginPage />} />
@@ -65,6 +67,14 @@ const AppRoutes: React.FC = () => {
           element={
             <ProtectedRoute>
               <LessonLayout />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/buy-premium"
+          element={
+            <ProtectedRoute>
+              <BuyPremiumPage />
             </ProtectedRoute>
           }
         />

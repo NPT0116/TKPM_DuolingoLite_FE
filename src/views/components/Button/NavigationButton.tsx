@@ -20,24 +20,26 @@ const NavigationButton: React.FC<INavigationButton> = ({
     <div className="rounded-xl">
       <Link
         to={path}
-        className="flex font-bold  rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
+        className="flex font-bold justify-center xl:justify-start rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
         style={{
           padding: "8px 4px 8px 4px",
         }}
       >
-        <span className="flex flex-row">
-          <div>
+        <span className="flex flex-row justify-center items-center">
+          <div className="flex justify-content-center">
             <img
               css={isAvatar ? avatarCSS : undefined}
               src={iconLink}
               alt="Logo navigation button"
-              width="32px"
+              className=" md:w-[32px]"
               style={{
                 margin: "0px 20px 0px 10px",
               }}
             />
           </div>
-          <span className=" flex justify-center items-center">{content}</span>
+          <span className="hidden xl:flex justify-center items-center">
+            {content}
+          </span>
         </span>
       </Link>
     </div>
