@@ -24,7 +24,6 @@ const AnswerContainer: React.FC<AnswerContainerProps> = ({
   onlyAudio,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
   useEffect(() => {
     if (isNext) {
       setIsNext(false);
@@ -35,7 +34,9 @@ const AnswerContainer: React.FC<AnswerContainerProps> = ({
   }, [isNext, setIsButtonActive, setIsButtonCorrect, setIsNext]);
   return (
     <div
-      className={`w-full h-full flex ${onlyAudio ? "" : "flex-col"} gap-[8px]`}
+      className={`w-full h-full flex ${
+        onlyAudio && options.length === 2 ? "" : "flex-col"
+      } gap-[8px]`}
     >
       {/* Answer Cards */}
       {options.map((option, index) => (

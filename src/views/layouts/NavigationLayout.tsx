@@ -32,10 +32,10 @@ const NavigationLayout: React.FC = () => {
           <img
             src="https://d35aaqx5ub95lt.cloudfront.net/vendor/70a4be81077a8037698067f583816ff9.svg"
             style={{
-              width: "65%",
               padding: "32px 0 30px 16px",
             }}
             alt="Logo of Duolingo"
+            className="w-[200px] xl:w-[65%]"
           />
         </div>
 
@@ -44,7 +44,7 @@ const NavigationLayout: React.FC = () => {
             isAvatar={false}
             iconLink="https://d35aaqx5ub95lt.cloudfront.net/vendor/784035717e2ff1d448c0f6cc4efc89fb.svg"
             content="HỌC"
-            path="/learn"
+            path="/home"
           />
           <NavigationButton
             isAvatar={false}
@@ -67,12 +67,12 @@ const NavigationLayout: React.FC = () => {
           <div className="rounded-xl">
             <div
               onClick={handleLogout}
-              className="flex font-bold  rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
+              className="flex font-bold justify-center xl:justify-start  rounded-xl hover:bg-[#37464F] focus:outline-3 focus:outline-[#50D3FF] focus:bg-[#37464F]"
               style={{
                 padding: "8px 4px 8px 4px",
               }}
             >
-              <span className="flex flex-row">
+              <span className="flex flex-row justify-center">
                 <div>
                   <img
                     src="https://images.freeimages.com/clg/images/26/261833/white-clarity-shutdown-icon_f?h=350"
@@ -83,7 +83,7 @@ const NavigationLayout: React.FC = () => {
                     }}
                   />
                 </div>
-                <span className=" flex justify-center items-center">
+                <span className="hidden xl:flex justify-center items-center">
                   ĐĂNG XUẤT
                 </span>
               </span>

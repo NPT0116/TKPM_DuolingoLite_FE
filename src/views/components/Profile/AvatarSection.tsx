@@ -1,25 +1,31 @@
 import { useRef, useState } from "react";
 import EditButton from "../Button/EditButton";
+import { uploadProfileImage } from "../../../services/User/UploadProfileImageService";
 
 interface AvatarSectionProps {
   profileImageUrl: string | null;
 }
 
 const AvatarSection: React.FC<AvatarSectionProps> = ({ profileImageUrl }) => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(
-    profileImageUrl
-  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleEditClick = () => {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      const imageUrl = URL.createObjectURL(file);
-      setSelectedImage(imageUrl);
+      if (file) {
+        try {
+          await uploadProfileImage(file);
+          window.location.href = "/profile";
+        } catch (err) {
+          console.error("Upload thất bại:", err);
+        }
+      }
     }
   };
   return (
@@ -31,7 +37,7 @@ const AvatarSection: React.FC<AvatarSectionProps> = ({ profileImageUrl }) => {
           ref={fileInputRef}
           accept="image/*"
           className="hidden"
-          onChange={handleFileChange}
+          onChange={handleImageChange}
         />
       </div>
       {profileImageUrl !== null ? (

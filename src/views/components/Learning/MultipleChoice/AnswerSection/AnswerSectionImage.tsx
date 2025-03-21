@@ -11,7 +11,7 @@ interface AnswerSectionImage3ColsProps {
   isSubmit: boolean;
 }
 
-const AnswerSectionImage3Cols: React.FC<AnswerSectionImage3ColsProps> = ({
+const AnswerSectionImage: React.FC<AnswerSectionImage3ColsProps> = ({
   data,
   setIsButtonActive,
   setIsButtonCorrect,
@@ -42,4 +42,4 @@ const AnswerSectionImage3Cols: React.FC<AnswerSectionImage3ColsProps> = ({
   );
 };
 
-export default AnswerSectionImage3Cols;
+export default AnswerSectionImage;

@@ -12,8 +12,8 @@ const XPBar: React.FC<IXPBar> = ({ accumulated, total }) => {
     transition: width 0.5s ease;
   `;
   return (
-    <div className="relative w-[80%] h-[10vh] flex justify-center items-center translate-y-6">
-      <div className="w-full flex flex-row justify-between gap-4 items-center">
+    <div className="relative w-[80%] h-[10vh] flex justify-end items-center translate-y-6">
+      <div className="w-full flex flex-row justify-between gap-4 items-end">
         <Link to="/home" className="absolute -translate-x-[30px]">
           <img
             src="https://d35aaqx5ub95lt.cloudfront.net/images/df223d5b9feb8017b323ed21103eb5ac.svg"

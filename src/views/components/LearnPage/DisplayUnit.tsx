@@ -152,6 +152,8 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
               isFinished={lessonOrder > item.order}
               whiteIcon={whiteIcon[index]}
               grayIcon={grayIcon[index]}
+              currentOrder={item.order}
+              lessonOrder={lessonOrder}
             />
           </div>
         ))}
