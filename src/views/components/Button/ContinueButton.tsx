@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { finishLesson } from "../../../services/Course/FinishLessonService";
 interface IContinueButton {
@@ -24,13 +23,18 @@ interface IContinueButton {
   isNext: boolean;
   isFinished: boolean;
   courseId?: string;
+  currentOrder: number;
+  lessonOrder: number;
 }
 
 const handleFinishLesson = async (
+  currentOrder: number,
+  lessonOrder: number,
   navigate: ReturnType<typeof useNavigate>,
   courseId?: string
 ) => {
-  await finishLesson(courseId ? courseId : "");
+  if (currentOrder === lessonOrder)
+    await finishLesson(courseId ? courseId : "");
   navigate("/home");
 };
 
@@ -53,6 +57,8 @@ const ContinueButton: React.FC<IContinueButton> = ({
   state,
   maxState,
   courseId,
+  currentOrder,
+  lessonOrder,
 }) => {
   const CSS = css`
     background-color: #${isButtonActivate ? mainColor : "37464F"};
@@ -95,7 +101,6 @@ const ContinueButton: React.FC<IContinueButton> = ({
       ${!isButtonActivate && "transform: translateY(-4px)"}
     }
   `;
-
   const navigate = useNavigate();
   return (
     <button
@@ -121,7 +126,7 @@ const ContinueButton: React.FC<IContinueButton> = ({
             setXp({ accumulated: state, total: maxState });
           }
           if (isFinished) {
-            handleFinishLesson(navigate, courseId);
+            handleFinishLesson(currentOrder, lessonOrder, navigate, courseId);
           }
         }
       }}

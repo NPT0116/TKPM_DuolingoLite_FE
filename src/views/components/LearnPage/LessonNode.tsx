@@ -13,6 +13,8 @@ interface ILessonNode {
   isFinished: boolean;
   whiteIcon: string;
   grayIcon: string;
+  currentOrder: number;
+  lessonOrder: number;
 }
 const LessonNode: React.FC<ILessonNode> = ({
   topColor,
@@ -25,6 +27,8 @@ const LessonNode: React.FC<ILessonNode> = ({
   isFinished,
   whiteIcon,
   grayIcon,
+  currentOrder,
+  lessonOrder,
 }) => {
   const navigate = useNavigate();
   const nodeColor = css`
@@ -34,7 +38,9 @@ const LessonNode: React.FC<ILessonNode> = ({
     }
   `;
   const goToLessonPage = () => {
-    navigate("/lesson", { state: { lessonInformation, courseId } });
+    navigate("/lesson", {
+      state: { lessonInformation, courseId, currentOrder, lessonOrder },
+    });
   };
   return (
     <button

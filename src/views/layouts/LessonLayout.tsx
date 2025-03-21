@@ -43,10 +43,12 @@ const LessonLayout: React.FC = () => {
   const [state, setState] = useState(1);
   const [questionList, setQuestionList] = useState<IQuestion[]>([]);
   const location = useLocation();
-  const { lessonInformation, courseId } = location.state as {
-    lessonInformation: ILessonInformation;
-    courseId: string;
-  };
+  const { lessonInformation, courseId, currentOrder, lessonOrder } =
+    location.state as {
+      lessonInformation: ILessonInformation;
+      courseId: string;
+      order: number;
+    };
 
   // Get user hearts:
   useEffect(() => {
@@ -208,6 +210,8 @@ const LessonLayout: React.FC = () => {
           paddingWidth={80}
           positionRight={250}
           courseId={courseId}
+          currentOrder={currentOrder}
+          lessonOrder={lessonOrder}
         />
       </div>
     </div>

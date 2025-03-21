@@ -1,8 +1,8 @@
 import { IMultipleChoiceQuestion } from "../../../../../interfaces/Questions/IMultipleChoiceQuestion";
 import QuestionSection from "../../../LearnPage/QuestionSection/QuestionSection";
-import AnswerContainer from "../AnswerContainer/AnswerContainer";
+import AnswerImageContainer3Cols from "../AnswerContainer/AnswerImageContainer3Cols";
 
-interface AnswerSectionProps {
+interface AnswerSectionImage3ColsProps {
   data: IMultipleChoiceQuestion;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,7 +10,8 @@ interface AnswerSectionProps {
   setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
   isSubmit: boolean;
 }
-const AnswerSection: React.FC<AnswerSectionProps> = ({
+
+const AnswerSectionImage: React.FC<AnswerSectionImage3ColsProps> = ({
   data,
   setIsButtonActive,
   setIsButtonCorrect,
@@ -18,14 +19,8 @@ const AnswerSection: React.FC<AnswerSectionProps> = ({
   setIsNext,
   isSubmit,
 }) => {
-  const onlyAudio =
-    data.audio != null &&
-    data.englishText.length === 0 &&
-    // data.vietnameseText?.length === 0 &&
-    !data.picture;
   return (
     <div className="flex flex-col gap-[24px] w-full h-full ">
-      {/* Question Section */}
       <QuestionSection
         words={data.words}
         questionConfigure={data.questionConfigure}
@@ -34,8 +29,7 @@ const AnswerSection: React.FC<AnswerSectionProps> = ({
         englishText={data.englishText}
         vietnameseText={data.vietnameseText}
       />
-      {/* Answer Section */}
-      <AnswerContainer
+      <AnswerImageContainer3Cols
         options={data.options}
         setIsButtonActive={setIsButtonActive}
         setIsButtonCorrect={setIsButtonCorrect}
@@ -43,10 +37,9 @@ const AnswerSection: React.FC<AnswerSectionProps> = ({
         setIsNext={setIsNext}
         isEnglish={data.optionConfigure.englishText}
         isSubmit={isSubmit}
-        onlyAudio={onlyAudio}
       />
     </div>
   );
 };
 
-export default AnswerSection;
+export default AnswerSectionImage;

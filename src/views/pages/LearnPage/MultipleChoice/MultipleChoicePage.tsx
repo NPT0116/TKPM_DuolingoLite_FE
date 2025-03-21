@@ -1,8 +1,8 @@
 import Instruction from "../../../components/LearnPage/Instruction/Instruction";
 import { IMultipleChoiceQuestion } from "../../../../interfaces/Questions/IMultipleChoiceQuestion";
-import AnswerSection from "../../../components/Learning/MultipleChoice/AnswerSection/AnswerSection";
-import AnswerSectionImage3Cols from "../../../components/Learning/MultipleChoice/AnswerSection/AnswerSectionImage";
 import { useEffect, useState } from "react";
+import AnswerSectionImage from "../../../components/Learning/MultipleChoice/AnswerSection/AnswerSectionImage";
+import AnswerSection from "../../../components/Learning/MultipleChoice/AnswerSection/AnswerSection";
 
 interface MultipleChoiceProps {
   data: IMultipleChoiceQuestion;
@@ -32,7 +32,7 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
 
         {/* Question & Answer Section */}
         {hasImageAnswer ? (
-          <AnswerSectionImage3Cols
+          <AnswerSectionImage
             data={data}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}

@@ -13,6 +13,7 @@ import LeaderboardPage from "../views/pages/LeaderboardPage/LeaderboardPage";
 import { JSX } from "react";
 import LessonLayout from "../views/layouts/LessonLayout";
 import ChooseCoursePage from "../views/pages/ChooseCoursePage/ChooseCoursePage";
+import BuyPremiumPage from "../views/pages/BuyPremiumPage/BuyPremiumPage";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
