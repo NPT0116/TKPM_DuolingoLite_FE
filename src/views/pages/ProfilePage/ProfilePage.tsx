@@ -29,7 +29,7 @@ const ProfilePage: React.FC = () => {
     >
       {/* Profile Section */}
       <div className="w-[full] max-w-[592px] flex flex-col gap-y-[20px]">
-        <AvatarSection profileImageUrl={user?.profileImageUrl || null} />
+        <AvatarSection profileImageUrl="https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-1/476089152_2304444693270147_6055804767055466994_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=108&ccb=1-7&_nc_sid=e99d92&_nc_ohc=j_Ua3IKkfjUQ7kNvgEONGnI&_nc_oc=Adhi2DX6WoWui6bt1RAXKRcQEBd6OqoqMCShdhVThiaeiPv94SAgRB4rWgLm1OKYScpbllJx1bv-5fapKYIzKGb3&_nc_zt=24&_nc_ht=scontent.fsgn8-4.fna&_nc_gid=AMFOJXx7SleIl1ldqfiEQnC&oh=00_AYHVYQiB3h2F3XYTy7xcZa2d-HoZKK7VyurXf93Ivxk2Bg&oe=67D8B9AC" />
         <InfoDetailSection
           firstName={user?.firstName ?? ""}
           lastName={user?.lastName ?? ""}

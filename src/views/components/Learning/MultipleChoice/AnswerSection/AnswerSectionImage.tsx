@@ -1,8 +1,8 @@
 import { IMultipleChoiceQuestion } from "../../../../../interfaces/Questions/IMultipleChoiceQuestion";
 import QuestionSection from "../../../LearnPage/QuestionSection/QuestionSection";
-import AnswerImageContainer3Cols from "../AnswerContainer/AnswerImageContainer3Cols";
+import AnswerContainer from "../AnswerContainer/AnswerContainer";
 
-interface AnswerSectionImage3ColsProps {
+interface AnswerSectionProps {
   data: IMultipleChoiceQuestion;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,8 +10,7 @@ interface AnswerSectionImage3ColsProps {
   setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
   isSubmit: boolean;
 }
-
-const AnswerSectionImage3Cols: React.FC<AnswerSectionImage3ColsProps> = ({
+const AnswerSection: React.FC<AnswerSectionProps> = ({
   data,
   setIsButtonActive,
   setIsButtonCorrect,
@@ -19,8 +18,14 @@ const AnswerSectionImage3Cols: React.FC<AnswerSectionImage3ColsProps> = ({
   setIsNext,
   isSubmit,
 }) => {
+  const onlyAudio =
+    data.audio != null &&
+    data.englishText.length === 0 &&
+    // data.vietnameseText?.length === 0 &&
+    !data.picture;
   return (
     <div className="flex flex-col gap-[24px] w-full h-full ">
+      {/* Question Section */}
       <QuestionSection
         words={data.words}
         questionConfigure={data.questionConfigure}
@@ -29,7 +34,8 @@ const AnswerSectionImage3Cols: React.FC<AnswerSectionImage3ColsProps> = ({
         englishText={data.englishText}
         vietnameseText={data.vietnameseText}
       />
-      <AnswerImageContainer3Cols
+      {/* Answer Section */}
+      <AnswerContainer
         options={data.options}
         setIsButtonActive={setIsButtonActive}
         setIsButtonCorrect={setIsButtonCorrect}
@@ -37,9 +43,10 @@ const AnswerSectionImage3Cols: React.FC<AnswerSectionImage3ColsProps> = ({
         setIsNext={setIsNext}
         isEnglish={data.optionConfigure.englishText}
         isSubmit={isSubmit}
+        onlyAudio={onlyAudio}
       />
     </div>
   );
 };
 
-export default AnswerSectionImage3Cols;
+export default AnswerSection;
