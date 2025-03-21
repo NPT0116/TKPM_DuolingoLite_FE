@@ -21,8 +21,9 @@ const AnswerSection: React.FC<AnswerSectionProps> = ({
   const onlyAudio =
     data.audio != null &&
     data.englishText.length === 0 &&
-    // data.vietnameseText?.length === 0 &&
+    data.vietnameseText?.length !== null &&
     !data.picture;
+
   return (
     <div className="flex flex-col gap-[24px] w-full h-full ">
       {/* Question Section */}

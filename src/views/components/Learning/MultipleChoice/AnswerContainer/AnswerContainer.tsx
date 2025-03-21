@@ -24,7 +24,6 @@ const AnswerContainer: React.FC<AnswerContainerProps> = ({
   onlyAudio,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
   useEffect(() => {
     if (isNext) {
       setIsNext(false);

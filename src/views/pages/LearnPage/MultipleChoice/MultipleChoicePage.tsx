@@ -1,7 +1,7 @@
 import Instruction from "../../../components/LearnPage/Instruction/Instruction";
 import { IMultipleChoiceQuestion } from "../../../../interfaces/Questions/IMultipleChoiceQuestion";
-import AnswerSection from "../../../components/Learning/MultipleChoice/AnswerSection/2Cols";
-import AnswerSectionImage3Cols from "../../../components/Learning/MultipleChoice/AnswerSection/3ColsImage";
+import AnswerSection from "../../../components/Learning/MultipleChoice/AnswerSection/AnswerSection";
+import AnswerSectionImage3Cols from "../../../components/Learning/MultipleChoice/AnswerSection/AnswerSectionImage";
 import { useEffect, useState } from "react";
 
 interface MultipleChoiceProps {
@@ -17,11 +17,7 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
   data,
   isSubmit,
 }) => {
-  const hasQuestionContent =
-    data.questionConfigure.audio ||
-    data.questionConfigure.englishText ||
-    data.questionConfigure.vietnameseText;
-
+  const hasImageAnswer = data.optionConfigure.image !== false;
   const [isNext, setIsNext] = useState(false);
 
   useEffect(() => {
@@ -35,8 +31,8 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
         <Instruction instruction={data.instruction} />
 
         {/* Question & Answer Section */}
-        {hasQuestionContent ? (
-          <AnswerSection
+        {hasImageAnswer ? (
+          <AnswerSectionImage3Cols
             data={data}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
@@ -45,7 +41,7 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
             isSubmit={isSubmit}
           />
         ) : (
-          <AnswerSectionImage3Cols
+          <AnswerSection
             data={data}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
