@@ -23,6 +23,7 @@ const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
   isSubmit,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  console.log(isNext);
   useEffect(() => {
     if (isNext) {
       setSelectedIndex(null);

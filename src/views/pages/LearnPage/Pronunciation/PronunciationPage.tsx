@@ -21,6 +21,8 @@ interface IPronunciationPage {
   setIsRetry: React.Dispatch<React.SetStateAction<boolean>>;
   isRetry: boolean;
   data: IPronunciationQuestion;
+  isQuestionRetry: boolean;
+  state: number;
 }
 
 const PronunciationPage: React.FC<IPronunciationPage> = ({
@@ -30,6 +32,8 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
   setIsRetry,
   data,
   isRetry,
+  isQuestionRetry,
+  state,
 }) => {
   // Set up data
   const questionElements = data.words

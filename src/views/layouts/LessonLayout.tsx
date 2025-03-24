@@ -29,6 +29,16 @@ import { set } from "date-fns";
 
 // https://d35aaqx5ub95lt.cloudfront.net/images/bd13fa941b2407b4914296afe4435646.svg
 
+// Hàm xáo câu hỏi
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};
+
 const LessonLayout: React.FC = () => {
   const [user, setUser] = useState<IUserProfile | null>(null);
 
@@ -36,6 +46,7 @@ const LessonLayout: React.FC = () => {
   const [isButtonCorrect, setIsButtonCorrect] = useState(false);
   const [isNext, setIsNext] = useState(false);
   const [isRetry, setIsRetry] = useState(false);
+  const [isQuestionRetry, setIsQuestionRetry] = useState<boolean[]>([]);
   const [isSubmit, setIsSubmit] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
 
@@ -48,6 +59,8 @@ const LessonLayout: React.FC = () => {
       lessonInformation: ILessonInformation;
       courseId: string;
       order: number;
+      currentOrder: number;
+      lessonOrder: number;
     };
 
   // Get user hearts:
@@ -65,21 +78,40 @@ const LessonLayout: React.FC = () => {
   }, []);
 
   const fetchLesson = async () => {
-    for (let i = 0; i < lessonInformation.questionCount; i++) {
-      await api
-        .get(
-          `/Question/questions/list-questions/${
-            lessonInformation.id
-          }?questionOrder=${i + 1}`
+    try {
+      const responses = await Promise.all(
+        Array.from({ length: lessonInformation.questionCount }, (_, i) =>
+          api.get(
+            `/Question/questions/list-questions/${
+              lessonInformation.id
+            }?questionOrder=${i + 1}`
+          )
         )
-        .then((response) => {
-          setQuestionList((prev) => [...prev, response.data.value]);
-        })
-        .catch((error) => {
-          console.error("Error while fetching question:", error);
-        });
+      );
+
+      const questions = responses.map((res) => res.data.value);
+      const shuffledQuestions = shuffleArray(questions);
+
+      setQuestionList(shuffledQuestions);
+      // Đặt tất cả các câu là chưa retry
+      setIsQuestionRetry(Array(shuffledQuestions.length).fill(false));
+    } catch (error) {
+      console.error("Error while fetching questions:", error);
     }
   };
+  // Nếu trả lời sai thì bỏ về cuối
+  useEffect(() => {
+    if (
+      isNext &&
+      !isButtonCorrect &&
+      questionList[state - 1].type !== "Pronunciation"
+    ) {
+      const currentQuestion = questionList[state - 1];
+      setQuestionList((prev) => [...prev, currentQuestion]);
+      setIsQuestionRetry((prev) => [...prev, true]);
+    }
+  }, [isNext, isButtonCorrect]);
+
   const handleLesson = (questionData: IQuestion) => {
     switch (questionData?.type) {
       case "Matching":
@@ -100,6 +132,8 @@ const LessonLayout: React.FC = () => {
             isRetry={isRetry}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
+            isQuestionRetry={isQuestionRetry[state - 1]}
+            state={state}
           />
         );
       case "MultipleChoice":
@@ -109,6 +143,8 @@ const LessonLayout: React.FC = () => {
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
             isSubmit={isSubmit}
+            isQuestionRetry={isQuestionRetry[state - 1]}
+            state={state}
           />
         );
       case "BuildSentence":
@@ -118,6 +154,8 @@ const LessonLayout: React.FC = () => {
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
             isSubmit={isSubmit}
+            isQuestionRetry={isQuestionRetry[state - 1]}
+            state={state}
           />
         );
       default:
@@ -150,11 +188,13 @@ const LessonLayout: React.FC = () => {
     if (
       questionList.length !== 1 &&
       state === questionList.length &&
-      isSubmit
+      isSubmit &&
+      isButtonCorrect
     ) {
       setIsFinished(true);
     }
   }, [state, setIsFinished, questionList, isSubmit]);
+
   return (
     <div className="flex flex-col items-center">
       <audio

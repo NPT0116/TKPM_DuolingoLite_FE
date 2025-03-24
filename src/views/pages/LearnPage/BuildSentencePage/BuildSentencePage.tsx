@@ -5,12 +5,15 @@ import AnswerLine from "../../../components/Learning/BuildSentence/AnswerLine";
 import WordChoice from "../../../components/Learning/BuildSentence/WordChoice";
 import { IBuildSentenceQuestion } from "../../../../interfaces/Questions/IBuildSentenceQuestion";
 import { IBuildSentenceOption } from "../../../../interfaces/Options/IBuildSentenceOption";
+import retry_img from "../../../../assets/imgs/retry_img.png";
 
 interface BuildSentenceProps {
   data: IBuildSentenceQuestion;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
   isSubmit: boolean;
+  isQuestionRetry: boolean;
+  state: number;
 }
 
 const BuildSentencePage: React.FC<BuildSentenceProps> = ({
@@ -18,6 +21,8 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
   setIsButtonCorrect,
   data,
   isSubmit,
+  isQuestionRetry,
+  state,
 }) => {
   const [selectedWords, setSelectedWords] = useState<IBuildSentenceOption[]>(
     []
@@ -51,15 +56,23 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
       return newSelectedWords;
     });
   };
+
   useEffect(() => {
     setIsNext(true);
-  }, [data.questionId]);
-
-  console.log(data);
+  }, [state]);
 
   return (
     <div className="w-full h-full bg-[#131F24] flex justify-center items-center">
       <div className="w-[600px] flex flex-col text-white">
+        {isQuestionRetry && (
+          <div
+            className="flex gap-2 text-[#ffab33] font-bold text-[16px]"
+            style={{ margin: "0 0 20px 10px" }}
+          >
+            <img src={retry_img} alt="" />
+            <span>LỖI SAI TRƯỚC ĐÂY</span>
+          </div>
+        )}
         <Instruction instruction={data.instruction} />
         <QuestionSection
           words={data.words}
