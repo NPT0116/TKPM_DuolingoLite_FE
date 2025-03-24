@@ -9,7 +9,7 @@ const StatisticSection: React.FC<StatisticSectionProps> = ({ userStats }) => {
     <div>
       <div className="text-[28px] font-bold">Thống kê</div>
       <div
-        className="grid grid-cols-2 w-full gap-3"
+        className="grid grid-cols-2 w-full gap-3 whitespace-nowrap "
         style={{ marginTop: "10px" }}
       >
         <div
@@ -34,7 +34,7 @@ const StatisticSection: React.FC<StatisticSectionProps> = ({ userStats }) => {
             >
               {userStats?.longestStreak}
             </div>
-            <div className="text-[#52656D] font-semibold text-[16px]">
+            <div className="text-[#52656D] font-semibold text-[16px] ">
               Ngày streak
             </div>
           </div>
@@ -76,17 +76,18 @@ const StatisticSection: React.FC<StatisticSectionProps> = ({ userStats }) => {
             className="w-[21px]"
             style={{ marginRight: "15px" }}
           />
-          <div className="transition translate-y-[-6px]">
-            <div className="font-bold text-[20px] text-[#52656D]">
+          <div className="transition translate-y-[-6px] w-[80%]">
+            <div className="font-bold text-[20px] text-[#52656D] overflow-hidden  whitespace-nowrap max-w-[full]">
               Chưa có xếp hạng
             </div>
-            <div className="text-[#52656D] font-semibold text-[16px]">
+
+            <div className="text-[#52656D] font-semibold text-[16px] overflow-hidden">
               Giải đấu hiện tại
             </div>
           </div>
         </div>
         <div
-          className="border-2 border-[#37464F] rounded-2xl h-[78px] flex items-start"
+          className="border-2 border-[#37464F] rounded-2xl h-[78px] flex items-start w-full"
           style={{ padding: "15px 24px" }}
         >
           <img
@@ -95,9 +96,11 @@ const StatisticSection: React.FC<StatisticSectionProps> = ({ userStats }) => {
             className="w-[21px]"
             style={{ marginRight: "15px" }}
           />
-          <div className="transition translate-y-[-6px]">
-            <div className="font-bold text-[20px] text-[#52656D] ">0</div>
-            <div className="text-[#52656D] font-semibold text-[16px]">
+          <div className="transition translate-y-[-6px] w-full">
+            <div className="font-bold text-[20px] text-[#52656D] overflow-hidden">
+              0
+            </div>
+            <div className="text-[#52656D] font-semibold text-[16px] overflow-hidden max-w-[90%]">
               Số lần đạt top 3
             </div>
           </div>

@@ -3,6 +3,7 @@ import { getUserProfile } from "../../../services/Authentication/AuthService";
 import { IUserProfile } from "../../../interfaces/Auth/IUserProfile";
 import { useLocation, useNavigate } from "react-router-dom";
 import Streaking from "../../pages/HomePage/StreakComponent/Streaking";
+import Notify from "./Notify/Notify";
 
 const RightSideBar: React.FC = () => {
   const [user, setUser] = useState<IUserProfile | null>(null);
@@ -41,6 +42,8 @@ const RightSideBar: React.FC = () => {
             className="w-auto h-[28px]"
           />
         </div>
+        {/* Notification */}
+        <Notify />
         {/* Streak */}
         <div className="flex flex-1 justify-center items-center gap-2">
           <Streaking streakNumber={user?.userStats.currentStreak} />
