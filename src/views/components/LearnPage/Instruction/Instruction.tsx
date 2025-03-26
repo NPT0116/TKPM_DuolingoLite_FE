@@ -4,7 +4,14 @@ interface InstructionProps {
 
 const Instruction: React.FC<InstructionProps> = ({ instruction }) => {
   return (
-    <span className="text-[32px] font-bold text-white">{instruction}</span>
+    <span
+      className="text-[32px] font-bold text-white"
+      style={{
+        marginBottom: "20px",
+      }}
+    >
+      {instruction}
+    </span>
   );
 };
 

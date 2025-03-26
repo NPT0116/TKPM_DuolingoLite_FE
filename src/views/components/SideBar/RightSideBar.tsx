@@ -6,6 +6,7 @@ import Streaking from "../../pages/HomePage/StreakComponent/Streaking";
 import Notify from "./Notify/Notify";
 
 const RightSideBar: React.FC = () => {
+  const [isPremium, setIsPremium] = useState(false);
   const [user, setUser] = useState<IUserProfile | null>(null);
   const location = useLocation();
   const fetched = useRef(false);
@@ -18,6 +19,7 @@ const RightSideBar: React.FC = () => {
         try {
           const userData = await getUserProfile();
           setUser(userData.value);
+          setIsPremium(user?.subscription !== null);
         } catch (err) {
           console.log("Failed to fetch user profile: " + err);
         }
@@ -29,7 +31,7 @@ const RightSideBar: React.FC = () => {
 
   return (
     <div
-      className=" w-[368px] flex flex-col shrink-0  sticky top-[20px] gap-[20px] font-bold"
+      className=" w-[368px] flex flex-col shrink-0  sticky top-[20px] gap-[20px] font-bold z-[10]"
       style={{ marginTop: "20px" }}
     >
       <div className="w-full h-[12%]  flex justify-evenly items-center gap-10 max-h-[44px]">
@@ -58,59 +60,80 @@ const RightSideBar: React.FC = () => {
           <span>{user?.userStats.experiencePoint}</span>
         </div>
         {/* Heart */}
-        <div
-          className="flex flex-1 items-center justify-center gap-2 text-[#EE5555]"
-          style={{ padding: "0 16px 0 10px" }}
-        >
-          <img
-            src="https://d35aaqx5ub95lt.cloudfront.net/images/hearts/8fdba477c56a8eeb23f0f7e67fdec6d9.svg"
-            alt="heart"
-            className="w-auto h-[28px]"
-          />
-          <span>{user?.userStats.heart}</span>
-        </div>
-      </div>
-      {/* Premium box */}
-      <div
-        className="flex flex-col border-2 border-[#37464f] rounded-2xl gap-4"
-        style={{ padding: "25px 25px" }}
-      >
-        <div className="flex items-start">
-          <div>
+        {isPremium ? (
+          <div
+            className="flex flex-1 items-center justify-center gap-2 text-[#EE5555]"
+            style={{ padding: "0 16px 0 10px" }}
+          >
             <img
-              src="https://d35aaqx5ub95lt.cloudfront.net/images/super/2e50c3e8358914df5285dc8cf45d0b4c.svg"
+              src="https://d35aaqx5ub95lt.cloudfront.net/images/hearts/0c1a523b4b5882a97e4df162f4b5c58b.svg"
+              className="w-auto h-[28px]"
+            />
+            <img
+              src="https://d35aaqx5ub95lt.cloudfront.net/images/hearts/8d4c5fcd9cedabfd155d3eda8af269bc.svg"
               alt=""
             />
-            <h2 className="text-[19px] font-bold" style={{ margin: "8px 0px" }}>
-              Try Super from now!
-            </h2>
-            <div style={{ margin: "8px 0px 24px 0px" }}>
-              <span className="font-[500]">
-                Unlimited hearts, personalized practice
-              </span>
-            </div>
           </div>
-          <img
-            src="https://d35aaqx5ub95lt.cloudfront.net/images/super/fb7130289a205fadd2e196b9cc866555.svg"
-            alt=""
-          />
-        </div>
-        <button
-          className="bg-[#3B4CFC] rounded-2xl cursor-pointer hover:bg-[#4255FF] active:translate-y-1"
-          style={{ padding: "10px 0", boxShadow: "0 4px 0 0 #3F22EB" }}
-          onMouseDown={(e) => {
-            e.currentTarget.style.boxShadow = "0 0 0 0 #3F22EB";
-          }}
-          onMouseUp={(e) => {
-            e.currentTarget.style.boxShadow = "0 4px 0 0 #3F22EB";
-          }}
-          onClick={() => {
-            navigate("/buy-premium");
-          }}
-        >
-          <span className="font-bold">BUY PREMIUM</span>
-        </button>
+        ) : (
+          <div
+            className="flex flex-1 items-center justify-center gap-2 text-[#EE5555]"
+            style={{ padding: "0 16px 0 10px" }}
+          >
+            <img
+              src="https://d35aaqx5ub95lt.cloudfront.net/images/hearts/8fdba477c56a8eeb23f0f7e67fdec6d9.svg"
+              alt="heart"
+              className="w-auto h-[28px]"
+            />
+            <span>{user?.userStats.heart}</span>
+          </div>
+        )}
       </div>
+      {/* Premium box */}
+      {!isPremium && (
+        <div
+          className="flex flex-col border-2 border-[#37464f] rounded-2xl gap-4"
+          style={{ padding: "25px 25px" }}
+        >
+          <div className="flex items-start">
+            <div>
+              <img
+                src="https://d35aaqx5ub95lt.cloudfront.net/images/super/2e50c3e8358914df5285dc8cf45d0b4c.svg"
+                alt=""
+              />
+              <h2
+                className="text-[19px] font-bold"
+                style={{ margin: "8px 0px" }}
+              >
+                Try Super from now!
+              </h2>
+              <div style={{ margin: "8px 0px 24px 0px" }}>
+                <span className="font-[500]">
+                  Unlimited hearts, personalized practice
+                </span>
+              </div>
+            </div>
+            <img
+              src="https://d35aaqx5ub95lt.cloudfront.net/images/super/fb7130289a205fadd2e196b9cc866555.svg"
+              alt=""
+            />
+          </div>
+          <button
+            className="bg-[#3B4CFC] rounded-2xl cursor-pointer hover:bg-[#4255FF] active:translate-y-1"
+            style={{ padding: "10px 0", boxShadow: "0 4px 0 0 #3F22EB" }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.boxShadow = "0 0 0 0 #3F22EB";
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.boxShadow = "0 4px 0 0 #3F22EB";
+            }}
+            onClick={() => {
+              navigate("/buy-premium");
+            }}
+          >
+            <span className="font-bold">BUY PREMIUM</span>
+          </button>
+        </div>
+      )}
       {location.pathname === "/leaderboard" ? (
         //  Emoji box
         <div

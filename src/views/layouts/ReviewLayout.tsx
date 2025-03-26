@@ -1,7 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import api from "../../configs/axiosConfig";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import correctSound from "../../assets/sounds/duo_correct_sound.mp4";
 import incorrectSound from "../../assets/sounds/duo_incorrect_sound.mp4";
 
@@ -9,7 +7,6 @@ import incorrectSound from "../../assets/sounds/duo_incorrect_sound.mp4";
 import XPBar from "../components/XPBar/XPBar";
 import ContinueButton from "../components/Button/ContinueButton";
 import { IQuestion } from "../../interfaces/IQuestion";
-import { ILessonInformation } from "../../interfaces/Course";
 import FooterStatus from "../components/FooterBar/FooterStatus";
 
 // Interface
@@ -23,112 +20,57 @@ import PronunciationPage from "../pages/LearnPage/Pronunciation/PronunciationPag
 import BuildSentencePage from "../pages/LearnPage/BuildSentencePage/BuildSentencePage";
 import MultipleChoicePage from "../pages/LearnPage/MultipleChoice/MultipleChoicePage";
 import LessonHeart from "../components/LessonHeart/LessonHeart";
-import {
-  ILessonReport,
-  IQuestionReport,
-} from "../../interfaces/SpaceRepetation/ILessonReport";
+import { IReviewRecordDue } from "../../interfaces/SpaceRepetation/IDueReview";
+import { fetchDueReview } from "../../services/SpaceRepetition/GetDueReviewService";
+import { fetchQuestionThroughRecordId } from "../../services/SpaceRepetition/GetQuestionThroughRecordId";
+import { putRecordThroughRecordId } from "../../services/SpaceRepetition/PutRecordService";
 import { fetchUserId } from "../../services/Authentication/AuthService";
-import { submitLessonReport } from "../../services/SpaceRepetition/PostLessonReport";
 
 // https://d35aaqx5ub95lt.cloudfront.net/images/bd13fa941b2407b4914296afe4435646.svg
 
-// Hàm xáo câu hỏi
-const shuffleArray = <T,>(array: T[]): T[] => {
-  const newArray = [...array];
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-  }
-  return newArray;
-};
-
-const LessonLayout: React.FC = () => {
+const ReviewLayout: React.FC = () => {
   const [userId, setUserId] = useState("");
   const [isButtonActivate, setIsButtonActive] = useState(false);
   const [isButtonCorrect, setIsButtonCorrect] = useState(false);
   const [isNext, setIsNext] = useState(false);
   const [isRetry, setIsRetry] = useState(false);
-  const [isQuestionRetry, setIsQuestionRetry] = useState<boolean[]>([]);
   const [isSubmit, setIsSubmit] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
-  const [lessonReport, setLessonReport] = useState<ILessonReport | null>(null); // Lưu lại report những câu đúng, câu sai
-  const [isPostReport, setIsPostReport] = useState(false);
+  const [dueReviewRecord, setDueReviewRecord] =
+    useState<IReviewRecordDue | null>(null);
   const [xp, setXp] = useState({ accumulated: 0, total: 1 });
   const [state, setState] = useState(1);
   const [questionList, setQuestionList] = useState<IQuestion[]>([]);
-  const location = useLocation();
-  const { lessonInformation, courseId, currentOrder, lessonOrder } =
-    location.state as {
-      lessonInformation: ILessonInformation;
-      courseId: string;
-      order: number;
-      currentOrder: number; //Kiểm tra xem user có làm lại bài cũ không, nếu có thì không xét finish lesson
-      lessonOrder: number;
-    };
 
   useEffect(() => {
     fetchUserId(setUserId);
   }, []);
 
   useEffect(() => {
-    if (userId && lessonReport === null) {
-      const newLessonReport: ILessonReport = {
-        userId: userId,
-        lessonId: lessonInformation.id,
-        results: [],
-      };
-      setLessonReport(newLessonReport);
+    if (userId) {
+      fetchDueReview(userId, setDueReviewRecord);
     }
-  }, [userId, lessonReport]);
+  }, [userId]);
 
-  const fetchLesson = async () => {
-    try {
-      console.log(lessonInformation);
-      const responses = await Promise.all(
-        Array.from({ length: lessonInformation.questionCount }, (_, i) =>
-          api.get(
-            `/Question/questions/list-questions/${
-              lessonInformation.id
-            }?questionOrder=${i + 1}`
-          )
-        )
-      );
-
-      const questions = responses.map((res) => res.data.value);
-      const shuffledQuestions = shuffleArray(questions);
-
-      setQuestionList(shuffledQuestions);
-      // Đặt tất cả các câu là chưa retry
-      setIsQuestionRetry(Array(shuffledQuestions.length).fill(false));
-    } catch (error) {
-      console.error("Error while fetching questions:", error);
-    }
-  };
-  // Nếu trả lời sai thì lưu về cuối
   useEffect(() => {
-    if (
-      isSubmit &&
-      !isButtonCorrect &&
-      questionList[state - 1].type !== "Pronunciation"
-    ) {
-      const currentQuestion = questionList[state - 1];
-      setQuestionList((prev) => [...prev, currentQuestion]);
-      setIsQuestionRetry((prev) => [...prev, true]);
+    if (dueReviewRecord) {
+      for (let i = 0; i < dueReviewRecord.dueReviews.length; i++) {
+        fetchQuestionThroughRecordId(
+          dueReviewRecord.dueReviews[i].id,
+          setQuestionList
+        );
+      }
     }
-  }, [isSubmit, isButtonCorrect]);
-  useEffect(() => {
-    fetchLesson();
-  }, [lessonInformation]);
+  }, [dueReviewRecord]);
+
   useEffect(() => {
     setIsButtonActive(false);
     setIsButtonCorrect(false);
   }, []);
 
+  // Play sounds
   useEffect(() => {
-    if (isSubmit) {
-      const sound = new Audio(isButtonCorrect ? correctSound : incorrectSound);
-      sound.play();
-    } else if (isNext) {
+    if (isSubmit || isNext) {
       const sound = new Audio(isButtonCorrect ? correctSound : incorrectSound);
       sound.play();
     } else if (isRetry) {
@@ -137,52 +79,19 @@ const LessonLayout: React.FC = () => {
     }
   }, [isSubmit, isNext, isRetry]);
 
+  //Put record Id khi hoàn thành question đó
   useEffect(() => {
-    if ((isSubmit || isNext) && !isQuestionRetry[state - 1]) {
-      const currentQuestionId = questionList[state - 1].questionId;
-
-      const isAlreadyReported = lessonReport?.results.some(
-        (q) => q.questionId === currentQuestionId
+    if (isSubmit || isNext) {
+      putRecordThroughRecordId(
+        dueReviewRecord!.dueReviews[state - 1].id,
+        isButtonCorrect
       );
-
-      if (!isAlreadyReported) {
-        const newQuestionReport: IQuestionReport = {
-          questionId: currentQuestionId,
-          isCorrect: isButtonCorrect,
-        };
-
-        setLessonReport((prev) => {
-          if (!prev) return prev;
-
-          return {
-            ...prev,
-            results: [...prev.results, newQuestionReport],
-          };
-        });
-      }
     }
-  }, [
-    isSubmit,
-    isNext,
-    lessonReport,
-    isButtonCorrect,
-    isQuestionRetry,
-    questionList,
-    state,
-  ]);
+  }, [isSubmit, isNext]);
 
   useEffect(() => {
-    if (
-      state === questionList.length &&
-      isNext &&
-      isButtonCorrect // Có cái này vì vẫn có vài câu hỏi phải làm lại sau khi sai
-    ) {
+    if (state === questionList.length && isNext) {
       setIsFinished(true);
-      if (currentOrder === lessonOrder && !isPostReport) {
-        console.log(lessonReport);
-        submitLessonReport(lessonReport!);
-        setIsPostReport(true);
-      }
     }
   }, [state, setIsFinished, questionList, isNext, isButtonCorrect]);
   const handleLesson = (questionData: IQuestion) => {
@@ -205,7 +114,7 @@ const LessonLayout: React.FC = () => {
             isRetry={isRetry}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
-            isQuestionRetry={isQuestionRetry[state - 1]}
+            isQuestionRetry={false}
             state={state}
           />
         );
@@ -216,7 +125,7 @@ const LessonLayout: React.FC = () => {
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
             isSubmit={isSubmit}
-            isQuestionRetry={isQuestionRetry[state - 1]}
+            isQuestionRetry={false}
             state={state}
           />
         );
@@ -227,7 +136,7 @@ const LessonLayout: React.FC = () => {
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
             isSubmit={isSubmit}
-            isQuestionRetry={isQuestionRetry[state - 1]}
+            isQuestionRetry={false}
             state={state}
           />
         );
@@ -290,13 +199,13 @@ const LessonLayout: React.FC = () => {
           hoverColor="4156FF"
           paddingWidth={80}
           positionRight={250}
-          courseId={courseId}
-          currentOrder={currentOrder}
-          lessonOrder={lessonOrder}
-          type="learn" //Nếu type learn thì navigate về home, nếu review navigate về review
+          courseId="" //Giá trị giả
+          currentOrder={1} //Giá trị giả
+          lessonOrder={0} //Giá trị giả
+          type="review"
         />
       </div>
     </div>
   );
 };
-export default LessonLayout;
+export default ReviewLayout;

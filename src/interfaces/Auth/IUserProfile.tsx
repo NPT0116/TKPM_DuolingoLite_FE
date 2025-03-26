@@ -1,3 +1,5 @@
+import { ISubscription } from "../ISubscription";
+
 export interface IUserActivity {
   userId: string;
   date: string;
@@ -22,7 +24,7 @@ export interface IUserProfile {
   email: string;
   nickName: string;
   profileImageUrl: string | null;
-  subscription: any | null;
+  subscription: ISubscription | null;
   userActivities: IUserActivity[];
   userStats: IUserStats;
 }

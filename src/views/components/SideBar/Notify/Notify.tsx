@@ -45,6 +45,12 @@ const Notify: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isOpen && realtimeNotifies.length > 1) {
+      setRealtimeNotifies([realtimeNotifies[0]]);
+    }
+  }, [isOpen]);
+
   return (
     <>
       <style>
@@ -80,7 +86,7 @@ const Notify: React.FC = () => {
           <div
             className="absolute right-[-20px] mt-2 w-[450px] bg-[#131F23] shadow-lg rounded-lg border border-[#37464F] z-50"
             style={{
-              marginTop: "5px",
+              marginTop: "10px",
               padding: "15px",
             }}
           >
@@ -136,7 +142,7 @@ const Notify: React.FC = () => {
                     }
                   })()}
 
-                  {index < realtimeNotifies.length - 1 && (
+                  {index < realtimeNotifies.length - 1 && index > 0 && (
                     <hr
                       className="bg-[#37464F] h-2 border-none"
                       style={{ margin: "15px 0" }}

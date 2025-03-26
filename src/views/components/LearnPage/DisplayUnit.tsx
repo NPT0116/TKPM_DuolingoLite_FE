@@ -9,6 +9,7 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
   lessonsList,
   lessonsInformation,
   lessonOrder,
+  setShowToast,
 }) => {
   const whiteIcon = [
     "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg",
@@ -63,7 +64,7 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
   };
   const randomTemplate = getRandomTemplate();
   return (
-    <div className="flex flex-col h-full justify-center w-full font-bold gap-8 items-center">
+    <div className="flex flex-col h-full justify-center w-full font-bold gap-8 items-center relative ">
       <div
         className="flex h-[100px] justify-between rounded-2xl w-[90%] items-center"
         style={{
@@ -154,6 +155,7 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
               grayIcon={grayIcon[index]}
               currentOrder={item.order}
               lessonOrder={lessonOrder}
+              setShowToast={setShowToast}
             />
           </div>
         ))}

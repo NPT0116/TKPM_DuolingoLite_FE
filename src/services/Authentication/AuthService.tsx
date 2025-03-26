@@ -20,3 +20,26 @@ export const getUserProfile = async (): Promise<any> => {
     return null;
   }
 };
+
+export const fetchUserId = async (
+  setUserId: React.Dispatch<React.SetStateAction<string>>
+): Promise<void> => {
+  try {
+    const authToken = localStorage.getItem("authToken");
+
+    if (!authToken) {
+      throw new Error("No authentication token found");
+    }
+
+    const response = await axios.get(`${API_BASE_URL}Authentication/me`, {
+      headers: {
+        Accept: "*/*",
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    setUserId(response.data.value.id);
+  } catch (error) {
+    console.error("Failed to fetch user ID:", error);
+  }
+};
