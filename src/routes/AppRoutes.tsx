@@ -14,6 +14,8 @@ import { JSX } from "react";
 import LessonLayout from "../views/layouts/LessonLayout";
 import ChooseCoursePage from "../views/pages/ChooseCoursePage/ChooseCoursePage";
 import BuyPremiumPage from "../views/pages/BuyPremiumPage/BuyPremiumPage";
+import ReviewLayout from "../views/layouts/ReviewLayout";
+import ReviewPage from "../views/pages/ReviewPage/ReviewPage";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -61,12 +63,28 @@ const AppRoutes: React.FC = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/review"
+            element={
+              <ProtectedRoute>
+                <ReviewPage />
+              </ProtectedRoute>
+            }
+          />
         </Route>
         <Route
           path="/lesson"
           element={
             <ProtectedRoute>
               <LessonLayout />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/review-lesson"
+          element={
+            <ProtectedRoute>
+              <ReviewLayout />
             </ProtectedRoute>
           }
         />

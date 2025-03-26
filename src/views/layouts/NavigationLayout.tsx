@@ -12,7 +12,7 @@ const NavigationLayout: React.FC = () => {
   };
   return (
     <div
-      className="flex flex-row text-white bg-primary relative overflow-auto w-full"
+      className="flex flex-row text-white bg-primary relative  overflow-auto  w-full "
       style={{
         width: "100vw",
         height: "100vh",
@@ -50,7 +50,7 @@ const NavigationLayout: React.FC = () => {
             isAvatar={false}
             iconLink="https://d35aaqx5ub95lt.cloudfront.net/vendor/5187f6694476a769d4a4e28149867e3e.svg"
             content="LUYỆN TẬP"
-            path="/learn"
+            path="/review"
           />
           <NavigationButton
             isAvatar={false}

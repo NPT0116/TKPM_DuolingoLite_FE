@@ -1,25 +1,12 @@
 import React, { useEffect, useState } from "react";
 import icon_check from "../../../assets/icons/ic_check.png";
-import { getVNPaymentUrl } from "../../../services/Payment/GetPaymentUrlService";
+import ChooseMonth from "../../components/BuyPremium/ChooseMonth";
 import { useNavigate } from "react-router-dom";
 
 const BuyPremiumPage = () => {
-  const navigate = useNavigate();
   const [isPaymentSuccess, setIsPaymentSuccess] = useState<boolean>(false);
-
-  const handlePayment = async () => {
-    try {
-      const paymentUrl = await getVNPaymentUrl();
-      if (paymentUrl) {
-        window.location.href = paymentUrl;
-      } else {
-        console.error("Error: No payment URL received");
-      }
-    } catch (err) {
-      console.error("Error fetching VNPaymentUrl:", err);
-    }
-  };
-
+  const [isTrialButtonClick, setIsTrialButtonClick] = useState<boolean>(false);
+  const navigate = useNavigate;
   useEffect(() => {
     const query = window.location.search;
 
@@ -42,18 +29,18 @@ const BuyPremiumPage = () => {
 
   return (
     <div
-      className="w-full h-[100vh] bg-gradient-to-b text-white overflow-auto"
+      className="w-full h-[100vh] min-h-[100vh] bg-gradient-to-b text-white overflow-auto"
       style={{
         backgroundImage:
           "linear-gradient(to bottom, #0B4B47, #0C316D, #401F73)",
         padding: "20px",
       }}
     >
-      <div className="flex justify-end">
+      <div className="flex justify-end ">
         <img
           src="https://d35aaqx5ub95lt.cloudfront.net/images/super/2e50c3e8358914df5285dc8cf45d0b4c.svg"
           alt=""
-          className="w-[103px]"
+          className="w-[103px] absolute right-6 top-5 z-10"
         />
       </div>
       {isPaymentSuccess ? (
@@ -94,6 +81,8 @@ const BuyPremiumPage = () => {
             QUAY VỀ TRANG CHỦ
           </a>
         </div>
+      ) : isTrialButtonClick ? (
+        <ChooseMonth />
       ) : (
         <div
           className="flex flex-col h-full gap-[40px] w-[650px] justify-start items-center"
@@ -185,31 +174,18 @@ const BuyPremiumPage = () => {
             className="flex w-full gap-[5%] justify-center"
             style={{ padding: "20px 20px 0px 20px", marginTop: "20px" }}
           >
-            {/* VNPAY button */}
             <button
-              className="font-bold flex items-center justify-center bg-white rounded-xl w-full cursor-pointer hover:bg-white/90 transition-colors ease-in-out"
-              style={{ padding: "5px" }}
-              onClick={handlePayment}
+              className="text-black text-[16px] font-bold flex items-center justify-center bg-[white] cursor-pointer transition-colors ease-in-out rounded-2xl w-[50%] active:  translate-y-[2px]"
+              style={{ padding: "10px", boxShadow: "0 3px 0 0 #9892B9" }}
+              onMouseDown={(e) => {
+                e.currentTarget.style.boxShadow = "0 0 0 0 #9892B9";
+              }}
+              onMouseUp={(e) => {
+                e.currentTarget.style.boxShadow = "0 3px 0 0 #9892B9";
+              }}
+              onClick={() => setIsTrialButtonClick(true)}
             >
-              <img
-                src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Icon-VNPAY-QR.png"
-                alt=""
-                className="w-[30px]"
-                style={{ marginRight: "10px" }}
-              />
-              <span className="text-[#EE232B]">VN</span>
-              <span className="text-[#0860AD]">PAY</span>
-            </button>
-            {/* MOMO button */}
-            <button
-              className="font-bold flex items-center justify-center bg-[#A80869] cursor-pointer hover:bg-[#A80869]/90 transition-colors ease-in-out rounded-xl w-full"
-              style={{ padding: "5px" }}
-            >
-              <img
-                src="https://play-lh.googleusercontent.com/uCtnppeJ9ENYdJaSL5av-ZL1ZM1f3b35u9k8EOEjK3ZdyG509_2osbXGH5qzXVmoFv0"
-                alt=""
-                className="w-[40px] h-auto"
-              />
+              <span>TRẢI NGHIỆM NGAY</span>
             </button>
           </div>
           <button className="font-bold text-[16px]">

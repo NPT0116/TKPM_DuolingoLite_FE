@@ -25,17 +25,22 @@ interface IContinueButton {
   courseId?: string;
   currentOrder: number;
   lessonOrder: number;
+  type: string;
 }
 
 const handleFinishLesson = async (
   currentOrder: number,
   lessonOrder: number,
   navigate: ReturnType<typeof useNavigate>,
+  type: string,
   courseId?: string
 ) => {
   if (currentOrder === lessonOrder)
     await finishLesson(courseId ? courseId : "");
-  navigate("/home");
+
+  if (type === "review") {
+    navigate("/review");
+  } else navigate("/home");
 };
 
 const ContinueButton: React.FC<IContinueButton> = ({
@@ -59,6 +64,7 @@ const ContinueButton: React.FC<IContinueButton> = ({
   courseId,
   currentOrder,
   lessonOrder,
+  type,
 }) => {
   const CSS = css`
     background-color: #${isButtonActivate ? mainColor : "37464F"};
@@ -126,7 +132,13 @@ const ContinueButton: React.FC<IContinueButton> = ({
             setXp({ accumulated: state, total: maxState });
           }
           if (isFinished) {
-            handleFinishLesson(currentOrder, lessonOrder, navigate, courseId);
+            handleFinishLesson(
+              currentOrder,
+              lessonOrder,
+              navigate,
+              type,
+              courseId
+            );
           }
         }
       }}

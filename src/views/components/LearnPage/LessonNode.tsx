@@ -2,6 +2,8 @@
 import { css } from "@emotion/react";
 import { ILessonInformation, ILessonValue } from "../../../interfaces/Course";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getUserHeart } from "../../../services/User/GetHeartService";
 interface ILessonNode {
   topColor: string;
   botColor: string;
@@ -15,6 +17,7 @@ interface ILessonNode {
   grayIcon: string;
   currentOrder: number;
   lessonOrder: number;
+  setShowToast: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const LessonNode: React.FC<ILessonNode> = ({
   topColor,
@@ -29,7 +32,9 @@ const LessonNode: React.FC<ILessonNode> = ({
   grayIcon,
   currentOrder,
   lessonOrder,
+  setShowToast,
 }) => {
+  const [userHeart, setUserHeart] = useState<number>(0);
   const navigate = useNavigate();
   const nodeColor = css`
     background: #${isEnable ? botColor : "2C383F"};
@@ -37,14 +42,37 @@ const LessonNode: React.FC<ILessonNode> = ({
       background: #${isEnable ? topColor : "37464F"};
     }
   `;
+  useEffect(() => {
+    const fetchUserHeart = async () => {
+      try {
+        const userHeartData = await getUserHeart();
+        setUserHeart(userHeartData.value.remainingHearts);
+      } catch (err) {
+        console.log("Failed to fetch user heart in RightSideLayout" + err);
+      }
+    };
+
+    fetchUserHeart();
+  }, []);
+
   const goToLessonPage = () => {
     navigate("/lesson", {
       state: { lessonInformation, courseId, currentOrder, lessonOrder },
     });
   };
+
+  const handleClick = () => {
+    if (!isEnable) return;
+
+    if (userHeart !== 0) {
+      goToLessonPage();
+    } else {
+      setShowToast(true);
+    }
+  };
   return (
     <button
-      onClick={isEnable ? goToLessonPage : () => {}}
+      onClick={handleClick}
       css={nodeColor}
       style={{ transform: `translateX(${transX}px)` }}
       className={`cursor-pointer group hover:before:translate-y-[-8px] relative flex justify-center items-center w-[70px] h-[58px] rounded-[100%] rounded-tr-[50px] rounded-tl-[50px] before:absolute before:translate-y-[-10px]  before:flex before:justify-center before:items-center before:w-[70px] before:h-[58px] before:rounded-[100%]`}

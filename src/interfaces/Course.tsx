@@ -38,6 +38,7 @@ export interface IDisplayUnit {
   lessonsList?: ILessonValue[];
   lessonsInformation?: ILessonInformation[];
   lessonOrder: number;
+  setShowToast: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export interface IError {
   code: string;
