@@ -1,36 +1,45 @@
 import React from "react";
-import {
-  BookOutlined,
-  QuestionCircleOutlined,
-  ReadOutlined,
-} from "@ant-design/icons";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Layout, Menu, theme } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
+import ic_book from "../../assets/icons/ic_book.png";
+import ic_color from "../../assets/icons/ic_color.png";
+import ic_question_mark from "../../assets/icons/ic_question_mark.png";
 
 const { Header, Content, Sider } = Layout;
 
 const lessonItems: MenuProps["items"] = [
   {
     key: "course",
-    icon: React.createElement(BookOutlined),
+    icon: (
+      <img src={ic_color} alt="icon_course" style={{ width: 30, height: 30 }} />
+    ),
     label: "Courses",
   },
   {
     key: "lesson",
-    icon: React.createElement(ReadOutlined),
+    icon: (
+      <img src={ic_book} alt="icon lesson" style={{ width: 30, height: 30 }} />
+    ),
     label: "Lessons",
+  },
+  {
+    key: "questions",
+    icon: (
+      <img
+        src={ic_question_mark}
+        alt="icon lesson"
+        style={{ width: 30, height: 30 }}
+      />
+    ),
+    label: "Question",
     children: [
       { key: "multiple", label: "Multiple Choice" },
       { key: "sentence", label: "Build Sentence" },
       { key: "matching", label: "Matching" },
       { key: "pronunciation", label: "Pronunciation" },
     ],
-  },
-  {
-    key: "questions",
-    icon: React.createElement(QuestionCircleOutlined),
-    label: "Question",
   },
 ];
 
@@ -54,7 +63,7 @@ const AdminLayout: React.FC = () => {
     }
   };
   return (
-    <Layout className="h-[100vh] min-h-[100vh]">
+    <Layout className="min-h-[100vh] h-[100vh] overflow-y-auto">
       <Header
         className="gap-4"
         style={{ display: "flex", alignItems: "center" }}
@@ -82,12 +91,16 @@ const AdminLayout: React.FC = () => {
             borderRadius: borderRadiusLG,
           }}
         >
-          <Sider style={{ background: colorBgContainer }} width={200}>
+          <Sider style={{ background: colorBgContainer }} width="20%">
             <Menu
               mode="inline"
               defaultSelectedKeys={["multiple"]}
               defaultOpenKeys={["lesson"]}
-              style={{ height: "100%" }}
+              style={{
+                fontWeight: "500",
+                height: "100%",
+                fontSize: "20px",
+              }}
               items={lessonItems}
               onClick={handleMenuClick}
             />
