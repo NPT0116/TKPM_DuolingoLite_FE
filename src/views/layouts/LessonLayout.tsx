@@ -252,7 +252,7 @@ const LessonLayout: React.FC = () => {
         Your browser does not support the audio element.
       </audio>
       {/* XP Bar & Heart*/}
-      <div className="flex h-[10vh] justify-center w-[70%] gap-[20px] items-center max-w-[1000px]">
+      <div className="flex h-[10vh] justify-end w-[70%] gap-[20px] items-center max-w-[1000px]">
         <XPBar accumulated={xp.accumulated} total={xp.total} />
         <LessonHeart
           state={state}

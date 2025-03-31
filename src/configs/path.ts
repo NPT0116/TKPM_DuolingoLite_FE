@@ -22,4 +22,14 @@ export const PATH = {
       leaderboard: "/leaderboard",
     },
   },
+  ADMIN: {
+    index: "/admin",
+    lesson: {
+      index: "lesson",
+      multipleChoice: "multiple-choice",
+      buildSentence: "build-sentence",
+      matching: "matching",
+      pronunciation: "pronunciation",
+    },
+  },
 };
