@@ -16,6 +16,11 @@ import ChooseCoursePage from "../views/pages/ChooseCoursePage/ChooseCoursePage";
 import BuyPremiumPage from "../views/pages/BuyPremiumPage/BuyPremiumPage";
 import ReviewLayout from "../views/layouts/ReviewLayout";
 import ReviewPage from "../views/pages/ReviewPage/ReviewPage";
+import AdminLayout from "../views/layouts/AdminLayout";
+import AdminMultipleChoicePage from "../views/pages/AdminPage/AdminMultipleChoicePage";
+import AdminMatchingPage from "../views/pages/AdminPage/AdminMatchingPage";
+import AdminBuildSentencePage from "../views/pages/AdminPage/AdminBuildSentencePage";
+import AdminPronunciationPage from "../views/pages/AdminPage/AdminPronunciationPage";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -97,6 +102,27 @@ const AppRoutes: React.FC = () => {
             </ProtectedRoute>
           }
         />
+        <Route path={PATH.ADMIN.index} element={<AdminLayout />}>
+          <Route path={PATH.ADMIN.lesson.index}>
+            <Route
+              path={PATH.ADMIN.lesson.multipleChoice}
+              element={<AdminMultipleChoicePage />}
+            />
+            <Route
+              path={PATH.ADMIN.lesson.matching}
+              element={<AdminMatchingPage />}
+            />
+            <Route
+              path={PATH.ADMIN.lesson.buildSentence}
+              element={<AdminBuildSentencePage />}
+            />
+            <Route
+              path={PATH.ADMIN.lesson.pronunciation}
+              element={<AdminPronunciationPage />}
+            />
+          </Route>
+          {/* Có thể thêm /admin/course, /admin/question tương tự */}
+        </Route>
       </Routes>
     </div>
   );
