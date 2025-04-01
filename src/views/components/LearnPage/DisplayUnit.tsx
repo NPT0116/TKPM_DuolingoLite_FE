@@ -1,6 +1,8 @@
 import LessonNode from "./LessonNode";
 import { IDisplayUnit } from "../../../interfaces/Course";
 import { motion } from "framer-motion";
+import { useContext } from "react";
+import { LessonOrderContext } from "../../../context/LessonContext";
 
 const DisplayUnit: React.FC<IDisplayUnit> = ({
   type,
@@ -8,7 +10,6 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
   courseId,
   lessonsList,
   lessonsInformation,
-  lessonOrder,
   setShowToast,
 }) => {
   const whiteIcon = [
@@ -62,6 +63,7 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
     const randomIndex = Math.floor(Math.random() * templates.length);
     return templates[randomIndex];
   };
+  const lessonOrder = useContext(LessonOrderContext);
   const randomTemplate = getRandomTemplate();
   return (
     <div className="flex flex-col h-full justify-center w-full font-bold gap-8 items-center relative ">
@@ -154,7 +156,6 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
               whiteIcon={whiteIcon[index]}
               grayIcon={grayIcon[index]}
               currentOrder={item.order}
-              lessonOrder={lessonOrder}
               setShowToast={setShowToast}
             />
           </div>

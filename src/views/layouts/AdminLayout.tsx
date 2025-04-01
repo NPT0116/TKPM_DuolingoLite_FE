@@ -1,5 +1,4 @@
 import React from "react";
-import { QuestionCircleOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Layout, Menu, theme } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -66,7 +65,13 @@ const AdminLayout: React.FC = () => {
     <Layout className="min-h-[100vh] h-[100vh] overflow-y-auto">
       <Header
         className="gap-4"
-        style={{ display: "flex", alignItems: "center" }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          position: "sticky",
+          top: 0,
+          zIndex: 10,
+        }}
       >
         <img
           className="h-[50%]"
@@ -82,7 +87,7 @@ const AdminLayout: React.FC = () => {
           DASHBOARD
         </h2>
       </Header>
-      <div className="h-[90%]">
+      <div className="h-auto">
         <Layout
           className="h-full"
           style={{
@@ -91,7 +96,14 @@ const AdminLayout: React.FC = () => {
             borderRadius: borderRadiusLG,
           }}
         >
-          <Sider style={{ background: colorBgContainer }} width="20%">
+          <Sider
+            style={{
+              background: colorBgContainer,
+              zIndex: 9,
+              overflowY: "auto",
+            }}
+            width="20%"
+          >
             <Menu
               mode="inline"
               defaultSelectedKeys={["multiple"]}

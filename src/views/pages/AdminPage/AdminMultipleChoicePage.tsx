@@ -1,46 +1,64 @@
-import QuestionPrompt from "../../components/Admin/Lesson/QuestionPrompt";
-import { Button, Input, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import Checkbox from "antd/es/checkbox/Checkbox";
+import { useState } from "react";
+import OptionPrompt from "../../components/Admin/Question/OptionPrompt";
+import QuestionPrompt from "../../components/Admin/Question/QuestionPrompt";
+import { IMultipleChoiceQuestion } from "../../../interfaces/Questions/IMultipleChoiceQuestion";
+
+const createEmptyQuestion = (): IMultipleChoiceQuestion => ({
+  questionId: "",
+  instruction: "",
+  vietnameseText: null,
+  englishText: "",
+  audio: null,
+  picture: null,
+  order: 0,
+  type: "multiple-choice",
+  questionConfigure: {
+    id: crypto.randomUUID(),
+    instruction: false,
+    vietnameseText: false,
+    englishText: false,
+    audio: false,
+    image: false,
+  },
+  optionConfigure: {
+    id: crypto.randomUUID(),
+    instruction: false,
+    vietnameseText: false,
+    englishText: false,
+    audio: false,
+    image: false,
+  },
+  options: [],
+  words: [],
+});
 
 const AdminMultipleChoicePage: React.FC = () => {
+  const optionConfigureArray = [
+    "Instruction",
+    "Vietnamese Text",
+    "English Text",
+    "Audio",
+    "Image",
+  ];
+  const questionConfigureArray = [
+    "Instruction",
+    "Vietnamese Text",
+    "English Text",
+    "Audio",
+    "Image",
+  ];
+
+  const [question, setQuestion] = useState<IMultipleChoiceQuestion>(
+    createEmptyQuestion()
+  );
   return (
-    <div className="flex flex-col gap-4">
-      <QuestionPrompt />
-      <div className="flex flex-col gap-4">
-        <h3 className="text-[25px] font-semibold ">Option Configuration</h3>
-        <ul
-          className="flex gap-6 justify-between"
-          style={{ marginBottom: "20px" }}
-        >
-          <li>
-            <Checkbox>
-              <span className="text-[20px]">Instruction</span>
-            </Checkbox>
-          </li>
-          <li>
-            <Checkbox>
-              <span className="text-[20px]">Vietnamese Text</span>
-            </Checkbox>
-          </li>
-          <li>
-            <Checkbox>
-              <span className="text-[20px]">Audio</span>
-            </Checkbox>
-          </li>
-          <li>
-            <Checkbox>
-              <span className="text-[20px]">English Text</span>
-            </Checkbox>
-          </li>
-          <li>
-            <Checkbox>
-              <span className="text-[20px]">Image</span>
-            </Checkbox>
-          </li>
-        </ul>
-      </div>
-      <Button className="w-fit">ADD OPTION</Button>
+    <div className="flex flex-col gap-[50px]">
+      <QuestionPrompt
+        configureArray={questionConfigureArray}
+        question={question}
+        setQuestion={setQuestion}
+      />
+      <OptionPrompt configureArray={optionConfigureArray} />
     </div>
   );
 };
