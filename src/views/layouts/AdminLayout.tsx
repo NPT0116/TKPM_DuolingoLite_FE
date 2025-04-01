@@ -18,6 +18,7 @@ const lessonItems = [
       />
     ),
     label: "Lessons",
+    children: [{ key: "Lessons", label: "Lessons" }],
   },
   {
     key: "course",
@@ -29,6 +30,7 @@ const lessonItems = [
       />
     ),
     label: "Courses",
+    children: [{ key: "Courses", label: "Courses" }],
   },
   {
     key: "",
@@ -97,7 +99,7 @@ const AdminLayout: React.FC = () => {
             <button
               onClick={() => setCollapsed(!collapsed)}
               style={{ padding: "0px", margin: "0px" }}
-              className="bg-white rounded-full w-[30px] h-[30px] border-[#E5E5E5] border-2 flex justify-center items-center text-xl font-bold text-[#AFAFAF] absolute right-0 translate-x-[15px] translate-y-[20px] z-10"
+              className="bg-white rounded-full w-[30px] h-[30px] border-[#E5E5E5] border-2 flex justify-center items-center text-xl font-bold text-[#AFAFAF] absolute right-0 translate-x-[15px] translate-y-[15px] z-10"
             >
               {collapsed ? (
                 <img
@@ -136,17 +138,19 @@ const AdminLayout: React.FC = () => {
                       <span className="font-medium text-lg">{item.label}</span>
                     )}
                     {/* Toggle button for children (only in expanded mode and if children exist) */}
-                    {!collapsed && item.children && (
-                      <button
-                        onClick={(e) => toggleExpand(item.key, e)}
-                        className="ml-auto text-xl font-bold text-[#AFAFAF] group-hover:text-[#1999D6]"
-                      >
-                        {expanded[item.key] ? "–" : "+"}
-                      </button>
-                    )}
+                    {!collapsed &&
+                      item.children &&
+                      item.children.length > 1 && (
+                        <button
+                          onClick={(e) => toggleExpand(item.key, e)}
+                          className="ml-auto text-xl font-bold text-[#AFAFAF] group-hover:text-[#1999D6]"
+                        >
+                          {expanded[item.key] ? "–" : "+"}
+                        </button>
+                      )}
                     {/* When collapsed and item has children, show popup on hover */}
                     {collapsed && item.children && (
-                      <div className="absolute left-full hidden group-hover:block bg-white shadow-xl rounded w-[150px]">
+                      <div className="absolute left-full hidden group-hover:block bg-white shadow-xl rounded w-[200px]">
                         <ul>
                           {item.children.map((child) => (
                             <li
@@ -156,7 +160,7 @@ const AdminLayout: React.FC = () => {
                                 handleMenuClick(child.key);
                               }}
                               className="p-1 hover:bg-gray-100 cursor-pointer font-medium"
-                              style={{ padding: "10px 5px" }}
+                              style={{ padding: "10px 20px" }}
                             >
                               {child.label}
                             </li>
@@ -167,12 +171,12 @@ const AdminLayout: React.FC = () => {
                   </li>
                   {/* In expanded mode, if this item has children and is toggled open, show them */}
                   {!collapsed && item.children && expanded[item.key] && (
-                    <ul className="ml-10 mt-1 flex flex-col gap-1">
+                    <ul className="flex flex-col gap-1">
                       {item.children.map((child) => (
                         <li
                           key={child.key}
                           onClick={() => handleMenuClick(child.key)}
-                          className="cursor-pointer p-1 hover:bg-gray-100 rounded text-[#AFAFAF]"
+                          className="cursor-pointer p-1 hover:bg-[#DDF4FF] hover:text-[#1999D6] rounded text-[#AFAFAF]"
                           style={{ padding: "8px 20px" }}
                         >
                           {child.label}
