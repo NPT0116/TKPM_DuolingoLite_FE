@@ -8,7 +8,7 @@ export interface IMatchingOption extends BaseOption {
   sourceType: string;
   targetType: string;
   englishText: string;
-  image: IResource;
+  image: null;
 }
 export interface IVNContent {
   optionId: string;
