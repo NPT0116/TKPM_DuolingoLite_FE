@@ -1,64 +1,62 @@
-import { useState } from "react";
-import OptionPrompt from "../../components/Admin/Question/OptionPrompt";
-import QuestionPrompt from "../../components/Admin/Question/QuestionPrompt";
-import { IMultipleChoiceQuestion } from "../../../interfaces/Questions/IMultipleChoiceQuestion";
+import QuestionPrompt from "../../components/Admin/Lesson/QuestionPrompt";
+import OptionPrompt from "../../components/Admin/Lesson/OptionPrompt";
+import OrderPrompt from "../../components/Admin/Lesson/OrderPrompt";
+import StepButton from "../../components/Admin/Components/StepButton";
 
-const createEmptyQuestion = (): IMultipleChoiceQuestion => ({
-  questionId: "",
-  instruction: "",
-  vietnameseText: null,
-  englishText: "",
-  audio: null,
-  picture: null,
-  order: 0,
-  type: "multiple-choice",
-  questionConfigure: {
-    id: crypto.randomUUID(),
-    instruction: false,
-    vietnameseText: false,
-    englishText: false,
-    audio: false,
-    image: false,
-  },
-  optionConfigure: {
-    id: crypto.randomUUID(),
-    instruction: false,
-    vietnameseText: false,
-    englishText: false,
-    audio: false,
-    image: false,
-  },
-  options: [],
-  words: [],
-});
+import { useState } from "react";
 
 const AdminMultipleChoicePage: React.FC = () => {
-  const optionConfigureArray = [
-    "Instruction",
-    "Vietnamese Text",
-    "English Text",
-    "Audio",
-    "Image",
-  ];
-  const questionConfigureArray = [
-    "Instruction",
-    "Vietnamese Text",
-    "English Text",
-    "Audio",
-    "Image",
-  ];
-
-  const [question, setQuestion] = useState<IMultipleChoiceQuestion>(
-    createEmptyQuestion()
-  );
+  const [step, setStep] = useState(0);
+  const HandleSetStateNext = () => {
+    if (step < 1) setStep((prev) => prev + 1);
+  };
+  const HandleSetStatePrev = () => {
+    if (step > 0) setStep((prev) => prev - 1);
+  };
+  const stepCss = {
+    background: "#1CB0F6",
+    color: "white",
+  };
+  const contentCss = {
+    color: "black",
+  };
   return (
-    <div className="flex flex-col gap-[50px]">
-      <QuestionPrompt
-        configureArray={questionConfigureArray}
-        question={question}
-        setQuestion={setQuestion}
-      />
-      <OptionPrompt configureArray={optionConfigureArray} />
+    <div className="w-full h-full flex flex-row">
+      <div
+        className="w-3/12 flex flex-col justify-center items-center border-r-2 border-[#E5E5E5]"
+        style={{ margin: "20px 0" }}
+      >
+        <OrderPrompt
+          order={1}
+          content="Promt Configuration"
+          processLine={true}
+          stepCss={step == 0 ? stepCss : {}}
+          contentCss={step == 0 ? contentCss : {}}
+        />
+        <OrderPrompt
+          order={2}
+          content="Option Configuration"
+          stepCss={step == 1 ? stepCss : {}}
+          contentCss={step == 1 ? contentCss : {}}
+        />
+      </div>
+
+      <div className="w-11/12 h-full" style={{ padding: "0 20px" }}>
+        <div className="w-full h-5/6">
+          {step == 0 && <QuestionPrompt />}
+          {step == 1 && <OptionPrompt />}
+        </div>
+        <div className="w-full h-1/6 flex flex-row justify-evenly items-center border-t-2 border-[#E5E5E5]">
+          <div className="w-1/2 flex justify-start">
+            {step == 1 && (
+              <StepButton content="LÙI" onClick={HandleSetStatePrev} />
+            )}
+          </div>
+          <div className="w-1/2 flex justify-end">
+            <StepButton content="TIẾP TỤC" onClick={HandleSetStateNext} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
