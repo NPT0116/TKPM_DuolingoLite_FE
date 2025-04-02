@@ -1,23 +1,19 @@
-import axios from "axios";
-import { IQuestion } from "../../interfaces/IQuestion";
-import { IMultipleChoiceQuestion } from "../../interfaces/Questions/IMultipleChoiceQuestion";
-import { API_BASE_URL } from "../../configs/apiConfig";
-
-const DEFAULT_LESSON_ID = "17ff2224-daab-4fff-9ad5-7acef879e3b7";
+import { IAddQuestion } from "../../interfaces/Questions/IBaseQuestion";
+import apiClient from "../../ultils/apiClient";
+import { handleApiError } from "../../ultils/handleApiError";
 
 export const addMultipleChoiceQuestion = async (
-  lessonId: string = DEFAULT_LESSON_ID,
-  question: IMultipleChoiceQuestion
-): Promise<any> => {
+  lessonId: string,
+  question: IAddQuestion
+): Promise<{ data?: any; error?: string }> => {
   try {
-    const response = await axios.post(
-      `${API_BASE_URL}Lesson/${lessonId}/add-question`,
-      question,
-      { headers: { Accept: "*/*", "Content-Type": "application/json" } }
+    const response = await apiClient.post(
+      `/Lesson/${lessonId}/add-question`,
+      question
     );
-    return response.data;
+    return { data: response.data };
   } catch (error) {
-    console.error("Failed to add multiple choice question: ", error);
-    return null;
+    const errorMessage = handleApiError(error);
+    return { error: errorMessage };
   }
 };

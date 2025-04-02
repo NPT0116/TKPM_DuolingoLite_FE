@@ -2,39 +2,41 @@ import QuestionPrompt from "../../components/Admin/Lesson/QuestionPrompt";
 import OptionPrompt from "../../components/Admin/Lesson/OptionPrompt";
 import OrderPrompt from "../../components/Admin/Lesson/OrderPrompt";
 import StepButton from "../../components/Admin/Components/StepButton";
-
 import { useEffect, useState } from "react";
-import { IAddMultipleChoiceQuestion } from "../../../interfaces/Questions/IMultipleChoiceQuestion";
+import { addMultipleChoiceQuestion } from "../../../services/Lesson/AddMultipleChoiceQuestionService";
+import { IAddQuestion } from "../../../interfaces/Questions/IBaseQuestion";
+import { QuestionType } from "../../../enums/questionType";
 
-const createEmptyQuestion = (): IAddMultipleChoiceQuestion => ({
+const createEmptyQuestion = (): IAddQuestion => ({
   instruction: "",
   vietnameseText: null,
   englishText: "",
-  audio: null,
   image: null,
-  order: 0,
-  type: "multiple-choice",
+  audio: null,
+  order: 1,
+  type: QuestionType.MultipleChoice,
   questionConfiguration: {
-    instruction: false,
-    vietnameseText: false,
-    englishText: false,
     audio: false,
+    englishText: false,
+    vietnameseText: false,
+    instruction: false,
     image: false,
   },
   optionConfiguration: {
-    instruction: false,
-    vietnameseText: false,
-    englishText: false,
     audio: false,
+    englishText: false,
+    vietnameseText: false,
+    instruction: false,
     image: false,
   },
   options: [],
 });
 
 const AdminMultipleChoicePage: React.FC = () => {
-  const [question, setQuestion] = useState<IAddMultipleChoiceQuestion>(
-    createEmptyQuestion()
-  );
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loadingMessage, setLoadingMessage] = useState("");
+  const [question, setQuestion] = useState<IAddQuestion>(createEmptyQuestion());
   const configureArray = [
     "Instruction",
     "Vietnamese Text",
@@ -56,6 +58,28 @@ const AdminMultipleChoicePage: React.FC = () => {
   const contentCss = {
     color: "black",
   };
+
+  const handleCreate = async () => {
+    setLoadingMessage("LOADING...");
+    try {
+      const { data, error } = await addMultipleChoiceQuestion(
+        "17ff2224-daab-4fff-9ad5-7acef879e3b7",
+        question
+      );
+      if (error) {
+        setErrorMessage(error);
+        setSuccessMessage("");
+        setLoadingMessage("");
+      } else {
+        setSuccessMessage("TẠO CÂU HỎI THÀNH CÔNG");
+        setErrorMessage("");
+        setLoadingMessage("");
+      }
+    } catch (error) {
+      console.log("Error handle create question: ", error);
+    }
+  };
+
   useEffect(() => {
     console.log(question);
   }, [question]);
@@ -108,11 +132,26 @@ const AdminMultipleChoicePage: React.FC = () => {
               <StepButton content="LÙI" onClick={HandleSetStatePrev} />
             )}
           </div>
+          <span
+            className={`font-bold whitespace-nowrap ${
+              loadingMessage
+                ? "text-[#47D7FF]"
+                : errorMessage
+                ? "text-[#ED5555]"
+                : "text-[#79B933]"
+            }`}
+          >
+            {loadingMessage
+              ? loadingMessage
+              : errorMessage
+              ? errorMessage
+              : successMessage}
+          </span>
           <div className="w-1/2 flex justify-end">
             {step < 1 ? (
               <StepButton content="TIẾP TỤC" onClick={HandleSetStateNext} />
             ) : (
-              <StepButton content="TẠO" />
+              <StepButton content="TẠO" onClick={handleCreate} />
             )}
           </div>
         </div>

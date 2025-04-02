@@ -1,17 +1,16 @@
 import { AutoComplete, Checkbox, Radio } from "antd";
-import { IAddMultipleChoiceQuestion } from "../../../../interfaces/Questions/IMultipleChoiceQuestion";
 import { useEffect, useState } from "react";
 import { Configure } from "../../../../interfaces/Configure/Configure";
 import { Button } from "antd";
 import CreateOptionForm from "./CreateOptionForm";
-import {
-  IAddMultipleChoiceOption,
-  IMultipleChoiceOption,
-} from "../../../../interfaces/Options/IMultipleChoiceOption";
+import { IMultipleChoiceOption } from "../../../../interfaces/Options/IMultipleChoiceOption";
 import { getOptionByEnglishText } from "../../../../services/Option/GetOptionService";
 import { IResource } from "../../../../interfaces/IResource";
+import { IAddOption } from "../../../../interfaces/Options/IBaseOption";
+import { IAddQuestion } from "../../../../interfaces/Questions/IBaseQuestion";
 
-const createEmptyOption = (): IAddMultipleChoiceOption => ({
+const createEmptyOption = (): IMultipleChoiceOption => ({
+  optionId: "",
   isCorrect: false,
   vietnameseText: null,
   englishText: null,
@@ -19,10 +18,19 @@ const createEmptyOption = (): IAddMultipleChoiceOption => ({
   audio: null,
 });
 
+const createAddEmptyOption = (): IAddOption => ({
+  order: 0,
+  optionId: "",
+  isCorrect: false,
+  sourceType: null,
+  targetType: null,
+  position: null,
+});
+
 interface OptionPromptProps {
   configureArray: string[];
-  question: IAddMultipleChoiceQuestion;
-  setQuestion: React.Dispatch<React.SetStateAction<IAddMultipleChoiceQuestion>>;
+  question: IAddQuestion;
+  setQuestion: React.Dispatch<React.SetStateAction<IAddQuestion>>;
 }
 
 const OptionPrompt: React.FC<OptionPromptProps> = ({
@@ -39,15 +47,19 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
   });
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [modalIndex, setModalIndex] = useState(0);
-  const [existedOptions, setExistedOptions] = useState<
-    IAddMultipleChoiceOption[]
-  >([]);
+
+  const [addAnswerOptions, setAddAnswerOptions] = useState<IAddOption[]>([]);
+
+  // Các Answer Option để hiện thị, check image, audio, vietnameseText, englishText
+  const [existedOptions, setExistedOptions] = useState<IMultipleChoiceOption[]>(
+    []
+  );
   const [filteredExistedOptions, setFilteredExistedOptions] = useState<
-    IAddMultipleChoiceOption[]
+    IMultipleChoiceOption[]
   >([]);
-  const [answerOptions, setAnswerOptions] = useState<
-    IAddMultipleChoiceOption[]
-  >(question.options || []);
+  const [answerOptions, setAnswerOptions] = useState<IMultipleChoiceOption[]>(
+    []
+  );
 
   const toCamelCase = (str: string): keyof Configure => {
     return (str.charAt(0).toLowerCase() +
@@ -60,7 +72,7 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
     setVisibleFields({ ...visibleFields, [key]: newValue });
     setQuestion((prev) => ({
       ...prev,
-      optionConfigure: {
+      optionConfiguration: {
         ...prev.optionConfiguration,
         [key]: newValue,
       },
@@ -72,19 +84,24 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
     setFilteredExistedOptions(filtered);
   }, [visibleFields]);
   const handleCorrectChange = (index: number, isCorrect: boolean) => {
+    const addUpdatedOptions = [...addAnswerOptions];
+    addUpdatedOptions[index].isCorrect = isCorrect;
+    setAddAnswerOptions(addUpdatedOptions);
+
     const updatedOptions = [...answerOptions];
     updatedOptions[index].isCorrect = isCorrect;
     setAnswerOptions(updatedOptions);
   };
 
   const handleAddOption = () => {
+    setAddAnswerOptions((prev) => [...prev, createAddEmptyOption()]);
     setAnswerOptions((prev) => [...prev, createEmptyOption()]);
   };
 
   const handleSearch = async (value: string) => {
     if (!value) return;
 
-    const result: IAddMultipleChoiceOption[] =
+    const result: IMultipleChoiceOption[] =
       (await getOptionByEnglishText(value)) ?? [];
     setExistedOptions(result);
     const filtered = filterSearchOption(result);
@@ -92,11 +109,11 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
     setFilteredExistedOptions(filtered);
   };
 
-  const filterSearchOption = (options: IAddMultipleChoiceOption[]) => {
+  const filterSearchOption = (options: IMultipleChoiceOption[]) => {
     const filtered = options.filter((option) => {
       return Object.entries(visibleFields).every(([key, isVisible]) => {
         if (key === "instruction") return true;
-        const value = option[key as keyof IAddMultipleChoiceOption];
+        const value = option[key as keyof IMultipleChoiceOption];
 
         if (key === "audio" || key === "image") {
           return isVisible
@@ -115,22 +132,26 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
     const updatedOptions = [...answerOptions];
     updatedOptions.splice(index, 1);
     setAnswerOptions(updatedOptions);
+
+    const updateAddOptions = [...addAnswerOptions];
+    updateAddOptions.splice(index, 1);
+    setAddAnswerOptions(updateAddOptions);
   };
 
   // Đồng bộ answerOptions vào question.options mỗi khi thay đổi
   useEffect(() => {
     setQuestion((prev) => ({
       ...prev,
-      options: answerOptions,
+      options: addAnswerOptions,
     }));
-  }, [answerOptions, setQuestion]);
+  }, [addAnswerOptions, setQuestion]);
 
   useEffect(() => {
     const { id, ...restConfig } = question.optionConfiguration;
     setVisibleFields(restConfig);
   }, [question.optionConfiguration]);
   return (
-    <div className="w-full h-full flex flex-col justify-evenly">
+    <div className="w-full h-full flex flex-col justify-evenly overflow-y-auto">
       <header className="h-1/6 bg-gray-300">
         <h3 className="text-3xl font-extrabold tracking-wide uppercase text-center">
           Option Configuration
@@ -226,8 +247,22 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
                     placeholder="Search English Text"
                     onSearch={handleSearch}
                     onSelect={(value, option) => {
-                      const selected =
-                        option.optionData as IMultipleChoiceOption;
+                      const data = option.optionData;
+                      const selected = data as IMultipleChoiceOption;
+                      const addSelected = {
+                        order: index + 1,
+                        optionId: data.id,
+                        isCorrect: data.isCorrect,
+                        position: null,
+                        sourceType: null,
+                        targetType: null,
+                      } as IAddOption;
+                      const addUpdated = [...addAnswerOptions];
+                      addUpdated[index] = addSelected;
+                      addUpdated[index].isCorrect =
+                        addAnswerOptions[index].isCorrect;
+                      setAddAnswerOptions(addUpdated);
+
                       const updated = [...answerOptions];
                       updated[index] = selected;
                       updated[index].isCorrect = answerOptions[index].isCorrect;
