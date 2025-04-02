@@ -116,7 +116,7 @@ const AdminLayout: React.FC = () => {
               )}
             </button>
 
-            <ul className="flex flex-col ">
+            <ul className="flex flex-col " style={{ margin: "40px 0" }}>
               {lessonItems.map((item) => (
                 <React.Fragment key={item.key}>
                   <li
