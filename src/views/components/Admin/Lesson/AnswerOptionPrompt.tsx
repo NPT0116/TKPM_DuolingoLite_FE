@@ -1,17 +1,18 @@
-import { AutoComplete, Checkbox, Radio } from "antd";
-import { IAddMultipleChoiceQuestion } from "../../../../interfaces/Questions/IMultipleChoiceQuestion";
-import { useEffect, useState } from "react";
-import { Configure } from "../../../../interfaces/Configure/Configure";
-import { Button } from "antd";
-import CreateOptionForm from "./CreateOptionForm";
-import {
-  IAddMultipleChoiceOption,
-  IMultipleChoiceOption,
-} from "../../../../interfaces/Options/IMultipleChoiceOption";
+import { useState, useEffect } from "react";
+import { IMultipleChoiceOption } from "../../../../interfaces/Options/IMultipleChoiceOption";
+import { IMultipleChoiceQuestion } from "../../../../interfaces/Questions/IMultipleChoiceQuestion";
+import Checkbox from "antd/es/checkbox/Checkbox";
+import { AutoComplete, Button, Input, Radio } from "antd";
 import { getOptionByEnglishText } from "../../../../services/Option/GetOptionService";
-import { IResource } from "../../../../interfaces/IResource";
+import CreateOptionForm from "./CreateOptionForm";
 
-const createEmptyOption = (): IAddMultipleChoiceOption => ({
+interface QuestionPromptProps {
+  configureArray: string[];
+  question: IMultipleChoiceQuestion;
+  setQuestion: React.Dispatch<React.SetStateAction<IMultipleChoiceQuestion>>;
+}
+
+const createEmptyOption = (): IMultipleChoiceOption => ({
   isCorrect: false,
   vietnameseText: null,
   englishText: null,
@@ -19,63 +20,19 @@ const createEmptyOption = (): IAddMultipleChoiceOption => ({
   audio: null,
 });
 
-interface OptionPromptProps {
-  configureArray: string[];
-  question: IAddMultipleChoiceQuestion;
-  setQuestion: React.Dispatch<React.SetStateAction<IAddMultipleChoiceQuestion>>;
-}
-
-const OptionPrompt: React.FC<OptionPromptProps> = ({
+const AnswerOptionPrompt: React.FC<QuestionPromptProps> = ({
   configureArray,
   question,
   setQuestion,
 }) => {
-  const [visibleFields, setVisibleFields] = useState<Record<string, boolean>>({
-    instruction: false,
-    vietnameseText: false,
-    englishText: false,
-    audio: false,
-    image: false,
-  });
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [modalIndex, setModalIndex] = useState(0);
-  const [existedOptions, setExistedOptions] = useState<
-    IAddMultipleChoiceOption[]
-  >([]);
-  const [filteredExistedOptions, setFilteredExistedOptions] = useState<
-    IAddMultipleChoiceOption[]
-  >([]);
-  const [answerOptions, setAnswerOptions] = useState<
-    IAddMultipleChoiceOption[]
-  >(question.options || []);
-
-  const toCamelCase = (str: string): keyof Configure => {
-    return (str.charAt(0).toLowerCase() +
-      str.slice(1).replace(/\s+/g, "")) as keyof Configure;
-  };
-
-  const handleCheckBox = (field: string) => () => {
-    const key = toCamelCase(field);
-    const newValue = !visibleFields[key];
-    setVisibleFields({ ...visibleFields, [key]: newValue });
-    setQuestion((prev) => ({
-      ...prev,
-      optionConfigure: {
-        ...prev.optionConfiguration,
-        [key]: newValue,
-      },
-    }));
-  };
-
-  useEffect(() => {
-    const filtered = filterSearchOption(existedOptions);
-    setFilteredExistedOptions(filtered);
-  }, [visibleFields]);
-  const handleCorrectChange = (index: number, isCorrect: boolean) => {
-    const updatedOptions = [...answerOptions];
-    updatedOptions[index].isCorrect = isCorrect;
-    setAnswerOptions(updatedOptions);
-  };
+  const [existedOptions, setExistedOptions] = useState<IMultipleChoiceOption[]>(
+    []
+  );
+  const [answerOptions, setAnswerOptions] = useState<IMultipleChoiceOption[]>(
+    question.options || []
+  );
 
   const handleAddOption = () => {
     setAnswerOptions((prev) => [...prev, createEmptyOption()]);
@@ -84,31 +41,16 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
   const handleSearch = async (value: string) => {
     if (!value) return;
 
-    const result: IAddMultipleChoiceOption[] =
-      (await getOptionByEnglishText(value)) ?? [];
-    setExistedOptions(result);
-    const filtered = filterSearchOption(result);
-
-    setFilteredExistedOptions(filtered);
+    const result = await getOptionByEnglishText(value);
+    if (result) {
+      setExistedOptions(result);
+    }
   };
 
-  const filterSearchOption = (options: IAddMultipleChoiceOption[]) => {
-    const filtered = options.filter((option) => {
-      return Object.entries(visibleFields).every(([key, isVisible]) => {
-        if (key === "instruction") return true;
-        const value = option[key as keyof IAddMultipleChoiceOption];
-
-        if (key === "audio" || key === "image") {
-          return isVisible
-            ? value !== null && (value as IResource).url !== ""
-            : value === null;
-        } else {
-          // Trường hợp là string | null
-          return isVisible ? value !== null && value !== "" : value === null;
-        }
-      });
-    });
-    return filtered;
+  const handleCorrectChange = (index: number, isCorrect: boolean) => {
+    const updatedOptions = [...answerOptions];
+    updatedOptions[index].isCorrect = isCorrect;
+    setAnswerOptions(updatedOptions);
   };
 
   const handleDelete = (index: number) => {
@@ -125,25 +67,19 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
     }));
   }, [answerOptions, setQuestion]);
 
-  useEffect(() => {
-    const { id, ...restConfig } = question.optionConfiguration;
-    setVisibleFields(restConfig);
-  }, [question.optionConfiguration]);
   return (
-    <div className="w-full h-full flex flex-col justify-evenly">
+    <div className="w-full h-full flex flex-col justify-evenly overflow-y-auto">
       <header className="h-1/6 bg-gray-300">
         <h3 className="text-3xl font-extrabold tracking-wide uppercase text-center">
-          Option Configuration
+          Answer Option Configuration
         </h3>
         <section>
           <ul className="flex flex-wrap gap-8 justify-center">
             {configureArray.map((field, index) => (
               <li key={index}>
-                {field !== "Instruction" && (
-                  <Checkbox onChange={handleCheckBox(field)}>
-                    <span className="text-[18px]">{field}</span>
-                  </Checkbox>
-                )}
+                <Checkbox>
+                  <span className="text-[18px]">{field}</span>
+                </Checkbox>
               </li>
             ))}
           </ul>
@@ -210,7 +146,7 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
                   </span>
                   <AutoComplete
                     style={{ width: "100%" }}
-                    options={filteredExistedOptions.map((item) => ({
+                    options={existedOptions.map((item) => ({
                       value:
                         item.englishText +
                         (item.vietnameseText
@@ -261,4 +197,4 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
   );
 };
 
-export default OptionPrompt;
+export default AnswerOptionPrompt;

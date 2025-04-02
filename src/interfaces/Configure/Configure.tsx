@@ -6,6 +6,15 @@ export interface Configure {
   image: boolean;
   instruction: boolean;
 }
+
+export interface IAddConfigure {
+  audio: boolean;
+  englishText: boolean;
+  vietnameseText: boolean;
+  image: boolean;
+  instruction: boolean;
+}
+
 export interface IQuestionConfigure {
   id: string;
   instruction: boolean;

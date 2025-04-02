@@ -3,9 +3,45 @@ import OptionPrompt from "../../components/Admin/Lesson/OptionPrompt";
 import OrderPrompt from "../../components/Admin/Lesson/OrderPrompt";
 import StepButton from "../../components/Admin/Components/StepButton";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { IAddMultipleChoiceQuestion } from "../../../interfaces/Questions/IMultipleChoiceQuestion";
+
+const createEmptyQuestion = (): IAddMultipleChoiceQuestion => ({
+  instruction: "",
+  vietnameseText: null,
+  englishText: "",
+  audio: null,
+  image: null,
+  order: 0,
+  type: "multiple-choice",
+  questionConfiguration: {
+    instruction: false,
+    vietnameseText: false,
+    englishText: false,
+    audio: false,
+    image: false,
+  },
+  optionConfiguration: {
+    instruction: false,
+    vietnameseText: false,
+    englishText: false,
+    audio: false,
+    image: false,
+  },
+  options: [],
+});
 
 const AdminMultipleChoicePage: React.FC = () => {
+  const [question, setQuestion] = useState<IAddMultipleChoiceQuestion>(
+    createEmptyQuestion()
+  );
+  const configureArray = [
+    "Instruction",
+    "Vietnamese Text",
+    "English Text",
+    "Audio",
+    "Image",
+  ];
   const [step, setStep] = useState(0);
   const HandleSetStateNext = () => {
     if (step < 1) setStep((prev) => prev + 1);
@@ -20,6 +56,9 @@ const AdminMultipleChoicePage: React.FC = () => {
   const contentCss = {
     color: "black",
   };
+  useEffect(() => {
+    console.log(question);
+  }, [question]);
   return (
     <div className="w-full h-full flex flex-row">
       <div
@@ -28,7 +67,7 @@ const AdminMultipleChoicePage: React.FC = () => {
       >
         <OrderPrompt
           order={1}
-          content="Promt Configuration"
+          content="Question Configuration"
           processLine={true}
           stepCss={step == 0 ? stepCss : {}}
           contentCss={step == 0 ? contentCss : {}}
@@ -40,20 +79,41 @@ const AdminMultipleChoicePage: React.FC = () => {
           contentCss={step == 1 ? contentCss : {}}
         />
       </div>
-
+      {/* Main Content */}
       <div className="w-11/12 h-full" style={{ padding: "0 20px" }}>
-        <div className="w-full h-5/6">
-          {step == 0 && <QuestionPrompt />}
-          {step == 1 && <OptionPrompt />}
+        <div
+          className="w-full h-5/6"
+          style={{ display: step === 0 ? "block" : "none" }}
+        >
+          <QuestionPrompt
+            configureArray={configureArray}
+            question={question}
+            setQuestion={setQuestion}
+          />
         </div>
+        <div
+          className="w-full h-5/6"
+          style={{ display: step === 1 ? "block" : "none" }}
+        >
+          <OptionPrompt
+            configureArray={configureArray}
+            question={question}
+            setQuestion={setQuestion}
+          />
+        </div>
+
         <div className="w-full h-1/6 flex flex-row justify-evenly items-center border-t-2 border-[#E5E5E5]">
           <div className="w-1/2 flex justify-start">
-            {step == 1 && (
+            {step >= 1 && (
               <StepButton content="LÙI" onClick={HandleSetStatePrev} />
             )}
           </div>
           <div className="w-1/2 flex justify-end">
-            <StepButton content="TIẾP TỤC" onClick={HandleSetStateNext} />
+            {step < 1 ? (
+              <StepButton content="TIẾP TỤC" onClick={HandleSetStateNext} />
+            ) : (
+              <StepButton content="TẠO" />
+            )}
           </div>
         </div>
       </div>

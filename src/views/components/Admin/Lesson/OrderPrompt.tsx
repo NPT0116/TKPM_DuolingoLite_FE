@@ -15,7 +15,7 @@ const OrderPrompt: React.FC<IOrderPrompt> = ({
 }) => {
   return (
     <div className="w-full " style={{ padding: "0 5px" }}>
-      <div className="flex flex-roww-full">
+      <div className="flex flex-row-full">
         <div className="w-1/6">
           <div
             className="rounded-full text-[#B0B0B0] bg-[#E5E5E5] h-[25px] w-[25px] flex justify-center items-center font-bold"

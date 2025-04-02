@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import DisplayUnit from "../../components/LearnPage/DisplayUnit";
 import { css } from "@emotion/react";
-import React, { createContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../../../configs/axiosConfig";
 import {
   ICourseValue,

@@ -1,43 +1,88 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Input, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Checkbox from "antd/es/checkbox/Checkbox";
+import { IAddMultipleChoiceQuestion } from "../../../../interfaces/Questions/IMultipleChoiceQuestion";
+import { Configure } from "../../../../interfaces/Configure/Configure";
+import { IBaseQuestion } from "../../../../interfaces/Questions/IBaseQuestion";
+import FileUpload from "../Components/Upload";
+import { IResource } from "../../../../interfaces/IResource";
 
-const QuestionPrompt: React.FC = () => {
+interface QuestionPromptProps {
+  configureArray: string[];
+  question: IAddMultipleChoiceQuestion;
+  setQuestion: React.Dispatch<React.SetStateAction<IAddMultipleChoiceQuestion>>;
+}
+
+const QuestionPrompt: React.FC<QuestionPromptProps> = ({
+  configureArray,
+  question,
+  setQuestion,
+}) => {
+  const [visibleFields, setVisibleFields] = useState<Record<string, boolean>>({
+    instruction: false,
+    vietnameseText: false,
+    englishText: false,
+    audio: false,
+    image: false,
+  });
+  const [imgUpload, setImgUpload] = useState<IResource | null>(null);
+  const [audioUpload, setAudioUpload] = useState<IResource | null>(null);
+  const handleCheckBox = (field: string) => () => {
+    const key = toCamelCase(field);
+    const newValue = !visibleFields[key];
+    setVisibleFields({ ...visibleFields, [key]: newValue });
+
+    setQuestion((prev) => ({
+      ...prev,
+      questionConfigure: {
+        ...prev.questionConfiguration,
+        [key]: newValue,
+      },
+    }));
+  };
+
+  const handleInputChange =
+    (key: keyof IBaseQuestion) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setQuestion((prev) => ({
+        ...prev,
+        [key]: e.target.value,
+      }));
+    };
+
+  const toCamelCase = (str: string): keyof Configure => {
+    return (str.charAt(0).toLowerCase() +
+      str.slice(1).replace(/\s+/g, "")) as keyof Configure;
+  };
+
+  useEffect(() => {
+    const { id, ...restConfig } = question.questionConfiguration;
+    setVisibleFields(restConfig);
+  }, [question.questionConfiguration]);
+
+  useEffect(() => {
+    setQuestion((prev) => ({
+      ...prev,
+      audio: audioUpload,
+      picture: imgUpload,
+    }));
+  }, [imgUpload, audioUpload]);
   return (
-    <div className="w-full h-full flex flex-col justify-evenly">
+    <div className="w-full h-full flex flex-col justify-evenly overflow-y-auto">
       {/* Header */}
       <header className="h-1/6 ">
         <h3 className="text-3xl font-extrabold tracking-wide uppercase text-center">
-          Prompt Configuration
+          Question Configuration
         </h3>
         <section>
           <ul className="flex flex-wrap gap-8 justify-center">
-            <li>
-              <Checkbox>
-                <span className="text-lg">Instruction</span>
-              </Checkbox>
-            </li>
-            <li>
-              <Checkbox>
-                <span className="text-lg">Vietnamese Text</span>
-              </Checkbox>
-            </li>
-            <li>
-              <Checkbox>
-                <span className="text-lg">Audio</span>
-              </Checkbox>
-            </li>
-            <li>
-              <Checkbox>
-                <span className="text-lg">English Text</span>
-              </Checkbox>
-            </li>
-            <li>
-              <Checkbox>
-                <span className="text-lg">Image</span>
-              </Checkbox>
-            </li>
+            {configureArray.map((field, index) => (
+              <li key={index}>
+                <Checkbox onChange={handleCheckBox(field)}>
+                  <span className="text-[18px]">{field}</span>
+                </Checkbox>
+              </li>
+            ))}
           </ul>
         </section>
       </header>
@@ -46,79 +91,71 @@ const QuestionPrompt: React.FC = () => {
         {/* Checkbox List */}
 
         {/* Input Form */}
-        <section className="space-y-6">
+        <section className="space-y-6 flex flex-col gap-[40px]">
           {/* Instruction Input */}
-          <div className="flex flex-col gap-2">
-            <label className="text-base font-medium">
-              <span className="text-red-500">*</span> Instruction
-            </label>
-            <Input
-              placeholder="VD: Chọn đáp án đúng"
-              size="large"
-              className="rounded-md bg-gray-50 text-gray-700"
-            />
-          </div>
+          {visibleFields.instruction && (
+            <div className="flex flex-col gap-2">
+              <label className="text-base font-medium">
+                <span className="text-red-500">*</span> Instruction
+              </label>
+              <Input
+                onChange={handleInputChange("instruction")}
+                placeholder="VD: Chọn đáp án đúng"
+                size="large"
+                className="rounded-md bg-gray-50 text-gray-700"
+              />
+            </div>
+          )}
 
           {/* Vietnamese Text Input */}
-          <div className="flex flex-col gap-2">
-            <label className="text-base font-medium">
-              <span className="text-red-500">*</span> Vietnamese Text
-            </label>
-            <Input
-              placeholder="VD: Đâu là cái bàn?"
-              size="large"
-              className="rounded-md bg-gray-50 text-gray-700"
-            />
-          </div>
+          {visibleFields.vietnameseText && (
+            <div className="flex flex-col gap-2">
+              <label className="text-base font-medium">
+                <span className="text-red-500">*</span> Vietnamese Text
+              </label>
+              <Input
+                onChange={handleInputChange("vietnameseText")}
+                placeholder="VD: Đâu là cái bàn?"
+                size="large"
+                className="rounded-md bg-gray-50 text-gray-700"
+              />
+            </div>
+          )}
+
+          {/* English Text Input */}
+          {visibleFields.englishText && (
+            <div className="flex flex-col gap-2">
+              <label className="text-base font-medium">
+                <span className="text-red-500">*</span> English Text
+              </label>
+              <Input
+                onChange={handleInputChange("englishText")}
+                placeholder="VD: Which is the table?"
+                size="large"
+                className="rounded-md bg-gray-50 text-gray-700"
+              />
+            </div>
+          )}
 
           {/* Audio Upload */}
-          <div className="flex flex-col gap-2">
-            <label className="text-base font-medium">
-              <span className="text-red-500">*</span> Audio
-            </label>
-            <Upload
-              name="audio"
-              accept="audio/*"
-              showUploadList={false}
-              beforeUpload={(file) => {
-                console.log("Audio file:", file);
-                return false; // Ngăn auto upload
-              }}
-            >
-              <Button
-                icon={<UploadOutlined />}
-                size="large"
-                className="rounded-md"
-              >
-                Upload Audio
-              </Button>
-            </Upload>
-          </div>
+          {visibleFields.audio && (
+            <div className="flex flex-col gap-2">
+              <label className="text-base font-medium">
+                <span className="text-red-500">*</span> Audio
+              </label>
+              <FileUpload type="audio" setAudioUpload={setAudioUpload} />
+            </div>
+          )}
 
           {/* Image Upload */}
-          <div className="flex flex-col gap-2">
-            <label className="text-base font-medium">
-              <span className="text-red-500">*</span> Image
-            </label>
-            <Upload
-              name="image"
-              accept="image/*"
-              listType="picture"
-              showUploadList={false}
-              beforeUpload={(file) => {
-                console.log("Image file:", file);
-                return false; // Ngăn auto upload
-              }}
-            >
-              <Button
-                icon={<UploadOutlined />}
-                size="large"
-                className="rounded-md"
-              >
-                Upload Image
-              </Button>
-            </Upload>
-          </div>
+          {visibleFields.image && (
+            <div className="flex flex-col gap-2">
+              <label className="text-base font-medium">
+                <span className="text-red-500">*</span> Image
+              </label>
+              <FileUpload type="image" setImageUpload={setImgUpload} />
+            </div>
+          )}
         </section>
       </div>
     </div>

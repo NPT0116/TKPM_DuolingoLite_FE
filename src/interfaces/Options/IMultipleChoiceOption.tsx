@@ -8,3 +8,11 @@ export interface IMultipleChoiceOption extends BaseOption {
   image: IResource | null;
   audio: IResource | null;
 }
+
+export interface IAddMultipleChoiceOption {
+  isCorrect: boolean;
+  vietnameseText: string | null;
+  englishText: string | null;
+  image: IResource | null;
+  audio: IResource | null;
+}

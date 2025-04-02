@@ -1,3 +1,3 @@
 export interface BaseOption {
-  optionId: string;
+  optionId: string | null;
 }
