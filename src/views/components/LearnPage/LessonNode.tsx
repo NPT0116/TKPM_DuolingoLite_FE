@@ -2,8 +2,9 @@
 import { css } from "@emotion/react";
 import { ILessonInformation, ILessonValue } from "../../../interfaces/Course";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getUserHeart } from "../../../services/User/GetHeartService";
+import { LessonOrderContext } from "../../../context/LessonContext";
 interface ILessonNode {
   topColor: string;
   botColor: string;
@@ -16,7 +17,6 @@ interface ILessonNode {
   whiteIcon: string;
   grayIcon: string;
   currentOrder: number;
-  lessonOrder: number;
   setShowToast: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const LessonNode: React.FC<ILessonNode> = ({
@@ -31,7 +31,6 @@ const LessonNode: React.FC<ILessonNode> = ({
   whiteIcon,
   grayIcon,
   currentOrder,
-  lessonOrder,
   setShowToast,
 }) => {
   const [userHeart, setUserHeart] = useState<number>(0);
@@ -54,6 +53,7 @@ const LessonNode: React.FC<ILessonNode> = ({
 
     fetchUserHeart();
   }, []);
+  const lessonOrder = useContext(LessonOrderContext);
 
   const goToLessonPage = () => {
     navigate("/lesson", {

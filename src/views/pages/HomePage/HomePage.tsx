@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserCurrentCourse } from "../../../services/Course/GetUserCourseService";
 import { getCourseById } from "../../../services/Course/GetCourseByIdService";
 import { getUserProfile } from "../../../services/Authentication/AuthService";
+import { LessonOrderContext } from "../../../context/LessonContext";
 
 const scrollContainerStyle = css`
   scrollbar-width: 0px;
@@ -109,15 +110,16 @@ const HomePage: React.FC = () => {
       css={scrollContainerStyle}
     >
       <div className="h-full w-full overflow-auto" css={scrollContainerStyle}>
-        <DisplayUnit
-          setShowToast={setShowToast}
-          courseId={selectedCourse?.courseId}
-          title={courseDetail?.name}
-          type={1}
-          lessonsList={selectedCourse?.lessons}
-          lessonsInformation={lessonsInformation}
-          lessonOrder={selectedCourse?.lessonOrder || 0}
-        />
+        <LessonOrderContext.Provider value={selectedCourse?.lessonOrder ?? 0}>
+          <DisplayUnit
+            setShowToast={setShowToast}
+            courseId={selectedCourse?.courseId}
+            title={courseDetail?.name}
+            type={1}
+            lessonsList={selectedCourse?.lessons}
+            lessonsInformation={lessonsInformation}
+          />
+        </LessonOrderContext.Provider>
       </div>
       {showToast && (
         <div className="fixed top-0 left-0 w-full h-full z-50 bg-black/20 backdrop-blur-none flex justify-center items-center ">

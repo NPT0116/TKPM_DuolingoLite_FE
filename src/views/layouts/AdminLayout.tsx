@@ -4,7 +4,6 @@ import { Outlet, useNavigate } from "react-router-dom";
 import ic_flag from "../../assets/icons/ic_flag.svg";
 import ic_courses from "../../assets/icons/ic_courses.svg";
 import ic_add from "../../assets/icons/ic_add.svg";
-import { transform } from "framer-motion";
 
 const lessonItems = [
   {

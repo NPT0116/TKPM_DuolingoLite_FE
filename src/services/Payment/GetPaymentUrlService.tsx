@@ -1,7 +1,6 @@
 import axios from "axios";
 import { API_BASE_URL } from "../../configs/apiConfig";
 
-const moneyToPay = 100000;
 const description = encodeURIComponent("Thanh toán Premium");
 
 export const getVNPaymentUrl = async (money: number): Promise<any> => {
