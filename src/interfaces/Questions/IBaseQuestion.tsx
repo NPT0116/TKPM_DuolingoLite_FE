@@ -1,5 +1,7 @@
+import { QuestionType } from "../../enums/questionType";
 import { Configure, IAddConfigure } from "../Configure/Configure";
 import { IResource } from "../IResource";
+import { IAddOption } from "../Options/IBaseOption";
 
 export interface IBaseQuestion {
   instruction: string;
@@ -14,14 +16,15 @@ export interface IBaseQuestion {
   type: string;
 }
 
-export interface IAddBaseQuestion {
+export interface IAddQuestion {
   instruction: string;
   vietnameseText: string | null;
-  image: IResource | null;
   englishText: string;
-  audio: IResource | null;
+  image: string | null;
+  audio: string | null;
+  order: number;
+  type: QuestionType;
   questionConfiguration: IAddConfigure;
   optionConfiguration: IAddConfigure;
-  order: number;
-  type: string;
+  options: IAddOption[];
 }
