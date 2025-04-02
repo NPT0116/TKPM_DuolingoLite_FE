@@ -2,16 +2,42 @@ import { useEffect, useState } from "react";
 import CourseItem from "../../../components/Admin/Management/CourseItem";
 import LessonItem from "../../../components/Admin/Management/LessonItem";
 import { ICourseValue, ILessonValue } from "../../../../interfaces/Course";
-import { fakeCourseResponse } from "./MockCourse";
+// import { fakeCourseResponse } from "./MockCourse";
 import StepButton from "../../../components/Admin/Components/StepButton";
 import AddQuizPopup from "./AddQuizPopup";
+import { getCourseList } from "../../../../services/Course/GetCourseListService";
+import { getLessonByCourseId } from "../../../../services/Lesson/GetLessonByCourseIdService";
 const AdminCourseManagementPage: React.FC = () => {
-  // Fetch course
   const [courses, setCourses] = useState<ICourseValue[] | null>(null);
+
   useEffect(() => {
-    console.log("Fetch Mock Courses");
-    setCourses(fakeCourseResponse.value);
+    const fetchCoursesWithLessons = async () => {
+      try {
+        const data = await getCourseList();
+        const courseList = data.value;
+
+        const coursesWithLessons = await Promise.all(
+          courseList.map(async (course: ICourseValue) => {
+            const lessonResult = await getLessonByCourseId(course.id);
+            console.log("Lessons: ", lessonResult.data.value);
+            return {
+              ...course,
+              lessons: lessonResult?.data.value || [],
+            };
+          })
+        );
+
+        setCourses(coursesWithLessons);
+      } catch (error) {
+        console.error("Error fetching course list with lessons:", error);
+      }
+    };
+
+    fetchCoursesWithLessons();
+    // console.log("Fetch Mock Courses");
+    // setCourses(fakeCourseResponse.value);
   }, []);
+
   console.log(courses);
   // Handle Selected Course
   const [selectedCourse, setSelectedCourse] = useState<ICourseValue | null>(
@@ -102,8 +128,8 @@ const AdminCourseManagementPage: React.FC = () => {
                     >
                       <LessonItem
                         lessonTitle={lesson.title}
-                        lessonQuestionCount={lesson.questions.length}
-                        lessonEp={lesson.epEarned}
+                        lessonQuestionCount={lesson.questionCount}
+                        lessonEp={lesson.xpEarned}
                       />{" "}
                       <StepButton
                         content="ADD QUIZ"

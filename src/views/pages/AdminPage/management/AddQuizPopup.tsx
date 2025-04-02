@@ -1,6 +1,7 @@
 import { useState } from "react";
 import StepButton from "../../../components/Admin/Components/StepButton";
 import { ICourseValue, ILessonValue } from "../../../../interfaces/Course";
+import { useNavigate } from "react-router-dom";
 interface IAddQuizPopup {
   onBack?: () => void;
   selectedCourse?: ICourseValue | null;
@@ -11,9 +12,11 @@ const AddQuizPopup: React.FC<IAddQuizPopup> = ({
   selectedCourse,
   selectedLesson,
 }) => {
+  const navigate = useNavigate();
   const handleClick = (type: string) => {
     const url = `/admin/course/${selectedCourse?.id}/lesson/${selectedLesson?.id}/${type}`;
-    alert(url);
+    navigate(url);
+    // alert(url);
   };
   return (
     <div className="w-[600px] h-[500px] bg-white rounded-xl">

@@ -105,7 +105,7 @@ const AppRoutes: React.FC = () => {
           }
         />
         <Route path={PATH.ADMIN.index} element={<AdminLayout />}>
-          <Route path={PATH.ADMIN.lesson.index}>
+          <Route path={PATH.ADMIN.lesson.base}>
             <Route
               path={PATH.ADMIN.lesson.multipleChoice}
               element={<AdminMultipleChoicePage />}

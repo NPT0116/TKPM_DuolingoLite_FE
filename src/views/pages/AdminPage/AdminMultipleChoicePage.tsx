@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { addMultipleChoiceQuestion } from "../../../services/Lesson/AddMultipleChoiceQuestionService";
 import { IAddQuestion } from "../../../interfaces/Questions/IBaseQuestion";
 import { QuestionType } from "../../../enums/questionType";
+import { useParams } from "react-router-dom";
 
 const createEmptyQuestion = (): IAddQuestion => ({
   instruction: "",
@@ -37,6 +38,7 @@ const AdminMultipleChoicePage: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [loadingMessage, setLoadingMessage] = useState("");
   const [question, setQuestion] = useState<IAddQuestion>(createEmptyQuestion());
+  const { lessonId } = useParams();
   const configureArray = [
     "Instruction",
     "Vietnamese Text",
@@ -60,10 +62,11 @@ const AdminMultipleChoicePage: React.FC = () => {
   };
 
   const handleCreate = async () => {
+    if (!lessonId) return;
     setLoadingMessage("LOADING...");
     try {
       const { data, error } = await addMultipleChoiceQuestion(
-        "17ff2224-daab-4fff-9ad5-7acef879e3b7",
+        lessonId,
         question
       );
       if (error) {
