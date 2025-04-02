@@ -4,6 +4,7 @@ interface IStepButton {
   borderColor?: string;
   bgColor?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  width?: string;
 }
 const StepButton: React.FC<IStepButton> = ({
   content,
@@ -11,12 +12,14 @@ const StepButton: React.FC<IStepButton> = ({
   borderColor,
   bgColor,
   onClick,
+  width,
 }) => {
   const buttonCss = {
     padding: "10px 0",
     background: bgColor,
     color: textColor,
     borderColor: borderColor,
+    width: width,
   };
   return (
     <button
