@@ -25,7 +25,9 @@ export const PATH = {
   ADMIN: {
     index: "/admin",
     lesson: {
-      index: "lesson",
+      base: "course/:courseId/lesson/:lessonId",
+      management: "course",
+      index: "course/:courseId/lesson",
       multipleChoice: "multiple-choice",
       buildSentence: "build-sentence",
       matching: "matching",

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const apiBaseUrl = import.meta.env.VITE_PORT 
-  ? `http://localhost:${import.meta.env.VITE_PORT}/api` 
+const apiBaseUrl = import.meta.env.VITE_PORT
+  ? `http://localhost:${import.meta.env.VITE_PORT}/api`
   : "http://localhost:5142/api";
 
 const api = axios.create({ baseURL: apiBaseUrl });

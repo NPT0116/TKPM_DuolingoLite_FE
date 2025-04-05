@@ -1,8 +1,6 @@
 import React from "react";
 import { IResource } from "../../../../../interfaces/IResource";
-import { audio } from "framer-motion/client";
 import { useEffect, useRef, useState } from "react";
-import { IMatchingOption } from "../../../../../interfaces/Options/IMatchingOption";
 import { IWord } from "../../../../../interfaces/Questions/IPronunciationQuesion";
 
 interface TextAudioPictureProps {
@@ -46,6 +44,7 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
   };
 
   const playAudio = () => {
+    console.log("TextAudioPicture.tsx");
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;

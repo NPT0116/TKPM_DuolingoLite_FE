@@ -16,7 +16,9 @@ import ChooseCoursePage from "../views/pages/ChooseCoursePage/ChooseCoursePage";
 import BuyPremiumPage from "../views/pages/BuyPremiumPage/BuyPremiumPage";
 import ReviewLayout from "../views/layouts/ReviewLayout";
 import ReviewPage from "../views/pages/ReviewPage/ReviewPage";
+// Admin
 import AdminLayout from "../views/layouts/AdminLayout";
+import AdminCourseManagementPage from "../views/pages/AdminPage/management/AdminCourseManagementPage";
 import AdminMultipleChoicePage from "../views/pages/AdminPage/AdminMultipleChoicePage";
 import AdminMatchingPage from "../views/pages/AdminPage/AdminMatchingPage";
 import AdminBuildSentencePage from "../views/pages/AdminPage/AdminBuildSentencePage";
@@ -103,7 +105,7 @@ const AppRoutes: React.FC = () => {
           }
         />
         <Route path={PATH.ADMIN.index} element={<AdminLayout />}>
-          <Route path={PATH.ADMIN.lesson.index}>
+          <Route path={PATH.ADMIN.lesson.base}>
             <Route
               path={PATH.ADMIN.lesson.multipleChoice}
               element={<AdminMultipleChoicePage />}
@@ -121,6 +123,10 @@ const AppRoutes: React.FC = () => {
               element={<AdminPronunciationPage />}
             />
           </Route>
+          <Route
+            path={PATH.ADMIN.lesson.management}
+            element={<AdminCourseManagementPage />}
+          />
           {/* Có thể thêm /admin/course, /admin/question tương tự */}
         </Route>
       </Routes>

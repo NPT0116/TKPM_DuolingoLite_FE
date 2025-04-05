@@ -1,6 +1,5 @@
 import { Configure } from "../../../../interfaces/Configure/Configure";
 import { IResource } from "../../../../interfaces/IResource";
-import { IBuildSentenceOption } from "../../../../interfaces/Options/IBuildSentenceOption";
 import { OnlyAudio } from "../QuestionType/OnlyAudio/OnlyAudio";
 import { TextAudioPicture } from "../QuestionType/TextAudioPicture/TextAudioPicture";
 import { IWord } from "../../../../interfaces/Questions/IPronunciationQuesion";

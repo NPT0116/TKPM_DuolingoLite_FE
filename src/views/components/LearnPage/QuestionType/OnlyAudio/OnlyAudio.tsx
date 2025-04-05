@@ -7,6 +7,7 @@ interface OnlyAudioProps {
 export const OnlyAudio: React.FC<OnlyAudioProps> = ({ audio }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const playAudio = () => {
+    console.log("OnlyAudio.tsx");
     if (audioRef.current) {
       audioRef.current.pause();
     }

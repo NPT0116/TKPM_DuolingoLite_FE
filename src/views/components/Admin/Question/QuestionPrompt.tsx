@@ -1,4 +1,4 @@
-import { Button, Input, Upload } from "antd";
+import { Button, Input } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Checkbox from "antd/es/checkbox/Checkbox";
 import { useEffect, useState } from "react";

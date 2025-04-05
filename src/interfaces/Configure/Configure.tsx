@@ -11,8 +11,8 @@ export interface IAddConfigure {
   audio: boolean;
   englishText: boolean;
   vietnameseText: boolean;
-  image: boolean;
   instruction: boolean;
+  image: boolean;
 }
 
 export interface IQuestionConfigure {

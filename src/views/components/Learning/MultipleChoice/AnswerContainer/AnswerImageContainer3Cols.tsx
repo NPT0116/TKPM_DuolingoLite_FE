@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import AnswerImageCard from "../AnswerCard/AnswerImageCard";
 import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
@@ -32,7 +32,19 @@ const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
       setIsButtonCorrect(false);
     }
   }, [isNext, setIsButtonActive, setIsNext]);
-
+  // Handle overlap audio
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+  const playAudio = (url: string) => {
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause();
+      currentAudioRef.current.currentTime = 0;
+    }
+    const audio = new Audio(url);
+    currentAudioRef.current = audio;
+    audio.play().catch((error) => {
+      console.log("Error in AnswerImageContainer3Cols: ", error);
+    });
+  };
   return (
     <div className="h-[300px] w-full flex flex-col-3 gap-[8px] items-center">
       {options.map((option, index) => (
@@ -49,6 +61,9 @@ const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
               setIsButtonCorrect(true);
             } else {
               setIsButtonCorrect(false);
+            }
+            if (option.audio && option.audio.url) {
+              playAudio(option.audio.url);
             }
           }}
           isSubmit={isSubmit}

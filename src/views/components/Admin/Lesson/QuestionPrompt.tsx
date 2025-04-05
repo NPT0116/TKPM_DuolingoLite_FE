@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { Input } from "antd";
 import Checkbox from "antd/es/checkbox/Checkbox";
-import { IAddMultipleChoiceQuestion } from "../../../../interfaces/Questions/IMultipleChoiceQuestion";
-import { Configure } from "../../../../interfaces/Configure/Configure";
-import { IBaseQuestion } from "../../../../interfaces/Questions/IBaseQuestion";
+import { IAddConfigure } from "../../../../interfaces/Configure/Configure";
+import { IAddQuestion } from "../../../../interfaces/Questions/IBaseQuestion";
 import FileUpload from "../Components/Upload";
 import { IResource } from "../../../../interfaces/IResource";
 
 interface QuestionPromptProps {
   configureArray: string[];
-  question: IAddMultipleChoiceQuestion;
-  setQuestion: React.Dispatch<React.SetStateAction<IAddMultipleChoiceQuestion>>;
+  question: IAddQuestion;
+  setQuestion: React.Dispatch<React.SetStateAction<IAddQuestion>>;
 }
 
 const QuestionPrompt: React.FC<QuestionPromptProps> = ({
@@ -35,7 +33,7 @@ const QuestionPrompt: React.FC<QuestionPromptProps> = ({
 
     setQuestion((prev) => ({
       ...prev,
-      questionConfigure: {
+      questionConfiguration: {
         ...prev.questionConfiguration,
         [key]: newValue,
       },
@@ -43,16 +41,16 @@ const QuestionPrompt: React.FC<QuestionPromptProps> = ({
   };
 
   const handleInputChange =
-    (key: keyof IBaseQuestion) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    (key: keyof IAddQuestion) => (e: React.ChangeEvent<HTMLInputElement>) => {
       setQuestion((prev) => ({
         ...prev,
         [key]: e.target.value,
       }));
     };
 
-  const toCamelCase = (str: string): keyof Configure => {
+  const toCamelCase = (str: string): keyof IAddConfigure => {
     return (str.charAt(0).toLowerCase() +
-      str.slice(1).replace(/\s+/g, "")) as keyof Configure;
+      str.slice(1).replace(/\s+/g, "")) as keyof IAddConfigure;
   };
 
   useEffect(() => {
@@ -63,8 +61,8 @@ const QuestionPrompt: React.FC<QuestionPromptProps> = ({
   useEffect(() => {
     setQuestion((prev) => ({
       ...prev,
-      audio: audioUpload,
-      picture: imgUpload,
+      audio: audioUpload?.url ?? null,
+      image: imgUpload?.url ?? null,
     }));
   }, [imgUpload, audioUpload]);
   return (
