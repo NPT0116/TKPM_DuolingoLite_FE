@@ -98,6 +98,7 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
                 label={word}
                 onClick={() => onRemoveWord(option)}
                 disabled={isSubmit}
+                isEnglish={false}
               />
             </motion.div>
           );

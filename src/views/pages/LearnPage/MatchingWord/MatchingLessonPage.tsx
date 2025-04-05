@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { IMatchingQuestion } from "../../../../interfaces/Questions/IMatchingQuestion";
 import { IMatchingOption } from "../../../../interfaces/Options/IMatchingOption";
 
@@ -80,6 +80,19 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
   const handleScreenClick = () => {
     setPickingQueue([]);
   };
+  // Handle Overlap audio
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const playAudio = (url: string) => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    const audio = new Audio(url);
+    audioRef.current = audio;
+    audio
+      .play()
+      .catch((error) => console.log("Error in MatchingLessonPag.tsx", error));
+  };
   return (
     <div onClick={() => handleScreenClick()}>
       {/* Lesson Container */}
@@ -106,6 +119,11 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
           <div className="w-full h-full grid grid-cols-1 grid-rows-5 gap-4">
             {targetCollection.map((content) => (
               <ButtonMatching
+                onClick={() => {
+                  if (content.audio && content.audio.url) {
+                    playAudio(content.audio.url);
+                  }
+                }}
                 key={`target-${content.optionId}`}
                 setWrongPickingList={setWrongPickingList}
                 wrongPickingList={wrongPickingList}
