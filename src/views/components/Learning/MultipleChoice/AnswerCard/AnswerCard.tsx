@@ -19,14 +19,7 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
   onSelect,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
-  const playAudio = () => {
-    console.log("AnswerCard.tsx");
 
-    if (option.audio && option.audio.url) {
-      const audio = new Audio(option.audio.url);
-      audio.play().catch((error) => console.error("Audio play failed", error));
-    }
-  };
   return (
     <div
       className={`w-full flex items-center justify-center h-full border-2  rounded-xl ${
@@ -59,7 +52,6 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
           ? "0 2.5px 0 0 #3F85A7"
           : "0 2.5px 0 0 #37464F";
         setIsClicked(false);
-        playAudio();
         onSelect();
       }}
     >
