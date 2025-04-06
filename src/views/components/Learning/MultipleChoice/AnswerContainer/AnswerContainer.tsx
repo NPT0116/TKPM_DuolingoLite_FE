@@ -37,9 +37,9 @@ const AnswerContainer: React.FC<AnswerContainerProps> = ({
 
   return (
     <div
-      className={`w-full h-full flex ${
+      className={`w-full h-full  flex justify-center items-center ${
         onlyAudio && options.length === 2 ? "" : "flex-col"
-      } gap-[8px]`}
+      } gap-2`}
     >
       {/* Answer Cards */}
       {options.map((option, index) => (

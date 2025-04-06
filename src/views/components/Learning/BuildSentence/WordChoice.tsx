@@ -45,7 +45,7 @@ const WordChoice: React.FC<WordChoiceProps> = ({
   return (
     <div
       ref={containerRef}
-      className="flex flex-wrap justify-center text-[19px] gap-[10px]"
+      className="flex flex-wrap justify-center items-center text-[19px] gap-2 "
     >
       {wordOptions.map((option) => {
         const word: string = isEnglish

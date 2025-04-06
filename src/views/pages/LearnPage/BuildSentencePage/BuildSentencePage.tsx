@@ -62,48 +62,65 @@ const BuildSentencePage: React.FC<BuildSentenceProps> = ({
   }, [state]);
 
   return (
-    <div className="w-full h-full bg-[#131F24] flex justify-center items-center">
-      <div className="w-[600px] flex flex-col text-white">
-        {isQuestionRetry && (
-          <div
-            className="flex gap-2 text-[#ffab33] font-bold text-[16px]"
-            style={{ margin: "0 0 20px 10px" }}
-          >
-            <img src={retry_img} alt="" />
-            <span>LỖI SAI TRƯỚC ĐÂY</span>
+    <div
+      className="w-full h-full bg-[#131F24] flex justify-center items-center"
+      style={{ padding: "0 0 20px 0" }}
+    >
+      <div className="w-1/2 h-full flex flex-col text-white">
+        <div
+          className="h-1/5 w-full flex flex-col items-start "
+          style={{ padding: "10px 0 0 0" }}
+        >
+          <div className="w-full h-1/4">
+            {isQuestionRetry && (
+              <div className=" flex gap-2 text-[#ffab33] font-bold text-[16px]">
+                <img src={retry_img} alt="" />
+                <span>LỖI SAI TRƯỚC ĐÂY</span>
+              </div>
+            )}
           </div>
-        )}
-        <Instruction instruction={data.instruction} />
-        <QuestionSection
-          words={data.words}
-          questionConfigure={data.questionConfigure}
-          audio={data.audio}
-          picture={data.picture}
-          englishText={data.englishText}
-          vietnameseText={data.vietnameseText}
-          isBuildSentence={true}
-        />
-        <div className="flex flex-col gap-[30px] ">
-          <AnswerLine
-            correctWordLength={correctWordLength}
-            isEnglish={data.optionConfigure.englishText}
-            selectedWords={selectedWords}
-            onRemoveWord={handleRemoveWord}
-            wrapCount={wrapCount}
-            setIsButtonCorrect={setIsButtonCorrect}
-            isNext={isNext}
-            setIsNext={setIsNext}
-            setSelectedWords={setSelectedWords}
-            isSubmit={isSubmit}
-          />
-          <WordChoice
-            isEnglish={data.optionConfigure.englishText}
-            selectedWords={selectedWords}
-            wordOptions={data.options}
-            onWordClick={handleChooseWord}
-            onWrapCountChange={(count) => setWrapCount(count)}
-            isSubmit={isSubmit}
-          />
+          <div className="w-full h-3/4">
+            <Instruction instruction={data.instruction} />
+          </div>
+        </div>
+        <div className="h-4/5 w-full flex flex-col gap-5">
+          <div className="w-full h-1/3  flex justify-center items-center">
+            <QuestionSection
+              words={data.words}
+              questionConfigure={data.questionConfigure}
+              audio={data.audio}
+              picture={data.picture}
+              englishText={data.englishText}
+              vietnameseText={data.vietnameseText}
+              isBuildSentence={true}
+            />
+          </div>
+          <div className="w-full h-2/3 flex flex-col gap-2">
+            <div className="w-full h-1/2 ">
+              <AnswerLine
+                correctWordLength={correctWordLength}
+                isEnglish={data.optionConfigure.englishText}
+                selectedWords={selectedWords}
+                onRemoveWord={handleRemoveWord}
+                wrapCount={wrapCount}
+                setIsButtonCorrect={setIsButtonCorrect}
+                isNext={isNext}
+                setIsNext={setIsNext}
+                setSelectedWords={setSelectedWords}
+                isSubmit={isSubmit}
+              />
+            </div>
+            <div className="w-full h-1/2   flex justify-center">
+              <WordChoice
+                isEnglish={data.optionConfigure.englishText}
+                selectedWords={selectedWords}
+                wordOptions={data.options}
+                onWordClick={handleChooseWord}
+                onWrapCountChange={(count) => setWrapCount(count)}
+                isSubmit={isSubmit}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

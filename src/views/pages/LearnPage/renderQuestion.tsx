@@ -78,6 +78,6 @@ export const renderQuestion = ({
         />
       );
     default:
-      return <div className="text-white">Câu hỏi không hợp lệ</div>;
+      return <div className="text-white"></div>;
   }
 };

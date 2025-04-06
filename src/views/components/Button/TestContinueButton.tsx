@@ -68,8 +68,8 @@ const TestContinueButton: React.FC<ITestContinueButton> = ({
   return (
     <button
       disabled={!isButtonActivate}
-      className={`absolute top-1/2 -translate-y-1/2 text-md rounded-2xl font-bold text-white border-b-[4px] cursor-pointer active:border-b-0 active:translate-y-[50% + 4px]`}
-      style={{ padding: `12px ${paddingWidth}px` }}
+      className={`w-[300px] h-[50px] absolute top-1/2 -translate-y-1/2 text-md rounded-2xl font-bold text-white border-b-[4px] cursor-pointer active:border-b-0 active:translate-y-[50% + 4px]`}
+      style={{ margin: "0px 20px 0px 0px" }}
       onClick={() => {
         if (isButtonActivate) {
           if (isButtonCorrect) {

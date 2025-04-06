@@ -4,7 +4,7 @@ import LessonItem from "../../../components/Admin/Management/LessonItem";
 import { ICourseValue, ILessonValue } from "../../../../interfaces/Course";
 // import { fakeCourseResponse } from "./MockCourse";
 import StepButton from "../../../components/Admin/Components/StepButton";
-import AddQuizPopup from "./AddQuizPopup";
+import LessonManagement from "./LessonManagement";
 import { getCourseList } from "../../../../services/Course/GetCourseListService";
 import { getLessonByCourseId } from "../../../../services/Lesson/GetLessonByCourseIdService";
 const AdminCourseManagementPage: React.FC = () => {
@@ -26,7 +26,6 @@ const AdminCourseManagementPage: React.FC = () => {
             };
           })
         );
-
         setCourses(coursesWithLessons);
       } catch (error) {
         console.error("Error fetching course list with lessons:", error);
@@ -38,7 +37,7 @@ const AdminCourseManagementPage: React.FC = () => {
     // setCourses(fakeCourseResponse.value);
   }, []);
 
-  console.log(courses);
+  // console.log(courses);
   // Handle Selected Course
   const [selectedCourse, setSelectedCourse] = useState<ICourseValue | null>(
     null
@@ -64,7 +63,7 @@ const AdminCourseManagementPage: React.FC = () => {
       {isAdd && (
         <div className="w-full h-full absolute left-0 top-0 z-10">
           <div className="absolute left-0 top-0 w-[100vw] h-[100vh] flex justify-center items-center !z-20">
-            <AddQuizPopup
+            <LessonManagement
               onBack={() => handleBack()}
               selectedCourse={selectedCourse}
               selectedLesson={selectedLesson}
@@ -130,12 +129,13 @@ const AdminCourseManagementPage: React.FC = () => {
                         lessonTitle={lesson.title}
                         lessonQuestionCount={lesson.questionCount}
                         lessonEp={lesson.xpEarned}
+                        onClick={() => setIsAdd(true)}
                       />{" "}
-                      <StepButton
+                      {/* <StepButton
                         content="ADD QUIZ"
                         width="90%"
                         onClick={() => setIsAdd(true)}
-                      />
+                      /> */}
                     </div>
                   ))}
               </div>
