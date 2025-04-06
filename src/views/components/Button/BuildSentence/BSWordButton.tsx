@@ -7,7 +7,7 @@ interface BSWordProps {
   mousing?: () => void;
   disabled?: boolean;
   style?: React.CSSProperties;
-  option: IBuildSentenceOption;
+  option?: IBuildSentenceOption;
   isEnglish: boolean;
 }
 

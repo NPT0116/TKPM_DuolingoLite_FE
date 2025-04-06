@@ -11,12 +11,12 @@ export interface IMatchingOption extends BaseOption {
   image: null;
 }
 export interface IVNContent {
-  optionId: string;
+  optionId: string | null;
   sourceType: string;
   vietnameseText: string;
 }
 export interface IELContent {
-  optionId: string;
+  optionId: string | null;
   targetType: string;
   englishText: string;
   audio: IResource;

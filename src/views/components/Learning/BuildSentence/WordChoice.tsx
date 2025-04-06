@@ -40,8 +40,8 @@ const WordChoice: React.FC<WordChoiceProps> = ({
     }
   }, [wordOptions, selectedWords, onWrapCountChange]);
   // Audio
-  // const audioRef = useRef<HTMLAudioElement | null>(null);
   const playAudio = usePlayAudio();
+  console.log(isEnglish);
   return (
     <div
       ref={containerRef}
@@ -77,7 +77,7 @@ const WordChoice: React.FC<WordChoiceProps> = ({
                 }}
                 mousing={() => {
                   console.log(word);
-                  if (option.audio && option.audio.url) {
+                  if (isEnglish && option.audio && option.audio.url) {
                     playAudio(option.audio.url);
                   }
                 }}

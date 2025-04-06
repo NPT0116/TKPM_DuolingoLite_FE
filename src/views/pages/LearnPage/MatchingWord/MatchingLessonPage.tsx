@@ -8,6 +8,7 @@ import {
   IVNContent,
   IELContent,
 } from "../../../../interfaces/Options/IMatchingOption";
+import { usePlayAudio } from "../../../components/LearnPage/Audio/AudioProvider";
 
 interface IMatchingLessonPage {
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,17 +42,21 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
     return newArray;
   }
   useEffect(() => {
-    const sourceCollection = data.options.map((option: IMatchingOption) => ({
-      optionId: option.optionId,
-      sourceType: option.sourceType,
-      vietnameseText: option.vietnameseText,
-    }));
-    const targetCollection = data.options.map((option: IMatchingOption) => ({
-      optionId: option.optionId,
-      targetType: option.targetType,
-      englishText: option.englishText,
-      audio: option.audio,
-    }));
+    const sourceCollection = data.options
+      .filter((option: IMatchingOption) => option.optionId != null)
+      .map((option: IMatchingOption) => ({
+        optionId: option.optionId,
+        sourceType: option.sourceType,
+        vietnameseText: option.vietnameseText,
+      }));
+    const targetCollection = data.options
+      .filter((option: IMatchingOption) => option.optionId != null)
+      .map((option: IMatchingOption) => ({
+        optionId: option.optionId,
+        targetType: option.targetType,
+        englishText: option.englishText,
+        audio: option.audio,
+      }));
     setSourceCollection(shuffleArray(sourceCollection));
     setTargetCollection(shuffleArray(targetCollection));
   }, []);
@@ -60,7 +65,7 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
     if (pickingQueue.length === 2) {
       const [firstItem, secondItem] = pickingQueue;
       if (firstItem.optionId === secondItem.optionId) {
-        setCorrectPickingList((prev) => [...prev, firstItem.optionId]);
+        setCorrectPickingList((prev) => [...prev, firstItem.optionId!]);
       } else {
         setWrongPickingList((prev) => [firstItem, secondItem]);
       }
@@ -81,18 +86,7 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
     setPickingQueue([]);
   };
   // Handle Overlap audio
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const playAudio = (url: string) => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
-    const audio = new Audio(url);
-    audioRef.current = audio;
-    audio
-      .play()
-      .catch((error) => console.log("Error in MatchingLessonPag.tsx", error));
-  };
+  const playAudio = usePlayAudio();
   return (
     <div onClick={() => handleScreenClick()}>
       {/* Lesson Container */}

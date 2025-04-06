@@ -40,11 +40,12 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
         }));
 
   const handleMouseEnter = (audioUrl: string) => {
-    const audio = new Audio(audioUrl);
-    audio.play();
+    stopAudio();
+    playAudio(audioUrl);
   };
 
   useEffect(() => {
+    stopAudio();
     playAudio(audio?.url);
     return () => {
       stopAudio();
