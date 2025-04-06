@@ -24,27 +24,31 @@ const AnswerSection: React.FC<AnswerSectionProps> = ({
     // data.vietnameseText?.length === 0 &&
     !data.picture;
   return (
-    <div className="flex flex-col gap-[24px] w-full h-full ">
+    <div className="flex flex-col justify-evenly  w-full h-full">
       {/* Question Section */}
-      <QuestionSection
-        words={data.words}
-        questionConfigure={data.questionConfigure}
-        audio={data.audio}
-        picture={data.picture}
-        englishText={data.englishText}
-        vietnameseText={data.vietnameseText}
-      />
+      <div className="w-full h-1/2 ">
+        <QuestionSection
+          words={data.words}
+          questionConfigure={data.questionConfigure}
+          audio={data.audio}
+          picture={data.picture}
+          englishText={data.englishText}
+          vietnameseText={data.vietnameseText}
+        />
+      </div>
       {/* Answer Section */}
-      <AnswerContainer
-        options={data.options}
-        setIsButtonActive={setIsButtonActive}
-        setIsButtonCorrect={setIsButtonCorrect}
-        isNext={isNext}
-        setIsNext={setIsNext}
-        isEnglish={data.optionConfigure.englishText}
-        isSubmit={isSubmit}
-        onlyAudio={onlyAudio}
-      />
+      <div className="w-full h-fit flex justify-center items-center ">
+        <AnswerContainer
+          options={data.options}
+          setIsButtonActive={setIsButtonActive}
+          setIsButtonCorrect={setIsButtonCorrect}
+          isNext={isNext}
+          setIsNext={setIsNext}
+          isEnglish={data.optionConfigure.englishText}
+          isSubmit={isSubmit}
+          onlyAudio={onlyAudio}
+        />
+      </div>
     </div>
   );
 };

@@ -163,83 +163,79 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
   };
 
   return (
-    <div>
-      {/* Main content */}
-      <div
-        className="relative w-[100vw] h-[70vh] flex flex-col justify-center items-center"
-        style={{ padding: "0px 300px" }}
-      >
-        <div className="w-full h-full  flex flex-col justify-evenly items-center">
-          {" "}
-          <div className="font-bold text-3xl text-white w-full h-1/6 flex justify-start items-center">
-            Đọc câu này
-          </div>
-          <div className="relative w-full h-5/6 flex flex-col justify-center items-center ">
-            <div
-              id="reading-content"
-              className=" flex flex-row justify-center items-center gap-4 w-full h-4/6"
-            >
-              <div className="w-full h-2/3 flex flex-row gap-8">
+    <div
+      className="relative w-full h-full flex flex-col justify-center items-center"
+      style={{ padding: "0 0 40px 0" }}
+    >
+      <div className="w-1/2 h-full  flex flex-col justify-evenly items-center">
+        {" "}
+        <div className="font-bold text-3xl text-white w-full h-1/5 flex justify-start items-center">
+          Đọc câu này
+        </div>
+        <div className="relative w-full h-5/6 flex flex-col justify-center items-center ">
+          <div
+            id="reading-content"
+            className=" flex flex-row justify-center items-center gap-4 w-full h-4/5"
+          >
+            <div className="w-full h-2/3 flex flex-row gap-8">
+              {" "}
+              <img
+                src="https://duoplanet.com/wp-content/uploads/2022/04/Duolingo-Lily-1.png"
+                alt=""
+                className="h-full"
+              />
+              <div className="w-full h-full flex justify-start items-center">
                 {" "}
-                <img
-                  src="https://duoplanet.com/wp-content/uploads/2022/04/Duolingo-Lily-1.png"
-                  alt=""
-                  className="h-full"
+                <QuestionBox
+                  questionElements={questionElements}
+                  mainAudio={mainAudio}
                 />
-                <div className="w-full h-full flex justify-start items-center">
-                  {" "}
-                  <QuestionBox
-                    questionElements={questionElements}
-                    mainAudio={mainAudio}
-                  />
-                </div>
               </div>
             </div>
-            <div className="relative w-full h-2/6  flex flex-row justify-start items-center">
-              <button
-                className="absolute top-0  w-full"
-                onClick={handleRecordButton}
+          </div>
+          <div className="relative w-full h-2/6  flex flex-row justify-start items-center">
+            <button
+              className="absolute top-0  w-full"
+              onClick={handleRecordButton}
+            >
+              <div
+                id="record-micro"
+                className="hover:bg-[#121C1F] bg-[#131F23] flex justify-center items-center gap-4 border-2 border-b-4 border-[#313F47] w-full  rounded-xl active:border-b-2 active:translate-y-[2px] cursor-pointer "
+                style={{ padding: "15px" }}
               >
-                <div
-                  id="record-micro"
-                  className="hover:bg-[#121C1F] bg-[#131F23] flex justify-center items-center gap-4 border-2 border-b-4 border-[#313F47] w-full  rounded-xl active:border-b-2 active:translate-y-[2px] cursor-pointer "
-                  style={{ padding: "15px" }}
-                >
-                  <div className="flex flex-row gap-2 h-[20px]">
-                    {!isRecord && (
-                      <img
-                        src="https://d35aaqx5ub95lt.cloudfront.net/images/18758dd8bd61ed4f1783c8b0917fe899.svg"
-                        alt="Micro icon"
-                        width="20"
-                      />
-                    )}
+                <div className="flex flex-row gap-2 h-[20px]">
+                  {!isRecord && (
+                    <img
+                      src="https://d35aaqx5ub95lt.cloudfront.net/images/18758dd8bd61ed4f1783c8b0917fe899.svg"
+                      alt="Micro icon"
+                      width="20"
+                    />
+                  )}
 
-                    <div className="font-bold flex justify-center items-center text-[#41ACE0] h-full ">
-                      {" "}
-                      {!isRecord && "NHẤN ĐỂ ĐỌC"}
-                      {isRecord && (
-                        <div className="flex flex-row justify-center items-start gap-2">
-                          {waveBars.map((_, index) => (
-                            <div
-                              key={index}
-                              css={css`
-                                background-color: #41ace0;
-                                width: 5px;
-                                height: 10px;
-                                border-radius: 9999px;
-                                animation: ${fluctuate} 1.2s ease-in-out
-                                  infinite;
-                                animation-delay: ${index * 0.2}s;
-                              `}
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                  <div className="font-bold flex justify-center items-center text-[#41ACE0] h-full ">
+                    {" "}
+                    {!isRecord && "NHẤN ĐỂ ĐỌC"}
+                    {isRecord && (
+                      <div className="flex flex-row justify-center items-start gap-2">
+                        {waveBars.map((_, index) => (
+                          <div
+                            key={index}
+                            css={css`
+                              background-color: #41ace0;
+                              width: 5px;
+                              height: 10px;
+                              border-radius: 9999px;
+                              animation: ${fluctuate} 1.2s ease-in-out infinite;
+                              animation-delay: ${index * 0.2}s;
+                            `}
+                          />
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
-              </button>
-            </div>
+              </div>
+            </button>
           </div>
         </div>
       </div>

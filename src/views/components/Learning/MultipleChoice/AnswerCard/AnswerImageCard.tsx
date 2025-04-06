@@ -37,6 +37,7 @@ const AnswerImageCard: React.FC<AnswerImageCardProps> = ({
             ? "0 2.5px 0px #5F8428"
             : "0 2.5px 0px #3F85A7"
           : "0 2.5px 0 0 #37464F",
+        padding: "40px 0",
       }}
       onMouseDown={(e) => {
         if (isSubmit) return;

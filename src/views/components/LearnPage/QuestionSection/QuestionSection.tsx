@@ -26,7 +26,7 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
 }) => {
   console.log(words);
   return (
-    <div>
+    <div className=" flex justify-center items-center w-full h-full ">
       {questionConfigure.audio &&
       !questionConfigure.englishText &&
       !questionConfigure.vietnameseText &&

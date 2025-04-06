@@ -31,40 +31,49 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
   }, [state]);
 
   return (
-    <div className="w-full h-full flex justify-center items-center">
-      <div className="w-full sm:w-full md:w-[600px] min-w-[600px] max-h-[450px] flex flex-col justify-center  ">
-        {isQuestionRetry && (
-          <div
-            className="flex gap-2 text-[#ffab33] font-bold text-[16px]"
-            style={{ margin: "0 0 20px 10px" }}
-          >
-            <img src={retry_img} alt="" />
-            <span>LỖI SAI TRƯỚC ĐÂY</span>
+    <div
+      className="w-full h-full flex justify-center items-center "
+      style={{ padding: "0 0 40px 0" }}
+    >
+      <div className="w-1/2 h-full flex flex-col justify-between ">
+        <div
+          className="h-1/5 w-full flex flex-col items-start "
+          style={{ padding: "10px 0 0 0" }}
+        >
+          <div className="w-full h-1/4">
+            {isQuestionRetry && (
+              <div className=" flex gap-2 text-[#ffab33] font-bold text-[16px]">
+                <img src={retry_img} alt="" />
+                <span>LỖI SAI TRƯỚC ĐÂY</span>
+              </div>
+            )}
           </div>
-        )}
-        {/* Instruction */}
-        <Instruction instruction={data.instruction} />
-
-        {/* Question & Answer Section */}
-        {hasImageAnswer ? (
-          <AnswerSectionImage
-            data={data}
-            setIsButtonActive={setIsButtonActive}
-            setIsButtonCorrect={setIsButtonCorrect}
-            isNext={isNext}
-            setIsNext={setIsNext}
-            isSubmit={isSubmit}
-          />
-        ) : (
-          <AnswerSection
-            data={data}
-            setIsButtonActive={setIsButtonActive}
-            setIsButtonCorrect={setIsButtonCorrect}
-            isNext={isNext}
-            setIsNext={setIsNext}
-            isSubmit={isSubmit}
-          />
-        )}
+          <div className="w-full h-3/4">
+            <Instruction instruction={data.instruction} />
+          </div>
+        </div>
+        <div className="w-full h-4/5">
+          {/* Question & Answer Section */}
+          {hasImageAnswer ? (
+            <AnswerSectionImage
+              data={data}
+              setIsButtonActive={setIsButtonActive}
+              setIsButtonCorrect={setIsButtonCorrect}
+              isNext={isNext}
+              setIsNext={setIsNext}
+              isSubmit={isSubmit}
+            />
+          ) : (
+            <AnswerSection
+              data={data}
+              setIsButtonActive={setIsButtonActive}
+              setIsButtonCorrect={setIsButtonCorrect}
+              isNext={isNext}
+              setIsNext={setIsNext}
+              isSubmit={isSubmit}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

@@ -27,10 +27,10 @@ export const OnlyAudio: React.FC<OnlyAudioProps> = ({ audio }) => {
     };
   }, []);
   return (
-    <div className="flex  justify-center items-end gap-[16px]">
+    <div className="flex  w-full h-full justify-center items-end gap-2 ">
       <button
         onClick={() => playAudio(audio.url)}
-        className="w-[140px] h-[140px] bg-[#49C0F8] flex items-center justify-center relative rounded-[25%] cursor-pointer active:translate-y-1"
+        className="aspect-square h-[90%] bg-[#49C0F8] flex items-center justify-center relative rounded-[25%] cursor-pointer active:translate-y-1"
         style={{
           boxShadow: "0 4px 0 0 #1899D6",
         }}
