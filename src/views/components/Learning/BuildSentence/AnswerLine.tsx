@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { IBuildSentenceOption } from "../../../../interfaces/Options/IBuildSentenceOption";
 import BSBWordButton from "../../Button/BuildSentence/BSWordButton";
 
@@ -96,8 +96,11 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
             >
               <BSBWordButton
                 label={word}
-                onClick={() => onRemoveWord(option)}
+                onClick={() => {
+                  onRemoveWord(option);
+                }}
                 disabled={isSubmit}
+                isEnglish={false}
               />
             </motion.div>
           );

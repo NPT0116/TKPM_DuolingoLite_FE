@@ -23,6 +23,7 @@ import AdminMultipleChoicePage from "../views/pages/AdminPage/AdminMultipleChoic
 import AdminMatchingPage from "../views/pages/AdminPage/AdminMatchingPage";
 import AdminBuildSentencePage from "../views/pages/AdminPage/AdminBuildSentencePage";
 import AdminPronunciationPage from "../views/pages/AdminPage/AdminPronunciationPage";
+import AdminTestLessonPage from "../views/pages/AdminPage/AdminTest/AdminTestLessonPage";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -126,6 +127,10 @@ const AppRoutes: React.FC = () => {
           <Route
             path={PATH.ADMIN.lesson.management}
             element={<AdminCourseManagementPage />}
+          />
+          <Route
+            path={PATH.ADMIN.lesson.test}
+            element={<AdminTestLessonPage />}
           />
           {/* Có thể thêm /admin/course, /admin/question tương tự */}
         </Route>

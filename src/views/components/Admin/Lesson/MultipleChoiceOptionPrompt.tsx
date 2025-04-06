@@ -1,6 +1,6 @@
 import { AutoComplete, Checkbox, Radio } from "antd";
 import { useEffect, useState } from "react";
-import { Configure } from "../../../../interfaces/Configure/Configure";
+import { IAddConfigure } from "../../../../interfaces/Configure/Configure";
 import { Button } from "antd";
 import CreateOptionForm from "./CreateOptionForm";
 import { IMultipleChoiceOption } from "../../../../interfaces/Options/IMultipleChoiceOption";
@@ -27,17 +27,20 @@ const createAddEmptyOption = (): IAddOption => ({
   position: null,
 });
 
-interface OptionPromptProps {
+interface MultipleChoiceOptionPromptProps {
   configureArray: string[];
   question: IAddQuestion;
   setQuestion: React.Dispatch<React.SetStateAction<IAddQuestion>>;
 }
 
-const OptionPrompt: React.FC<OptionPromptProps> = ({
+const MultipleChoiceOptionPrompt: React.FC<MultipleChoiceOptionPromptProps> = ({
   configureArray,
   question,
   setQuestion,
 }) => {
+  const [audioForced, setAudioForced] = useState(false);
+  const [vietnameseTextForced, setVietnameseTextForced] = useState(false);
+  const [englishTextForced, setEnglishTextForced] = useState(false);
   const [visibleFields, setVisibleFields] = useState<Record<string, boolean>>({
     instruction: false,
     vietnameseText: false,
@@ -61,20 +64,61 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
     []
   );
 
-  const toCamelCase = (str: string): keyof Configure => {
+  // useEffect(() => {
+  //   if (question.questionConfiguration.englishText) {
+  //     setEnglishTextForced(true);
+  //   } else setEnglishTextForced(false);
+  //   if (question.questionConfiguration.vietnameseText) {
+  //     setVietnameseTextForced(true);
+  //   } else setVietnameseTextForced(false);
+  // }, [question.questionConfiguration]);
+
+  const toCamelCase = (str: string): keyof IAddConfigure => {
     return (str.charAt(0).toLowerCase() +
-      str.slice(1).replace(/\s+/g, "")) as keyof Configure;
+      str.slice(1).replace(/\s+/g, "")) as keyof IAddConfigure;
   };
 
   const handleCheckBox = (field: string) => () => {
     const key = toCamelCase(field);
     const newValue = !visibleFields[key];
-    setVisibleFields({ ...visibleFields, [key]: newValue });
+    if (key === "englishText") {
+      setVisibleFields((prev) => ({
+        ...prev,
+        englishText: newValue,
+        audio: newValue,
+      }));
+      if (newValue) {
+        setVisibleFields((prev) => ({
+          ...prev,
+          vietnameseText: false,
+        }));
+      }
+      setVietnameseTextForced(newValue);
+      setAudioForced(newValue);
+    } else if (key === "vietnameseText") {
+      setVisibleFields((prev) => ({
+        ...prev,
+        vietnameseText: newValue,
+      }));
+      if (newValue) {
+        setVisibleFields((prev) => ({
+          ...prev,
+          englishText: false,
+        }));
+      }
+      setEnglishTextForced(newValue);
+    } else if (!audioForced || key !== "audio") {
+      setVisibleFields((prev) => ({
+        ...prev,
+        [key]: newValue,
+      }));
+    }
     setQuestion((prev) => ({
       ...prev,
       optionConfiguration: {
         ...prev.optionConfiguration,
         [key]: newValue,
+        ...(key === "englishText" ? { audio: newValue } : {}),
       },
     }));
   };
@@ -83,6 +127,7 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
     const filtered = filterSearchOption(existedOptions);
     setFilteredExistedOptions(filtered);
   }, [visibleFields]);
+
   const handleCorrectChange = (index: number, isCorrect: boolean) => {
     const addUpdatedOptions = [...addAnswerOptions];
     addUpdatedOptions[index].isCorrect = isCorrect;
@@ -114,7 +159,11 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
       return Object.entries(visibleFields).every(([key, isVisible]) => {
         if (key === "instruction") return true;
         const value = option[key as keyof IMultipleChoiceOption];
-
+        if (key === "englishText" && englishTextForced) {
+          return true;
+        } else if (key === "vietNameseText" && vietnameseTextForced) {
+          return true;
+        }
         if (key === "audio" || key === "image") {
           return isVisible
             ? value !== null && (value as IResource).url !== ""
@@ -161,7 +210,19 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
             {configureArray.map((field, index) => (
               <li key={index}>
                 {field !== "Instruction" && (
-                  <Checkbox onChange={handleCheckBox(field)}>
+                  <Checkbox
+                    onChange={handleCheckBox(field)}
+                    checked={visibleFields[toCamelCase(field)]}
+                    disabled={
+                      toCamelCase(field) === "englishText"
+                        ? englishTextForced
+                        : toCamelCase(field) === "vietnameseText"
+                        ? vietnameseTextForced
+                        : toCamelCase(field) === "audio"
+                        ? audioForced
+                        : false
+                    }
+                  >
                     <span className="text-[18px]">{field}</span>
                   </Checkbox>
                 )}
@@ -296,4 +357,4 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
   );
 };
 
-export default OptionPrompt;
+export default MultipleChoiceOptionPrompt;

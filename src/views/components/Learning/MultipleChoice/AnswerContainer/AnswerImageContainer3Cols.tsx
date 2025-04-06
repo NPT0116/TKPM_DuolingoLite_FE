@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 
 import AnswerImageCard from "../AnswerCard/AnswerImageCard";
 import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
+import { usePlayAudio } from "../../../LearnPage/Audio/AudioProvider";
 
 interface AnswerImageContainer3ColsProps {
   options: IMultipleChoiceOption[];
@@ -32,7 +33,7 @@ const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
       setIsButtonCorrect(false);
     }
   }, [isNext, setIsButtonActive, setIsNext]);
-
+  const playAudio = usePlayAudio();
   return (
     <div className="h-[300px] w-full flex flex-col-3 gap-[8px] items-center">
       {options.map((option, index) => (
@@ -49,6 +50,9 @@ const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
               setIsButtonCorrect(true);
             } else {
               setIsButtonCorrect(false);
+            }
+            if (option.audio && option.audio.url) {
+              playAudio(option.audio.url);
             }
           }}
           isSubmit={isSubmit}

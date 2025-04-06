@@ -12,6 +12,7 @@ interface IButtonMatching {
   correctPickingList: string[];
   content: IELContent | IVNContent;
   wrongPickingList: Content[];
+  onClick?: () => void;
 }
 const isVietnameseContent = (
   content: IVNContent | IELContent
@@ -108,13 +109,8 @@ const ButtonMatching: React.FC<IButtonMatching> = ({
   correctPickingList,
   wrongPickingList,
   setWrongPickingList,
+  onClick,
 }) => {
-  const playAudio = () => {
-    if (isIELContent(content)) {
-      const audio = new Audio(content.audio.url);
-      audio.play();
-    }
-  };
   const [tempWrong, setTempWrong] = useState(false);
   useEffect(() => {
     const isWrong = wrongPickingList.some((item) => {
@@ -147,7 +143,9 @@ const ButtonMatching: React.FC<IButtonMatching> = ({
       }
       onClick={(e) => {
         e.stopPropagation();
-        playAudio();
+        if (onClick) {
+          onClick();
+        }
         setPickingQueue((prev: any) => {
           const isSelf = prev.some(
             (item: Content) => JSON.stringify(item) === JSON.stringify(content)

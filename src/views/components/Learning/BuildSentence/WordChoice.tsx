@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 
 import BSBWordButton from "../../Button/BuildSentence/BSWordButton";
 import { IBuildSentenceOption } from "../../../../interfaces/Options/IBuildSentenceOption";
+import { usePlayAudio } from "../../LearnPage/Audio/AudioProvider";
 
 interface WordChoiceProps {
   isEnglish: boolean;
@@ -38,7 +39,9 @@ const WordChoice: React.FC<WordChoiceProps> = ({
       }
     }
   }, [wordOptions, selectedWords, onWrapCountChange]);
-
+  // Audio
+  const playAudio = usePlayAudio();
+  console.log(isEnglish);
   return (
     <div
       ref={containerRef}
@@ -70,6 +73,12 @@ const WordChoice: React.FC<WordChoiceProps> = ({
                 onClick={() => {
                   if (!isSelected) {
                     onWordClick(option);
+                  }
+                }}
+                mousing={() => {
+                  console.log(word);
+                  if (isEnglish && option.audio && option.audio.url) {
+                    playAudio(option.audio.url);
                   }
                 }}
                 disabled={isSelected || isSubmit}

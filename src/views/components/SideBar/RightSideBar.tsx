@@ -19,7 +19,6 @@ const RightSideBar: React.FC = () => {
         try {
           const userData = await getUserProfile();
           setUser(userData.value);
-          setIsPremium(user?.subscription !== null);
         } catch (err) {
           console.log("Failed to fetch user profile: " + err);
         }
@@ -28,6 +27,12 @@ const RightSideBar: React.FC = () => {
       fetchUserProfile();
     }
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      setIsPremium(user?.subscription !== null);
+    }
+  });
 
   return (
     <div

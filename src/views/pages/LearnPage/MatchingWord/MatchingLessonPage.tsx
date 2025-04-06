@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { IMatchingQuestion } from "../../../../interfaces/Questions/IMatchingQuestion";
 import { IMatchingOption } from "../../../../interfaces/Options/IMatchingOption";
 
@@ -8,6 +8,7 @@ import {
   IVNContent,
   IELContent,
 } from "../../../../interfaces/Options/IMatchingOption";
+import { usePlayAudio } from "../../../components/LearnPage/Audio/AudioProvider";
 
 interface IMatchingLessonPage {
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,17 +42,21 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
     return newArray;
   }
   useEffect(() => {
-    const sourceCollection = data.options.map((option: IMatchingOption) => ({
-      optionId: option.optionId,
-      sourceType: option.sourceType,
-      vietnameseText: option.vietnameseText,
-    }));
-    const targetCollection = data.options.map((option: IMatchingOption) => ({
-      optionId: option.optionId,
-      targetType: option.targetType,
-      englishText: option.englishText,
-      audio: option.audio,
-    }));
+    const sourceCollection = data.options
+      .filter((option: IMatchingOption) => option.optionId != null)
+      .map((option: IMatchingOption) => ({
+        optionId: option.optionId,
+        sourceType: option.sourceType,
+        vietnameseText: option.vietnameseText,
+      }));
+    const targetCollection = data.options
+      .filter((option: IMatchingOption) => option.optionId != null)
+      .map((option: IMatchingOption) => ({
+        optionId: option.optionId,
+        targetType: option.targetType,
+        englishText: option.englishText,
+        audio: option.audio,
+      }));
     setSourceCollection(shuffleArray(sourceCollection));
     setTargetCollection(shuffleArray(targetCollection));
   }, []);
@@ -60,7 +65,7 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
     if (pickingQueue.length === 2) {
       const [firstItem, secondItem] = pickingQueue;
       if (firstItem.optionId === secondItem.optionId) {
-        setCorrectPickingList((prev) => [...prev, firstItem.optionId]);
+        setCorrectPickingList((prev) => [...prev, firstItem.optionId!]);
       } else {
         setWrongPickingList((prev) => [firstItem, secondItem]);
       }
@@ -80,6 +85,8 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
   const handleScreenClick = () => {
     setPickingQueue([]);
   };
+  // Handle Overlap audio
+  const playAudio = usePlayAudio();
   return (
     <div onClick={() => handleScreenClick()}>
       {/* Lesson Container */}
@@ -106,6 +113,11 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
           <div className="w-full h-full grid grid-cols-1 grid-rows-5 gap-4">
             {targetCollection.map((content) => (
               <ButtonMatching
+                onClick={() => {
+                  if (content.audio && content.audio.url) {
+                    playAudio(content.audio.url);
+                  }
+                }}
                 key={`target-${content.optionId}`}
                 setWrongPickingList={setWrongPickingList}
                 wrongPickingList={wrongPickingList}

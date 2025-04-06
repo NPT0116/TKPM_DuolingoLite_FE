@@ -7,7 +7,6 @@ interface AnswerImageCardProps {
   isSelected: boolean;
   isEnglish: boolean;
   isSubmit: boolean;
-
   onSelect: () => void;
 }
 
@@ -20,15 +19,6 @@ const AnswerImageCard: React.FC<AnswerImageCardProps> = ({
   isSubmit,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
-
-  // Function to play the audio
-  const playAudio = () => {
-    console.log(option?.audio?.url);
-    if (option.audio && option.audio.url) {
-      const audio = new Audio(option.audio.url);
-      audio.play().catch((error) => console.error("Audio play failed", error));
-    }
-  };
 
   return (
     <div
@@ -59,7 +49,6 @@ const AnswerImageCard: React.FC<AnswerImageCardProps> = ({
           ? "0 2.5px 0 0 #3F85A7"
           : "0 2.5px 0 0 #37464F";
         setIsClicked(false);
-        playAudio();
         onSelect();
       }}
     >

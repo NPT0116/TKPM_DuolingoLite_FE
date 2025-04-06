@@ -1,9 +1,10 @@
 import Instruction from "../../../components/LearnPage/Instruction/Instruction";
 import { IMultipleChoiceQuestion } from "../../../../interfaces/Questions/IMultipleChoiceQuestion";
-import { useEffect, useState } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 import AnswerSectionImage from "../../../components/Learning/MultipleChoice/AnswerSection/AnswerSectionImage";
 import AnswerSection from "../../../components/Learning/MultipleChoice/AnswerSection/AnswerSection";
 import retry_img from "../../../../assets/imgs/retry_img.png";
+import { useAudio } from "../../../components/LearnPage/Audio/AudioProvider";
 
 interface MultipleChoiceProps {
   data: IMultipleChoiceQuestion;

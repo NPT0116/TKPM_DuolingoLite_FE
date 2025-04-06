@@ -1,5 +1,6 @@
+import api from "../../configs/axiosConfig";
 import { IAddQuestion } from "../../interfaces/Questions/IBaseQuestion";
-import apiClient from "../../ultils/apiClient";
+
 import { handleApiError } from "../../ultils/handleApiError";
 
 export const addMultipleChoiceQuestion = async (
@@ -7,7 +8,7 @@ export const addMultipleChoiceQuestion = async (
   question: IAddQuestion
 ): Promise<{ data?: any; error?: string }> => {
   try {
-    const response = await apiClient.post(
+    const response = await api.post(
       `/Lesson/${lessonId}/add-question`,
       question
     );

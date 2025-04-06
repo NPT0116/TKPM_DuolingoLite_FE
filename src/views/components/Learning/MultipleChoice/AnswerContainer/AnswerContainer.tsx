@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
 import AnswerCard from "../AnswerCard/AnswerCard";
+import { usePlayAudio } from "../../../LearnPage/Audio/AudioProvider";
 
 interface AnswerContainerProps {
   options: IMultipleChoiceOption[];
@@ -32,6 +33,8 @@ const AnswerContainer: React.FC<AnswerContainerProps> = ({
       setIsButtonCorrect(false);
     }
   }, [isNext, setIsButtonActive, setIsButtonCorrect, setIsNext]);
+  const playAudio = usePlayAudio();
+
   return (
     <div
       className={`w-full h-full flex ${
@@ -51,6 +54,9 @@ const AnswerContainer: React.FC<AnswerContainerProps> = ({
             setSelectedIndex(index);
             setIsButtonActive(true);
             setIsButtonCorrect(option.isCorrect);
+            if (option.audio && option.audio.url) {
+              playAudio(option.audio.url);
+            }
           }}
           isSubmit={isSubmit}
         />

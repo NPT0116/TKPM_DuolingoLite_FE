@@ -1,9 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import api from "../../configs/axiosConfig";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import correctSound from "../../assets/sounds/duo_correct_sound.mp4";
 import incorrectSound from "../../assets/sounds/duo_incorrect_sound.mp4";
+// Audio
+import {
+  AudioProvider,
+  useStopAudio,
+} from "../components/LearnPage/Audio/AudioProvider";
 
 //
 import XPBar from "../components/XPBar/XPBar";
@@ -11,17 +16,6 @@ import ContinueButton from "../components/Button/ContinueButton";
 import { IQuestion } from "../../interfaces/IQuestion";
 import { ILessonInformation } from "../../interfaces/Course";
 import FooterStatus from "../components/FooterBar/FooterStatus";
-
-// Interface
-import { IBuildSentenceQuestion } from "../../interfaces/Questions/IBuildSentenceQuestion";
-import { IMultipleChoiceQuestion } from "../../interfaces/Questions/IMultipleChoiceQuestion";
-import { IMatchingQuestion } from "../../interfaces/Questions/IMatchingQuestion";
-import { IPronunciationQuestion } from "../../interfaces/Questions/IPronunciationQuesion";
-// Import Page Component
-import MatchingLessonPage from "../pages/LearnPage/MatchingWord/MatchingLessonPage";
-import PronunciationPage from "../pages/LearnPage/Pronunciation/PronunciationPage";
-import BuildSentencePage from "../pages/LearnPage/BuildSentencePage/BuildSentencePage";
-import MultipleChoicePage from "../pages/LearnPage/MultipleChoice/MultipleChoicePage";
 import LessonHeart from "../components/LessonHeart/LessonHeart";
 import {
   ILessonReport,
@@ -29,6 +23,7 @@ import {
 } from "../../interfaces/SpaceRepetation/ILessonReport";
 import { fetchUserId } from "../../services/Authentication/AuthService";
 import { submitLessonReport } from "../../services/SpaceRepetition/PostLessonReport";
+import { renderQuestion } from "../pages/LearnPage/renderQuestion";
 
 // https://d35aaqx5ub95lt.cloudfront.net/images/bd13fa941b2407b4914296afe4435646.svg
 
@@ -43,19 +38,28 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 };
 
 const LessonLayout: React.FC = () => {
+  //Care
   const [userId, setUserId] = useState("");
+
   const [isButtonActivate, setIsButtonActive] = useState(false);
   const [isButtonCorrect, setIsButtonCorrect] = useState(false);
   const [isNext, setIsNext] = useState(false);
+  //Care
   const [isRetry, setIsRetry] = useState(false);
   const [isQuestionRetry, setIsQuestionRetry] = useState<boolean[]>([]);
+
   const [isSubmit, setIsSubmit] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
+
+  // Care
   const [lessonReport, setLessonReport] = useState<ILessonReport | null>(null); // Lưu lại report những câu đúng, câu sai
   const [isPostReport, setIsPostReport] = useState(false);
+
   const [xp, setXp] = useState({ accumulated: 0, total: 1 });
   const [state, setState] = useState(1);
   const [questionList, setQuestionList] = useState<IQuestion[]>([]);
+
+  // Care
   const location = useLocation();
   const { lessonInformation, courseId, currentOrder, lessonOrder } =
     location.state as {
@@ -66,6 +70,7 @@ const LessonLayout: React.FC = () => {
       lessonOrder: number;
     };
 
+  // Care
   useEffect(() => {
     fetchUserId(setUserId);
   }, []);
@@ -81,6 +86,7 @@ const LessonLayout: React.FC = () => {
     }
   }, [userId, lessonReport]);
 
+  // Care
   const fetchLesson = async () => {
     try {
       console.log(lessonInformation);
@@ -104,6 +110,8 @@ const LessonLayout: React.FC = () => {
       console.error("Error while fetching questions:", error);
     }
   };
+
+  // Care
   // Nếu trả lời sai thì lưu về cuối
   useEffect(() => {
     if (
@@ -137,6 +145,7 @@ const LessonLayout: React.FC = () => {
     }
   }, [isSubmit, isNext, isRetry]);
 
+  // Care
   useEffect(() => {
     if ((isSubmit || isNext) && !isQuestionRetry[state - 1]) {
       const currentQuestionId = questionList[state - 1].questionId;
@@ -185,118 +194,84 @@ const LessonLayout: React.FC = () => {
       }
     }
   }, [state, setIsFinished, questionList, isNext, isButtonCorrect]);
-  const handleLesson = (questionData: IQuestion) => {
-    switch (questionData?.type) {
-      case "Matching":
-        return (
-          <MatchingLessonPage
-            data={questionData as unknown as IMatchingQuestion}
-            setIsNext={setIsNext}
-            setIsButtonActive={setIsButtonActive}
-            setIsButtonCorrect={setIsButtonCorrect}
-          />
-        );
-      case "Pronunciation":
-        return (
-          <PronunciationPage
-            data={questionData as unknown as IPronunciationQuestion}
-            setIsNext={setIsNext}
-            setIsRetry={setIsRetry}
-            isRetry={isRetry}
-            setIsButtonActive={setIsButtonActive}
-            setIsButtonCorrect={setIsButtonCorrect}
-            isQuestionRetry={isQuestionRetry[state - 1]}
-            state={state}
-          />
-        );
-      case "MultipleChoice":
-        return (
-          <MultipleChoicePage
-            data={questionData as unknown as IMultipleChoiceQuestion}
-            setIsButtonActive={setIsButtonActive}
-            setIsButtonCorrect={setIsButtonCorrect}
-            isSubmit={isSubmit}
-            isQuestionRetry={isQuestionRetry[state - 1]}
-            state={state}
-          />
-        );
-      case "BuildSentence":
-        return (
-          <BuildSentencePage
-            data={questionData as unknown as IBuildSentenceQuestion}
-            setIsButtonActive={setIsButtonActive}
-            setIsButtonCorrect={setIsButtonCorrect}
-            isSubmit={isSubmit}
-            isQuestionRetry={isQuestionRetry[state - 1]}
-            state={state}
-          />
-        );
-      default:
-        return <div className="text-white">{state}</div>;
-    }
-  };
 
+  const handleLesson = (questionData: IQuestion) => {
+    return renderQuestion({
+      questionData: questionData,
+      state,
+      isSubmit,
+      isRetry,
+      isQuestionRetry,
+      setIsNext,
+      setIsRetry,
+      setIsButtonActive,
+      setIsButtonCorrect,
+    });
+  };
+  // const stopAudio = useStopAudio();
   return (
-    <div className="flex flex-col items-center">
-      <audio
-        autoPlay
-        loop
-        muted
-        // style={{ display: "none" }}
-      >
-        alo
-        <source
-          src="https://drive.google.com/uc?export=download&id=1wSv4wBK2GaLTuv0G_WkoqUj6UOAOFJFr"
-          type="audio/mpeg"
-        />
-        Your browser does not support the audio element.
-      </audio>
-      {/* XP Bar & Heart*/}
-      <div className="flex h-[10vh] justify-end w-[70%] gap-[20px] items-center max-w-[1000px]">
-        <XPBar accumulated={xp.accumulated} total={xp.total} />
-        <LessonHeart
-          state={state}
-          isButtonCorrect={isButtonCorrect}
-          isSubmit={isSubmit}
-        />
+    <AudioProvider>
+      <div className="flex flex-col items-center">
+        <audio
+          autoPlay
+          loop
+          muted
+          // style={{ display: "none" }}
+        >
+          alo
+          <source
+            src="https://drive.google.com/uc?export=download&id=1wSv4wBK2GaLTuv0G_WkoqUj6UOAOFJFr"
+            type="audio/mpeg"
+          />
+          Your browser does not support the audio element.
+        </audio>
+        {/* XP Bar & Heart*/}
+        <div className="flex h-[10vh] justify-end w-[70%] gap-[20px] items-center max-w-[1000px]">
+          <XPBar accumulated={xp.accumulated} total={xp.total} />
+          <LessonHeart
+            state={state}
+            isButtonCorrect={isButtonCorrect}
+            isSubmit={isSubmit}
+          />
+        </div>
+        {/* Main Layout */}
+        <div className="h-[70vh] w-[100vw]">
+          {questionList?.[0] ? handleLesson(questionList[state - 1]) : null}
+        </div>
+        {/* Navigation Bar */}
+        <div
+          className="bg-[#131F23] border-[#37464F] border-t-2 h-[20vh] w-[100vw] relative"
+          // style={{ background: isNext ? "#202F36" : "" }}
+        >
+          {isNext && isButtonCorrect && <FooterStatus type={0} />}
+          {isNext && !isButtonCorrect && <FooterStatus type={1} />}
+          {!isNext && isRetry && <FooterStatus type={2} />}
+          <ContinueButton
+            setXp={setXp}
+            setIsSubmit={setIsSubmit}
+            isNext={isNext}
+            isFinished={isFinished}
+            setIsButtonActive={setIsButtonActive}
+            setIsButtonCorrect={setIsButtonCorrect}
+            setIsNext={setIsNext}
+            maxState={questionList.length}
+            isButtonActivate={isButtonActivate}
+            isButtonCorrect={isButtonCorrect}
+            state={state}
+            setState={setState}
+            mainColor="3B4EFF"
+            borderColor="3F22EC"
+            hoverColor="4156FF"
+            paddingWidth={80}
+            positionRight={250}
+            courseId={courseId}
+            currentOrder={currentOrder}
+            lessonOrder={lessonOrder}
+            type="learn" //Nếu type learn thì navigate về home, nếu review navigate về review
+          />
+        </div>
       </div>
-      {/* Main Layout */}
-      <div className="h-[70vh] w-[100vw]">
-        {questionList?.[0] ? handleLesson(questionList[state - 1]) : null}
-      </div>
-      {/* Navigation Bar */}
-      <div
-        className="bg-[#131F23] border-[#37464F] border-t-2 h-[20vh] w-[100vw] relative"
-        // style={{ background: isNext ? "#202F36" : "" }}
-      >
-        {isNext && isButtonCorrect && <FooterStatus type={0} />}
-        {isNext && !isButtonCorrect && <FooterStatus type={1} />}
-        {!isNext && isRetry && <FooterStatus type={2} />}
-        <ContinueButton
-          setXp={setXp}
-          setIsSubmit={setIsSubmit}
-          isNext={isNext}
-          isFinished={isFinished}
-          setIsButtonActive={setIsButtonActive}
-          setIsButtonCorrect={setIsButtonCorrect}
-          setIsNext={setIsNext}
-          maxState={questionList.length}
-          isButtonActivate={isButtonActivate}
-          isButtonCorrect={isButtonCorrect}
-          state={state}
-          setState={setState}
-          mainColor="3B4EFF"
-          borderColor="3F22EC"
-          hoverColor="4156FF"
-          paddingWidth={80}
-          positionRight={250}
-          courseId={courseId}
-          currentOrder={currentOrder}
-          lessonOrder={lessonOrder}
-          type="learn" //Nếu type learn thì navigate về home, nếu review navigate về review
-        />
-      </div>
-    </div>
+    </AudioProvider>
   );
 };
 export default LessonLayout;

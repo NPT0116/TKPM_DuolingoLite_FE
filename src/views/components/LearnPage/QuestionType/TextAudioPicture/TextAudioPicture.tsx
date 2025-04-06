@@ -1,16 +1,15 @@
 import React from "react";
 import { IResource } from "../../../../../interfaces/IResource";
-import { audio } from "framer-motion/client";
 import { useEffect, useRef, useState } from "react";
-import { IMatchingOption } from "../../../../../interfaces/Options/IMatchingOption";
 import { IWord } from "../../../../../interfaces/Questions/IPronunciationQuesion";
+import { usePlayAudio, useStopAudio } from "../../Audio/AudioProvider";
 
 interface TextAudioPictureProps {
   vietnameseText: string | null;
   picture: IResource | null;
   englishText: string | null;
   isBuildSentence?: boolean;
-  audio: IResource | null;
+  audio: IResource;
   words?: IWord[] | null;
 }
 
@@ -24,8 +23,8 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
 }) => {
   const textToSplit = vietnameseText || englishText || "";
   const isEnglish = englishText ? true : false;
-
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const playAudio = usePlayAudio();
+  const stopAudio = useStopAudio();
 
   const tokens = !isEnglish
     ? textToSplit
@@ -41,26 +40,15 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
         }));
 
   const handleMouseEnter = (audioUrl: string) => {
-    const audio = new Audio(audioUrl);
-    audio.play();
+    stopAudio();
+    playAudio(audioUrl);
   };
 
-  const playAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-    const playAudio = new Audio(audio?.url);
-    audioRef.current = playAudio;
-    audioRef.current.play();
-    audioRef.current.onended = () => {
-      audioRef.current = null;
-    };
-  };
   useEffect(() => {
-    playAudio();
+    stopAudio();
+    playAudio(audio?.url);
     return () => {
-      if (audioRef.current) audioRef.current.pause();
+      stopAudio();
     };
   }, [textToSplit]);
   return (
@@ -114,7 +102,7 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
           {audio !== null && (
             <div
               className="w-full h-fit flex items-center cursor-pointer "
-              onClick={playAudio}
+              onClick={() => playAudio(audio.url)}
             >
               {/* Icon 1 (Loa chính) */}
               <svg

@@ -1,3 +1,4 @@
+import { MutableRefObject } from "react";
 import { IMultipleChoiceQuestion } from "../../../../../interfaces/Questions/IMultipleChoiceQuestion";
 import QuestionSection from "../../../LearnPage/QuestionSection/QuestionSection";
 import AnswerImageContainer3Cols from "../AnswerContainer/AnswerImageContainer3Cols";
