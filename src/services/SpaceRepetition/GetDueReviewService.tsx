@@ -26,7 +26,7 @@ const getDueReview = async (userId: string): Promise<any> => {
 
     return response.data;
   } catch (error) {
-    console.error("❌ Failed to fetch due reviews:", error);
+    console.error(" Failed to fetch due reviews:", error);
     return null;
   }
 };

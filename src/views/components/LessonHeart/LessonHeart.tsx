@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { getUserHeart } from "../../../services/User/GetHeartService";
 import { postLoseHeart } from "../../../services/User/PostLoseHeartService";
 import { useNavigate } from "react-router-dom";
-import ic_heart_white from "../../../assets/icons/ic_white_heart.png";
 import { getUserProfile } from "../../../services/Authentication/AuthService";
 
 interface LessonHeartProps {
