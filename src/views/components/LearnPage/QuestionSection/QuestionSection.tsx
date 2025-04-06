@@ -3,6 +3,7 @@ import { IResource } from "../../../../interfaces/IResource";
 import { OnlyAudio } from "../QuestionType/OnlyAudio/OnlyAudio";
 import { TextAudioPicture } from "../QuestionType/TextAudioPicture/TextAudioPicture";
 import { IWord } from "../../../../interfaces/Questions/IPronunciationQuesion";
+import { MutableRefObject } from "react";
 
 interface QuestionSectionProps {
   questionConfigure: Configure;
@@ -37,7 +38,7 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
           englishText={englishText}
           picture={picture}
           isBuildSentence={isBuildSentence}
-          audio={audio}
+          audio={audio!}
           words={words}
         />
       )}

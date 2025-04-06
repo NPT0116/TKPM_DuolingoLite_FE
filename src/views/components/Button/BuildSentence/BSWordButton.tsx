@@ -4,6 +4,7 @@ import { IBuildSentenceOption } from "../../../../interfaces/Options/IBuildSente
 interface BSWordProps {
   label: string;
   onClick: () => void;
+  mousing?: () => void;
   disabled?: boolean;
   style?: React.CSSProperties;
   option: IBuildSentenceOption;
@@ -17,19 +18,8 @@ const BSBWordButton: React.FC<BSWordProps> = ({
   style,
   option,
   isEnglish,
+  mousing,
 }) => {
-  const playAudio = () => {
-    if (isEnglish) {
-      if (option.audio && option.audio.url) {
-        console.log("a");
-        console.log(option?.audio?.url);
-        const audio = new Audio(option.audio.url);
-        audio
-          .play()
-          .catch((error) => console.error("Audio play failed", error));
-      }
-    }
-  };
   return (
     <button
       onClick={disabled ? undefined : onClick}
@@ -43,6 +33,10 @@ const BSBWordButton: React.FC<BSWordProps> = ({
         ...style,
       }}
       onMouseDown={(e) => {
+        console.log(1);
+        if (mousing) {
+          mousing();
+        }
         if (disabled) return;
         e.preventDefault();
         e.currentTarget.style.boxShadow = "0 0 0 0 #37464F";
@@ -50,7 +44,6 @@ const BSBWordButton: React.FC<BSWordProps> = ({
       onMouseUp={(e) => {
         if (disabled) return;
         e.currentTarget.style.boxShadow = "0 2.5px 0 0 #37464F";
-        playAudio();
       }}
     >
       <span>{label}</span>

@@ -2,6 +2,7 @@
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import { finishLesson } from "../../../services/Course/FinishLessonService";
+import { useStopAudio } from "../LearnPage/Audio/AudioProvider";
 interface IContinueButton {
   setXp: React.Dispatch<
     React.SetStateAction<{ accumulated: number; total: number }>
@@ -108,12 +109,15 @@ const ContinueButton: React.FC<IContinueButton> = ({
     }
   `;
   const navigate = useNavigate();
+  const stopAudio = useStopAudio();
   return (
     <button
       disabled={!isButtonActivate}
       className={`absolute top-1/2 -translate-y-1/2 text-md rounded-2xl font-bold text-white border-b-[4px] cursor-pointer active:border-b-0 active:translate-y-[50% + 4px]`}
       style={{ padding: `12px ${paddingWidth}px` }}
       onClick={() => {
+        console.log("Continue Button Click");
+        stopAudio();
         if (isButtonActivate) {
           if (isButtonCorrect && !isNext) {
             setIsNext(true);

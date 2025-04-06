@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
 import AnswerCard from "../AnswerCard/AnswerCard";
+import { usePlayAudio } from "../../../LearnPage/Audio/AudioProvider";
 
 interface AnswerContainerProps {
   options: IMultipleChoiceOption[];
@@ -32,19 +33,8 @@ const AnswerContainer: React.FC<AnswerContainerProps> = ({
       setIsButtonCorrect(false);
     }
   }, [isNext, setIsButtonActive, setIsButtonCorrect, setIsNext]);
-  // Handle audio overlap
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const playAudio = (url: string) => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
-    const audio = new Audio(url);
-    audioRef.current = audio;
-    audio.play().catch((error) => {
-      console.log("Error in AnswerContainer.tsx", error);
-    });
-  };
+  const playAudio = usePlayAudio();
+
   return (
     <div
       className={`w-full h-full flex ${
