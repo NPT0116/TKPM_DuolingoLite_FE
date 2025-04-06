@@ -8,23 +8,13 @@ import XPBar from "../components/XPBar/XPBar";
 import ContinueButton from "../components/Button/ContinueButton";
 import { IQuestion } from "../../interfaces/IQuestion";
 import FooterStatus from "../components/FooterBar/FooterStatus";
-
-// Interface
-import { IBuildSentenceQuestion } from "../../interfaces/Questions/IBuildSentenceQuestion";
-import { IMultipleChoiceQuestion } from "../../interfaces/Questions/IMultipleChoiceQuestion";
-import { IMatchingQuestion } from "../../interfaces/Questions/IMatchingQuestion";
-import { IPronunciationQuestion } from "../../interfaces/Questions/IPronunciationQuesion";
-// Import Page Component
-import MatchingLessonPage from "../pages/LearnPage/MatchingWord/MatchingLessonPage";
-import PronunciationPage from "../pages/LearnPage/Pronunciation/PronunciationPage";
-import BuildSentencePage from "../pages/LearnPage/BuildSentencePage/BuildSentencePage";
-import MultipleChoicePage from "../pages/LearnPage/MultipleChoice/MultipleChoicePage";
-import LessonHeart from "../components/LessonHeart/LessonHeart";
 import { IReviewRecordDue } from "../../interfaces/SpaceRepetation/IDueReview";
 import { fetchDueReview } from "../../services/SpaceRepetition/GetDueReviewService";
 import { fetchQuestionThroughRecordId } from "../../services/SpaceRepetition/GetQuestionThroughRecordId";
 import { putRecordThroughRecordId } from "../../services/SpaceRepetition/PutRecordService";
 import { fetchUserId } from "../../services/Authentication/AuthService";
+import { renderQuestion } from "../pages/LearnPage/renderQuestion";
+import LessonHeart from "../components/LessonHeart/LessonHeart";
 
 // https://d35aaqx5ub95lt.cloudfront.net/images/bd13fa941b2407b4914296afe4435646.svg
 
@@ -95,54 +85,17 @@ const ReviewLayout: React.FC = () => {
     }
   }, [state, setIsFinished, questionList, isNext, isButtonCorrect]);
   const handleLesson = (questionData: IQuestion) => {
-    switch (questionData?.type) {
-      case "Matching":
-        return (
-          <MatchingLessonPage
-            data={questionData as unknown as IMatchingQuestion}
-            setIsNext={setIsNext}
-            setIsButtonActive={setIsButtonActive}
-            setIsButtonCorrect={setIsButtonCorrect}
-          />
-        );
-      case "Pronunciation":
-        return (
-          <PronunciationPage
-            data={questionData as unknown as IPronunciationQuestion}
-            setIsNext={setIsNext}
-            setIsRetry={setIsRetry}
-            isRetry={isRetry}
-            setIsButtonActive={setIsButtonActive}
-            setIsButtonCorrect={setIsButtonCorrect}
-            isQuestionRetry={false}
-            state={state}
-          />
-        );
-      case "MultipleChoice":
-        return (
-          <MultipleChoicePage
-            data={questionData as unknown as IMultipleChoiceQuestion}
-            setIsButtonActive={setIsButtonActive}
-            setIsButtonCorrect={setIsButtonCorrect}
-            isSubmit={isSubmit}
-            isQuestionRetry={false}
-            state={state}
-          />
-        );
-      case "BuildSentence":
-        return (
-          <BuildSentencePage
-            data={questionData as unknown as IBuildSentenceQuestion}
-            setIsButtonActive={setIsButtonActive}
-            setIsButtonCorrect={setIsButtonCorrect}
-            isSubmit={isSubmit}
-            isQuestionRetry={false}
-            state={state}
-          />
-        );
-      default:
-        return <div className="text-white">{state}</div>;
-    }
+    return renderQuestion({
+      questionData: questionData,
+      state,
+      isSubmit,
+      isRetry,
+      isQuestionRetry: [false],
+      setIsNext,
+      setIsRetry,
+      setIsButtonActive,
+      setIsButtonCorrect,
+    });
   };
 
   return (

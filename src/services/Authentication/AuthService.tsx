@@ -14,6 +14,7 @@ export const getUserProfile = async (): Promise<any> => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching user profile:", error);

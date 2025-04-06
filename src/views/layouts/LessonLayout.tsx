@@ -16,17 +16,6 @@ import ContinueButton from "../components/Button/ContinueButton";
 import { IQuestion } from "../../interfaces/IQuestion";
 import { ILessonInformation } from "../../interfaces/Course";
 import FooterStatus from "../components/FooterBar/FooterStatus";
-
-// Interface
-import { IBuildSentenceQuestion } from "../../interfaces/Questions/IBuildSentenceQuestion";
-import { IMultipleChoiceQuestion } from "../../interfaces/Questions/IMultipleChoiceQuestion";
-import { IMatchingQuestion } from "../../interfaces/Questions/IMatchingQuestion";
-import { IPronunciationQuestion } from "../../interfaces/Questions/IPronunciationQuesion";
-// Import Page Component
-import MatchingLessonPage from "../pages/LearnPage/MatchingWord/MatchingLessonPage";
-import PronunciationPage from "../pages/LearnPage/Pronunciation/PronunciationPage";
-import BuildSentencePage from "../pages/LearnPage/BuildSentencePage/BuildSentencePage";
-import MultipleChoicePage from "../pages/LearnPage/MultipleChoice/MultipleChoicePage";
 import LessonHeart from "../components/LessonHeart/LessonHeart";
 import {
   ILessonReport,
@@ -34,6 +23,7 @@ import {
 } from "../../interfaces/SpaceRepetation/ILessonReport";
 import { fetchUserId } from "../../services/Authentication/AuthService";
 import { submitLessonReport } from "../../services/SpaceRepetition/PostLessonReport";
+import { renderQuestion } from "../pages/LearnPage/renderQuestion";
 
 // https://d35aaqx5ub95lt.cloudfront.net/images/bd13fa941b2407b4914296afe4435646.svg
 
@@ -48,19 +38,28 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 };
 
 const LessonLayout: React.FC = () => {
+  //Care
   const [userId, setUserId] = useState("");
+
   const [isButtonActivate, setIsButtonActive] = useState(false);
   const [isButtonCorrect, setIsButtonCorrect] = useState(false);
   const [isNext, setIsNext] = useState(false);
+  //Care
   const [isRetry, setIsRetry] = useState(false);
   const [isQuestionRetry, setIsQuestionRetry] = useState<boolean[]>([]);
+
   const [isSubmit, setIsSubmit] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
+
+  // Care
   const [lessonReport, setLessonReport] = useState<ILessonReport | null>(null); // Lưu lại report những câu đúng, câu sai
   const [isPostReport, setIsPostReport] = useState(false);
+
   const [xp, setXp] = useState({ accumulated: 0, total: 1 });
   const [state, setState] = useState(1);
   const [questionList, setQuestionList] = useState<IQuestion[]>([]);
+
+  // Care
   const location = useLocation();
   const { lessonInformation, courseId, currentOrder, lessonOrder } =
     location.state as {
@@ -71,6 +70,7 @@ const LessonLayout: React.FC = () => {
       lessonOrder: number;
     };
 
+  // Care
   useEffect(() => {
     fetchUserId(setUserId);
   }, []);
@@ -86,6 +86,7 @@ const LessonLayout: React.FC = () => {
     }
   }, [userId, lessonReport]);
 
+  // Care
   const fetchLesson = async () => {
     try {
       console.log(lessonInformation);
@@ -109,6 +110,8 @@ const LessonLayout: React.FC = () => {
       console.error("Error while fetching questions:", error);
     }
   };
+
+  // Care
   // Nếu trả lời sai thì lưu về cuối
   useEffect(() => {
     if (
@@ -142,6 +145,7 @@ const LessonLayout: React.FC = () => {
     }
   }, [isSubmit, isNext, isRetry]);
 
+  // Care
   useEffect(() => {
     if ((isSubmit || isNext) && !isQuestionRetry[state - 1]) {
       const currentQuestionId = questionList[state - 1].questionId;
@@ -192,54 +196,17 @@ const LessonLayout: React.FC = () => {
   }, [state, setIsFinished, questionList, isNext, isButtonCorrect]);
 
   const handleLesson = (questionData: IQuestion) => {
-    switch (questionData?.type) {
-      case "Matching":
-        return (
-          <MatchingLessonPage
-            data={questionData as unknown as IMatchingQuestion}
-            setIsNext={setIsNext}
-            setIsButtonActive={setIsButtonActive}
-            setIsButtonCorrect={setIsButtonCorrect}
-          />
-        );
-      case "Pronunciation":
-        return (
-          <PronunciationPage
-            data={questionData as unknown as IPronunciationQuestion}
-            setIsNext={setIsNext}
-            setIsRetry={setIsRetry}
-            isRetry={isRetry}
-            setIsButtonActive={setIsButtonActive}
-            setIsButtonCorrect={setIsButtonCorrect}
-            isQuestionRetry={isQuestionRetry[state - 1]}
-            state={state}
-          />
-        );
-      case "MultipleChoice":
-        return (
-          <MultipleChoicePage
-            data={questionData as unknown as IMultipleChoiceQuestion}
-            setIsButtonActive={setIsButtonActive}
-            setIsButtonCorrect={setIsButtonCorrect}
-            isSubmit={isSubmit}
-            isQuestionRetry={isQuestionRetry[state - 1]}
-            state={state}
-          />
-        );
-      case "BuildSentence":
-        return (
-          <BuildSentencePage
-            data={questionData as unknown as IBuildSentenceQuestion}
-            setIsButtonActive={setIsButtonActive}
-            setIsButtonCorrect={setIsButtonCorrect}
-            isSubmit={isSubmit}
-            isQuestionRetry={isQuestionRetry[state - 1]}
-            state={state}
-          />
-        );
-      default:
-        return <div className="text-white">{state}</div>;
-    }
+    return renderQuestion({
+      questionData: questionData,
+      state,
+      isSubmit,
+      isRetry,
+      isQuestionRetry,
+      setIsNext,
+      setIsRetry,
+      setIsButtonActive,
+      setIsButtonCorrect,
+    });
   };
   // const stopAudio = useStopAudio();
   return (

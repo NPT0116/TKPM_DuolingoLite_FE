@@ -17,6 +17,9 @@ const QuestionPrompt: React.FC<QuestionPromptProps> = ({
   question,
   setQuestion,
 }) => {
+  const [audioForced, setAudioForced] = useState(false);
+  const [vietNameseTextForced, setVietnameseTextForced] = useState(false);
+  const [englishTextForced, setEnglishTextForced] = useState(false);
   const [visibleFields, setVisibleFields] = useState<Record<string, boolean>>({
     instruction: false,
     vietnameseText: false,
@@ -29,13 +32,34 @@ const QuestionPrompt: React.FC<QuestionPromptProps> = ({
   const handleCheckBox = (field: string) => () => {
     const key = toCamelCase(field);
     const newValue = !visibleFields[key];
-    setVisibleFields({ ...visibleFields, [key]: newValue });
-
+    if (key === "englishText") {
+      setVisibleFields((prev) => ({
+        ...prev,
+        englishText: newValue,
+        audio: newValue,
+        vietnameseText: !newValue,
+      }));
+      setVietnameseTextForced(newValue);
+      setAudioForced(newValue);
+    } else if (key === "vietnameseText") {
+      setVisibleFields((prev) => ({
+        ...prev,
+        englishText: !newValue,
+        vietnameseText: newValue,
+      }));
+      setEnglishTextForced(newValue);
+    } else if (!audioForced || key !== "audio") {
+      setVisibleFields((prev) => ({
+        ...prev,
+        [key]: newValue,
+      }));
+    }
     setQuestion((prev) => ({
       ...prev,
       questionConfiguration: {
         ...prev.questionConfiguration,
         [key]: newValue,
+        ...(key === "englishText" ? { audio: newValue } : {}),
       },
     }));
   };
@@ -76,7 +100,19 @@ const QuestionPrompt: React.FC<QuestionPromptProps> = ({
           <ul className="flex flex-wrap gap-8 justify-center">
             {configureArray.map((field, index) => (
               <li key={index}>
-                <Checkbox onChange={handleCheckBox(field)}>
+                <Checkbox
+                  onChange={handleCheckBox(field)}
+                  checked={visibleFields[toCamelCase(field)]}
+                  disabled={
+                    toCamelCase(field) === "englishText"
+                      ? englishTextForced
+                      : toCamelCase(field) === "vietnameseText"
+                      ? vietNameseTextForced
+                      : toCamelCase(field) === "audio"
+                      ? audioForced
+                      : false
+                  }
+                >
                   <span className="text-[18px]">{field}</span>
                 </Checkbox>
               </li>
@@ -127,7 +163,9 @@ const QuestionPrompt: React.FC<QuestionPromptProps> = ({
                 <span className="text-red-500">*</span> English Text
               </label>
               <Input
-                onChange={handleInputChange("englishText")}
+                onChange={() => {
+                  handleInputChange("englishText");
+                }}
                 placeholder="VD: Which is the table?"
                 size="large"
                 className="rounded-md bg-gray-50 text-gray-700"

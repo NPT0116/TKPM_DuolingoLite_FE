@@ -1,5 +1,5 @@
 import QuestionPrompt from "../../components/Admin/Lesson/QuestionPrompt";
-import OptionPrompt from "../../components/Admin/Lesson/OptionPrompt";
+import MultipleChoiceOptionPrompt from "../../components/Admin/Lesson/MultipleChoiceOptionPrompt";
 import OrderPrompt from "../../components/Admin/Lesson/OrderPrompt";
 import StepButton from "../../components/Admin/Components/StepButton";
 import { useEffect, useState } from "react";
@@ -122,7 +122,7 @@ const AdminMultipleChoicePage: React.FC = () => {
           className="w-full h-5/6"
           style={{ display: step === 1 ? "block" : "none" }}
         >
-          <OptionPrompt
+          <MultipleChoiceOptionPrompt
             configureArray={configureArray}
             question={question}
             setQuestion={setQuestion}
