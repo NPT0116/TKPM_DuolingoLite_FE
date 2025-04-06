@@ -12,6 +12,7 @@ const createEmptyQuestion = (): IAddQuestion => ({
   instruction: "",
   vietnameseText: null,
   englishText: "",
+  sentence: "",
   image: null,
   audio: null,
   order: 1,

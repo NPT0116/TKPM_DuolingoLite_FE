@@ -20,6 +20,7 @@ export interface IAddQuestion {
   instruction: string;
   vietnameseText: string | null;
   englishText: string;
+  sentence: string;
   image: string | null;
   audio: string | null;
   order: number;
