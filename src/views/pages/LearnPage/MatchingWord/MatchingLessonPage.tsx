@@ -88,17 +88,18 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
   // Handle Overlap audio
   const playAudio = usePlayAudio();
   return (
-    <div onClick={() => handleScreenClick()}>
+    <div
+      onClick={() => handleScreenClick()}
+      className="w-full h-full "
+      style={{ padding: "0 0 40px 0" }}
+    >
       {/* Lesson Container */}
-      <div className="relative w-[100vw] h-[75vh] ">
-        <div className="absolute text-white font-bold text-3xl left-[200px] top-[40px]">
+      <div className="relative w-full h-full flex flex-col justify-center items-center">
+        <div className="w-1/2   text-white font-bold text-3xl h-1/5  flex items-center justify-start">
           Chọn cặp từ
         </div>
-        <div
-          className="relative w-full h-full grid grid-cols-2 grid-row-1 gap-4"
-          style={{ padding: "120px 350px 50px 350px" }}
-        >
-          <div className="w-full h-full grid grid-cols-1 grid-rows-5 gap-4 ">
+        <div className="relative h-4/5 w-full  grid grid-cols-2 grid-row-1 gap-4">
+          <div className="h-full grid grid-cols-1 grid-rows-5 gap-4 w-1/2 justify-self-end">
             {sourceCollection.map((content) => (
               <ButtonMatching
                 key={`source-${content.optionId}`}
@@ -110,7 +111,7 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
               />
             ))}
           </div>
-          <div className="w-full h-full grid grid-cols-1 grid-rows-5 gap-4">
+          <div className=" h-full grid grid-cols-1 grid-rows-5 gap-4 w-1/2 justify-self-start">
             {targetCollection.map((content) => (
               <ButtonMatching
                 onClick={() => {
@@ -128,7 +129,6 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
             ))}
           </div>
         </div>
-        )
       </div>
     </div>
   );

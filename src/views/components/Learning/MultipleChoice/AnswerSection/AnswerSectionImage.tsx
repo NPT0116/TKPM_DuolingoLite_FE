@@ -21,24 +21,28 @@ const AnswerSectionImage: React.FC<AnswerSectionImage3ColsProps> = ({
   isSubmit,
 }) => {
   return (
-    <div className="flex flex-col gap-[24px] w-full h-full ">
-      <QuestionSection
-        words={data.words}
-        questionConfigure={data.questionConfigure}
-        audio={data.audio}
-        picture={data.picture}
-        englishText={data.englishText}
-        vietnameseText={data.vietnameseText}
-      />
-      <AnswerImageContainer3Cols
-        options={data.options}
-        setIsButtonActive={setIsButtonActive}
-        setIsButtonCorrect={setIsButtonCorrect}
-        isNext={isNext}
-        setIsNext={setIsNext}
-        isEnglish={data.optionConfigure.englishText}
-        isSubmit={isSubmit}
-      />
+    <div className="flex flex-col w-full h-full justify-between">
+      <div className="h-1/7 w-full">
+        <QuestionSection
+          words={data.words}
+          questionConfigure={data.questionConfigure}
+          audio={data.audio}
+          picture={data.picture}
+          englishText={data.englishText}
+          vietnameseText={data.vietnameseText}
+        />
+      </div>
+      <div className="h-6/7 w-full">
+        <AnswerImageContainer3Cols
+          options={data.options}
+          setIsButtonActive={setIsButtonActive}
+          setIsButtonCorrect={setIsButtonCorrect}
+          isNext={isNext}
+          setIsNext={setIsNext}
+          isEnglish={data.optionConfigure.englishText}
+          isSubmit={isSubmit}
+        />
+      </div>
     </div>
   );
 };

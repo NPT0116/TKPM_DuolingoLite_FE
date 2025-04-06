@@ -71,14 +71,7 @@ const AnswerLine: React.FC<AnswerLineProps> = ({
   }, [setSelectedWords, selectedWords, correctWordLength, setIsButtonCorrect]);
 
   return (
-    <div
-      style={{
-        minHeight: `${containerHeight}px`,
-        alignContent: "flex-start",
-        paddingTop: "5px",
-      }}
-      className="border-b-2 border-[#37464F] flex flex-wrap items-start gap-3.5 px-4 text-[19px] relative "
-    >
+    <div className=" w-full h-full border-b-2 border-[#37464F] flex flex-wrap items-start gap-3.5 text-[19px] relative ">
       {hrLines}
       <AnimatePresence>
         {selectedWords.map((option) => {

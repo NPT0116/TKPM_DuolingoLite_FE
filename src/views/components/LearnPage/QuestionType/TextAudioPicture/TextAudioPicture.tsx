@@ -26,18 +26,22 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
   const playAudio = usePlayAudio();
   const stopAudio = useStopAudio();
 
-  const tokens = !isEnglish
-    ? textToSplit
-        .split(" ")
-        .filter((token) => token !== "")
-        .map((token) => ({ word: token, audio: "", hasAudio: false }))
-    : words
-        ?.sort((a, b) => a.order - b.order)
-        .map((word) => ({
-          word: word.word,
-          audio: word.audio.url || "",
-          hasAudio: true,
-        }));
+  // const tokens = !isEnglish
+  //   ? textToSplit
+  //       .split(" ")
+  //       .filter((token) => token !== "")
+  //       .map((token) => ({ word: token, audio: "", hasAudio: false }))
+  //   : words
+  //       ?.sort((a, b) => a.order - b.order)
+  //       .map((word) => ({
+  //         word: word.word,
+  //         audio: word.audio.url || "",
+  //         hasAudio: true,
+  //       }));
+  const tokens = textToSplit
+    .split(" ")
+    .filter((token) => token !== "")
+    .map((token) => ({ word: token, audio: "", hasAudio: false }));
 
   const handleMouseEnter = (audioUrl: string) => {
     stopAudio();
@@ -53,25 +57,17 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
   }, [textToSplit]);
   return (
     <div
-      className={`flex items-center text-white ${
+      className={` w-full h-full flex  items-center text-white ${
         picture && isBuildSentence ? "border-b-2 border-[#37464F]" : ""
       }`}
     >
       {/* Image Placeholder */}
-      {picture !== null && (
-        <img
-          src={picture.url}
-          className="w-[175px] h-[175px] text-[20px] "
-        ></img>
-      )}
+      {picture !== null && <img src={picture.url} className="h-full"></img>}
 
       {/* Text */}
-      <div className="flex transform translate-x-[-12px]">
-        <div
-          className="transform translate-x-[1px] "
-          style={{ marginTop: "25px" }}
-        >
-          {/* Chat image */}
+      <div className="w-full  flex transform">
+        {/* Chat image */}
+        <div className="transform translate-x-[1px] translate-y-4">
           {picture !== null && (
             <svg height="20" viewBox="0 0 18 20" width="18" fill="#131F24">
               <path
@@ -92,16 +88,18 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
 
         {/* Text Question: */}
         <div
-          className={`flex gap-[4.84px] ${
+          className={` w-fit  justify-center items-center flex gap-[4.84px] ${
             picture ? "border-2 border-[#37464F]" : ""
           } h-fit rounded-xl items-center `}
           style={{
-            paddingLeft: audio ? (picture ? "30px" : "50px") : undefined,
+            padding: "10px 20px",
+            paddingLeft: audio ? (picture ? "30px" : "50px") : "20px",
           }}
         >
           {audio !== null && (
             <div
-              className="w-full h-fit flex items-center cursor-pointer "
+              className="h-fit w-fit  flex items-center cursor-pointer"
+              style={{ padding: "5px" }}
               onClick={() => playAudio(audio.url)}
             >
               {/* Icon 1 (Loa chính) */}
@@ -138,17 +136,13 @@ export const TextAudioPicture: React.FC<TextAudioPictureProps> = ({
               </svg>
             </div>
           )}
-          <div
-            className="flex gap-[4.84px] text-[20px] "
-            style={{ padding: "10px 14px" }}
-          >
+          <div className="flex gap-[4.84px] items-center  font-semibold w-full h-full ">
             {tokens?.map((token, index) => (
               <span
                 key={index}
-                className={`${
+                className={`h-full text-xl ${
                   englishText?.length != 0 ? "border-b-2 border-dashed" : ""
                 } border-[#52656D] cursor-default`}
-                style={{ paddingBottom: "4px" }}
                 onMouseEnter={() => {
                   if (token.hasAudio) {
                     handleMouseEnter(token.audio);
