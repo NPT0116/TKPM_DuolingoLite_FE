@@ -49,6 +49,7 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
         sourceType: option.sourceType,
         vietnameseText: option.vietnameseText,
       }));
+    console.log(sourceCollection);
     const targetCollection = data.options
       .filter((option: IMatchingOption) => option.optionId != null)
       .map((option: IMatchingOption) => ({
@@ -57,6 +58,7 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
         englishText: option.englishText,
         audio: option.audio,
       }));
+    console.log(targetCollection);
     setSourceCollection(shuffleArray(sourceCollection));
     setTargetCollection(shuffleArray(targetCollection));
   }, []);
