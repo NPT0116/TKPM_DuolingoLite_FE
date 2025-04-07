@@ -15,6 +15,7 @@ const CreateOptionForm: React.FC<CreateOptionFormProps> = ({
 }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [tempOption, setTempOption] = useState<IMultipleChoiceOption>({
+    optionId: "",
     isCorrect: false,
     vietnameseText: null,
     englishText: "",

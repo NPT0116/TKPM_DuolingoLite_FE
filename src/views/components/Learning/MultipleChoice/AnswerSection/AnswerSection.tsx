@@ -24,7 +24,7 @@ const AnswerSection: React.FC<AnswerSectionProps> = ({
     // data.vietnameseText?.length === 0 &&
     !data.picture;
   return (
-    <div className="flex flex-col justify-evenly  w-full h-full">
+    <div className="flex flex-col gap-[24px] w-full h-full ">
       {/* Question Section */}
       <div className="w-full h-1/2 ">
         <QuestionSection
