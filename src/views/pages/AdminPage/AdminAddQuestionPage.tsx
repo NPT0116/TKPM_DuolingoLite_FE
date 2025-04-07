@@ -1,5 +1,4 @@
 import QuestionPrompt from "../../components/Admin/Lesson/QuestionPrompt";
-import MultipleChoiceOptionPrompt from "../../components/Admin/Lesson/MultipleChoiceOptionPrompt";
 import OrderPrompt from "../../components/Admin/Lesson/OrderPrompt";
 import StepButton from "../../components/Admin/Components/StepButton";
 import { useEffect, useState } from "react";
@@ -8,8 +7,15 @@ import { IAddQuestion } from "../../../interfaces/Questions/IBaseQuestion";
 import { useParams } from "react-router-dom";
 import { createEmptyQuestion } from "./utils/createEmptyQuestion";
 import { QuestionType } from "../../../enums/questionType";
+import OptionPrompt from "../../components/Admin/Lesson/Option/OptionPrompt";
 
-const AdminMultipleChoicePage: React.FC = () => {
+interface AdminMultipleChoicePageProps {
+  questionType: QuestionType;
+}
+
+const AdminAddQuestionPage: React.FC<AdminMultipleChoicePageProps> = ({
+  questionType,
+}) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [loadingMessage, setLoadingMessage] = useState("");
@@ -40,7 +46,7 @@ const AdminMultipleChoicePage: React.FC = () => {
   useEffect(() => {
     setQuestion((question) => ({
       ...question,
-      type: QuestionType.MultipleChoice,
+      type: questionType,
     }));
   }, []);
 
@@ -105,10 +111,11 @@ const AdminMultipleChoicePage: React.FC = () => {
           className="w-full h-5/6"
           style={{ display: step === 1 ? "block" : "none" }}
         >
-          <MultipleChoiceOptionPrompt
+          <OptionPrompt
             configureArray={configureArray}
             question={question}
             setQuestion={setQuestion}
+            questionType={questionType}
           />
         </div>
 
@@ -146,4 +153,4 @@ const AdminMultipleChoicePage: React.FC = () => {
   );
 };
 
-export default AdminMultipleChoicePage;
+export default AdminAddQuestionPage;

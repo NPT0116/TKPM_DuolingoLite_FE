@@ -19,11 +19,11 @@ import ReviewPage from "../views/pages/ReviewPage/ReviewPage";
 // Admin
 import AdminLayout from "../views/layouts/AdminLayout";
 import AdminCourseManagementPage from "../views/pages/AdminPage/management/AdminCourseManagementPage";
-import AdminMultipleChoicePage from "../views/pages/AdminPage/AdminMultipleChoicePage";
+import AdminAddQuestionPage from "../views/pages/AdminPage/AdminAddQuestionPage";
 import AdminMatchingPage from "../views/pages/AdminPage/AdminMatchingPage";
 import AdminBuildSentencePage from "../views/pages/AdminPage/AdminBuildSentencePage";
 import AdminPronunciationPage from "../views/pages/AdminPage/AdminPronunciationPage";
-import AdminTestLessonPage from "../views/pages/AdminPage/AdminTest/AdminTestLessonPage";
+import { QuestionType } from "../enums/questionType";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -109,11 +109,17 @@ const AppRoutes: React.FC = () => {
           <Route path={PATH.ADMIN.lesson.base}>
             <Route
               path={PATH.ADMIN.lesson.multipleChoice}
-              element={<AdminMultipleChoicePage />}
+              element={
+                <AdminAddQuestionPage
+                  questionType={QuestionType.MultipleChoice}
+                />
+              }
             />
             <Route
               path={PATH.ADMIN.lesson.matching}
-              element={<AdminMatchingPage />}
+              element={
+                <AdminAddQuestionPage questionType={QuestionType.Matching} />
+              }
             />
             <Route
               path={PATH.ADMIN.lesson.buildSentence}
@@ -127,10 +133,6 @@ const AppRoutes: React.FC = () => {
           <Route
             path={PATH.ADMIN.lesson.management}
             element={<AdminCourseManagementPage />}
-          />
-          <Route
-            path={PATH.ADMIN.lesson.test}
-            element={<AdminTestLessonPage />}
           />
           {/* Có thể thêm /admin/course, /admin/question tương tự */}
         </Route>

@@ -1,10 +1,11 @@
 import axios from "axios";
 import { API_BASE_URL } from "../../configs/apiConfig";
 import { IMultipleChoiceOption } from "../../interfaces/Options/IMultipleChoiceOption";
+import { IMatchingOption } from "../../interfaces/Options/IMatchingOption";
 
 export const getOptionByEnglishText = async (
   englishText: string
-): Promise<IMultipleChoiceOption[] | null> => {
+): Promise<IMultipleChoiceOption[] | IMatchingOption[] | null> => {
   try {
     const { data } = await axios.get(`${API_BASE_URL}Option`, {
       params: { englishText },
