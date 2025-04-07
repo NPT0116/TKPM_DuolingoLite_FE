@@ -22,7 +22,7 @@ const PreviewQuestion: React.FC<IPreviewQuestion> = ({
         style={{ padding: "10px 20px" }}
       >
         <div className="text-center font-bold text-2xl">{title} Questions</div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           {questionList.map((question, index) => (
             <QuestionChoice
               onClick={() => setSelectedQuestion(question)}

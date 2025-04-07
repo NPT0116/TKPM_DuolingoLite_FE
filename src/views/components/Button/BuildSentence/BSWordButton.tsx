@@ -28,7 +28,7 @@ const BSBWordButton: React.FC<BSWordProps> = ({
         disabled ? "" : "cursor-pointer active:translate-y-[2px]"
       } relative z-10`}
       style={{
-        padding: "5px 8px 8px 8px",
+        padding: "7px 12px 12px 12px",
         boxShadow: "0 2.5px 0 0 #37464F",
         ...style,
       }}
@@ -46,7 +46,7 @@ const BSBWordButton: React.FC<BSWordProps> = ({
         e.currentTarget.style.boxShadow = "0 2.5px 0 0 #37464F";
       }}
     >
-      <span className="text-sm">{label}</span>
+      <span>{label}</span>
     </button>
   );
 };

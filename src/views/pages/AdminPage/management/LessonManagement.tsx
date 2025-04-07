@@ -25,8 +25,8 @@ const LessonManagement: React.FC<ILessonManagement> = ({
     setMode(0);
   };
   const modeOneCss = {
-    width: "90vw",
-    height: "90vh",
+    width: "100vw",
+    height: "100vh",
   };
   // Fetch QuestionList
   const [questionList, setQuestionList] = useState<IQuestion[]>([]);
@@ -122,7 +122,7 @@ const LessonManagement: React.FC<ILessonManagement> = ({
             >
               Choose Type of Quiz
             </div>
-            <div className="w-[400px] h-[200px] grid grid-cols-2 grid-rows-2 gap-4 ">
+            <div className="w-[400px] h-full grid grid-cols-2 grid-rows-2 gap-4 ">
               <StepButton
                 content="Multiple Choice"
                 width="100%"
