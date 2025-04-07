@@ -160,8 +160,10 @@ const MultipleChoiceOptionPrompt: React.FC<MultipleChoiceOptionPromptProps> = ({
         if (key === "instruction") return true;
         const value = option[key as keyof IMultipleChoiceOption];
         if (key === "englishText" && englishTextForced) {
+          console.log("English text forced");
           return true;
-        } else if (key === "vietNameseText" && vietnameseTextForced) {
+        } else if (key === "vietnameseText" && vietnameseTextForced) {
+          console.log(vietnameseTextForced);
           return true;
         }
         if (key === "audio" || key === "image") {
@@ -241,7 +243,7 @@ const MultipleChoiceOptionPrompt: React.FC<MultipleChoiceOptionPromptProps> = ({
           + ADD OPTION
         </Button>
         {/* Option List */}
-        <div>
+        <div className="grid grid-cols-2 gap-x-4">
           {answerOptions.map((option, index) => (
             <div>
               <div

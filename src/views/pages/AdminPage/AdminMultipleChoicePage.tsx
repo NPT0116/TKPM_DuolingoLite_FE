@@ -5,33 +5,9 @@ import StepButton from "../../components/Admin/Components/StepButton";
 import { useEffect, useState } from "react";
 import { addMultipleChoiceQuestion } from "../../../services/Lesson/AddMultipleChoiceQuestionService";
 import { IAddQuestion } from "../../../interfaces/Questions/IBaseQuestion";
-import { QuestionType } from "../../../enums/questionType";
 import { useParams } from "react-router-dom";
-
-const createEmptyQuestion = (): IAddQuestion => ({
-  instruction: "",
-  vietnameseText: null,
-  englishText: "",
-  image: null,
-  audio: null,
-  order: 1,
-  type: QuestionType.MultipleChoice,
-  questionConfiguration: {
-    audio: false,
-    englishText: false,
-    vietnameseText: false,
-    instruction: false,
-    image: false,
-  },
-  optionConfiguration: {
-    audio: false,
-    englishText: false,
-    vietnameseText: false,
-    instruction: false,
-    image: false,
-  },
-  options: [],
-});
+import { createEmptyQuestion } from "./utils/createEmptyQuestion";
+import { QuestionType } from "../../../enums/questionType";
 
 const AdminMultipleChoicePage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -60,6 +36,13 @@ const AdminMultipleChoicePage: React.FC = () => {
   const contentCss = {
     color: "black",
   };
+
+  useEffect(() => {
+    setQuestion((question) => ({
+      ...question,
+      type: QuestionType.MultipleChoice,
+    }));
+  }, []);
 
   const handleCreate = async () => {
     if (!lessonId) return;

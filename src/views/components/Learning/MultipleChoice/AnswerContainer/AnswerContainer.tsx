@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
 import AnswerCard from "../AnswerCard/AnswerCard";
 import { usePlayAudio } from "../../../LearnPage/Audio/AudioProvider";
@@ -37,9 +37,9 @@ const AnswerContainer: React.FC<AnswerContainerProps> = ({
 
   return (
     <div
-      className={`w-full h-full  flex justify-center items-center ${
+      className={`w-full h-full flex ${
         onlyAudio && options.length === 2 ? "" : "flex-col"
-      } gap-2`}
+      } gap-[8px]`}
     >
       {/* Answer Cards */}
       {options.map((option, index) => (

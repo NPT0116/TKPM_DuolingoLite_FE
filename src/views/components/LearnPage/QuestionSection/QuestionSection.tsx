@@ -3,7 +3,6 @@ import { IResource } from "../../../../interfaces/IResource";
 import { OnlyAudio } from "../QuestionType/OnlyAudio/OnlyAudio";
 import { TextAudioPicture } from "../QuestionType/TextAudioPicture/TextAudioPicture";
 import { IWord } from "../../../../interfaces/Questions/IPronunciationQuesion";
-import { MutableRefObject } from "react";
 
 interface QuestionSectionProps {
   questionConfigure: Configure;
@@ -24,7 +23,6 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({
   isBuildSentence = false,
   words,
 }) => {
-  console.log(words);
   return (
     <div className=" flex justify-center items-center w-full h-full ">
       {questionConfigure.audio &&

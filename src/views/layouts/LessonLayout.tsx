@@ -211,7 +211,7 @@ const LessonLayout: React.FC = () => {
   // const stopAudio = useStopAudio();
   return (
     <AudioProvider>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center overflow-y-auto">
         <audio
           autoPlay
           loop
