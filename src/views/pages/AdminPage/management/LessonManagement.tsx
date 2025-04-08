@@ -4,7 +4,6 @@ import { ICourseValue, ILessonValue } from "../../../../interfaces/Course";
 import { useNavigate } from "react-router-dom";
 import { getQuestionDetail } from "../../../../services/Question/getQuestionDetailService";
 import { IQuestion } from "../../../../interfaces/IQuestion";
-import QuizOption from "./PreviewQuestion/QuestionChoice";
 import PreviewQuestion from "./PreviewQuestion/PreviewQuestion";
 interface ILessonManagement {
   onBack?: () => void;

@@ -128,10 +128,10 @@ const AppRoutes: React.FC = () => {
             path={PATH.ADMIN.lesson.management}
             element={<AdminCourseManagementPage />}
           />
-          <Route
+          {/* <Route
             path={PATH.ADMIN.lesson.test}
             element={<AdminTestLessonPage />}
-          />
+          /> */}
           {/* Có thể thêm /admin/course, /admin/question tương tự */}
         </Route>
       </Routes>

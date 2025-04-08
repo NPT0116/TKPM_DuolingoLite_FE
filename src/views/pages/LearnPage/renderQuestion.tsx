@@ -19,6 +19,7 @@ interface HandleLessonProps {
   setIsRetry: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSubmit: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const renderQuestion = ({
@@ -31,12 +32,14 @@ export const renderQuestion = ({
   setIsRetry,
   setIsButtonActive,
   setIsButtonCorrect,
+  setIsSubmit,
 }: HandleLessonProps): React.ReactNode => {
   switch (questionData?.type) {
     case "Matching":
       return (
         <MatchingLessonPage
           data={questionData as unknown as IMatchingQuestion}
+          setIsSubmit={setIsSubmit}
           setIsNext={setIsNext}
           setIsButtonActive={setIsButtonActive}
           setIsButtonCorrect={setIsButtonCorrect}
