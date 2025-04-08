@@ -42,6 +42,7 @@ const AdminTestLessonPage: React.FC<IAdminTestLessonPage> = ({
       setIsRetry,
       setIsButtonActive,
       setIsButtonCorrect,
+      setIsSubmit,
     });
   };
   const [isButtonActivate, setIsButtonActive] = useState(false);
@@ -69,7 +70,7 @@ const AdminTestLessonPage: React.FC<IAdminTestLessonPage> = ({
       sound.play();
     }
   }, [isSubmit, isNext, isRetry]);
-
+  console.log(receivedQuestion);
   return (
     <AudioProvider>
       <div className="bg-[#131F23] w-full h-full overflow-auto flex flex-col">

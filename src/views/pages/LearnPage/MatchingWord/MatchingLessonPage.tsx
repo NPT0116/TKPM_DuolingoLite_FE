@@ -1,132 +1,248 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { IMatchingQuestion } from "../../../../interfaces/Questions/IMatchingQuestion";
 import { IMatchingOption } from "../../../../interfaces/Options/IMatchingOption";
-
 import ButtonMatching from "../../../components/Button/Matching/ButtonMatching";
-import {
-  IVNContent,
-  IELContent,
-} from "../../../../interfaces/Options/IMatchingOption";
-import { usePlayAudio } from "../../../components/LearnPage/Audio/AudioProvider";
 
 interface IMatchingLessonPage {
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
   setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
-  data: IMatchingQuestion;
+  setIsSubmit?: React.Dispatch<React.SetStateAction<boolean>>;
+  data?: IMatchingQuestion;
 }
-
-type PickingQueueItem = IVNContent | IELContent;
+interface IWrongItem {
+  id: string;
+  isSource: boolean;
+  isTarget: boolean;
+}
 
 const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
   setIsButtonActive,
   setIsButtonCorrect,
   setIsNext,
+  setIsSubmit,
   data,
 }) => {
-  //
-  const [correctPickingList, setCorrectPickingList] = useState<string[]>([]);
-  const [pickingQueue, setPickingQueue] = useState<PickingQueueItem[]>([]);
-  const [wrongPickingList, setWrongPickingList] = useState<PickingQueueItem[]>(
+  let displayUnit = 5;
+  let buttonHeight = "70px";
+
+  if (data?.optionConfigure.image) {
+    console.log("option have image");
+    buttonHeight = "200px";
+    displayUnit = 2;
+  }
+  // Prepare data
+  const getSourceOption = (option: IMatchingOption) => {
+    switch (option.sourceType) {
+      case "Audio":
+        return {
+          id: option.optionId,
+          type: option.sourceType,
+          audio: option.audio,
+        };
+      case "Image":
+        return {
+          id: option.optionId,
+          type: option.sourceType,
+          image: option.image,
+        };
+      case "VietnameseText":
+        return {
+          id: option.optionId,
+          type: option.sourceType,
+          vietnameseText: option.vietnameseText,
+        };
+      case "EnglishText":
+      default:
+        return {
+          id: option.optionId,
+          type: option.sourceType,
+          audio: option.audio,
+          englishText: option.englishText,
+        };
+    }
+  };
+  const getTargetOption = (option: IMatchingOption) => {
+    switch (option.targetType) {
+      case "Audio":
+        return {
+          id: option.optionId,
+          type: option.targetType,
+          audio: option.audio,
+        };
+      case "Image":
+        return {
+          id: option.optionId,
+          type: option.targetType,
+          image: option.image,
+        };
+      case "VietnameseText":
+        return {
+          id: option.optionId,
+          type: option.targetType,
+          vietnameseText: option.vietnameseText,
+        };
+      case "EnglishText":
+      default:
+        return {
+          id: option.optionId,
+          type: option.targetType,
+          audio: option.audio,
+          englishText: option.englishText,
+        };
+    }
+  };
+  const [displayOptions, setDisplayedOptions] = useState<IMatchingOption[]>([]);
+  const [remainingOptions, setRemainingOptions] = useState<IMatchingOption[]>(
     []
   );
-  const [sourceCollection, setSourceCollection] = useState<IVNContent[]>([]);
-  const [targetCollection, setTargetCollection] = useState<IELContent[]>([]);
-  function shuffleArray<T>(array: T[]): T[] {
-    const newArray = [...array];
+  const optionsList = data?.options || [];
+  const maxDisplaySize =
+    optionsList.length > displayUnit ? displayUnit : optionsList.length;
+  useEffect(() => {
+    const initialDisplayOptions = optionsList.slice(0, maxDisplaySize);
+    const remainingOptions = optionsList.slice(
+      maxDisplaySize,
+      optionsList.length
+    );
+    setDisplayedOptions(initialDisplayOptions);
+    setRemainingOptions(remainingOptions);
+  }, [data?.questionId]);
+  const sourceOptions = displayOptions!.map((option) => ({
+    ...getSourceOption(option),
+    isSource: true,
+    isTarget: false,
+  }));
+  const shuffleArray = (array: any[]) => {
+    const newArray = array.slice();
     for (let i = newArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
     return newArray;
+  };
+  let targetOptions = useMemo(() => {
+    const targets = displayOptions.map((option) => ({
+      ...getTargetOption(option),
+      isSource: false,
+      isTarget: true,
+    }));
+    return shuffleArray(targets);
+  }, [remainingOptions]);
+
+  // Option handle
+  const [selectedTarget, setSelectedTarget] = useState<any>();
+  const [selectedSource, setSelectedSource] = useState<any>();
+  // Manipulate button effect
+  // Check Correct
+  const [correctList, setCorrectList] = useState<string[]>([]);
+  const [wrongList, setWrongList] = useState<IWrongItem[]>([]);
+  if (selectedSource && selectedTarget) {
+    if (selectedSource.id == selectedTarget.id) {
+      if (!correctList.includes(selectedSource.id)) {
+        setCorrectList((prev) => [...prev, selectedSource.id]);
+        if (remainingOptions.length > 0) {
+          setTimeout(() => {
+            const nextOption = remainingOptions[0];
+            setRemainingOptions(remainingOptions.slice(1));
+            setDisplayedOptions((prev) => {
+              const index = prev.findIndex(
+                (o) => o.optionId === selectedSource.id
+              );
+              if (index !== -1) {
+                const newOptions = [...prev];
+                newOptions[index] = nextOption;
+                return newOptions;
+              }
+              return prev;
+            });
+          }, 500);
+        }
+      }
+    } else {
+      setWrongList([
+        { id: selectedSource.id, isSource: true, isTarget: false },
+        { id: selectedTarget.id, isSource: false, isTarget: true },
+      ]);
+      setTimeout(() => {
+        setWrongList([]);
+      }, 500);
+    }
+    setSelectedSource(null);
+    setSelectedTarget(null);
+  }
+  // Handle Navigation Button
+  if (correctList.length === optionsList!.length) {
+    setIsButtonActive(true);
+    if (setIsSubmit) setIsSubmit(true);
+    setIsButtonCorrect(true);
+    setIsNext(true);
   }
   useEffect(() => {
-    const sourceCollection = data.options
-      .filter((option: IMatchingOption) => option.optionId != null)
-      .map((option: IMatchingOption) => ({
-        optionId: option.optionId,
-        sourceType: option.sourceType,
-        vietnameseText: option.vietnameseText,
-      }));
-    console.log(sourceCollection);
-    const targetCollection = data.options
-      .filter((option: IMatchingOption) => option.optionId != null)
-      .map((option: IMatchingOption) => ({
-        optionId: option.optionId,
-        targetType: option.targetType,
-        englishText: option.englishText,
-        audio: option.audio,
-      }));
-    console.log(targetCollection);
-    setSourceCollection(shuffleArray(sourceCollection));
-    setTargetCollection(shuffleArray(targetCollection));
-  }, []);
-  // Process the picking queue whenever it changes.
-  useEffect(() => {
-    if (pickingQueue.length === 2) {
-      const [firstItem, secondItem] = pickingQueue;
-      if (firstItem.optionId === secondItem.optionId) {
-        setCorrectPickingList((prev) => [...prev, firstItem.optionId!]);
-      } else {
-        setWrongPickingList((prev) => [firstItem, secondItem]);
-      }
-      setPickingQueue([]);
-    }
-  }, [pickingQueue]);
-
-  // Activate button when the correct picking list reaches 5 items.
-  useEffect(() => {
-    if (correctPickingList.length === 5) {
-      setIsButtonActive(true);
-      setIsButtonCorrect(true);
-      setIsNext(true);
-    }
-  }, [correctPickingList]);
-
-  const handleScreenClick = () => {
-    setPickingQueue([]);
-  };
-  // Handle Overlap audio
-  const playAudio = usePlayAudio();
+    setCorrectList([]);
+    setWrongList([]);
+  }, [data?.questionId]);
+  // Return
   return (
     <div
-      onClick={() => handleScreenClick()}
-      className="w-full h-full "
+      onClick={() => {
+        setSelectedSource(null);
+        setSelectedTarget(null);
+      }}
+      className="w-full h-full flex justify-center items-center flex-col bg-[#131F24]"
       style={{ padding: "0 0 40px 0" }}
     >
-      {/* Lesson Container */}
-      <div className="relative w-full h-full flex flex-col justify-center items-center">
-        <div className="w-1/2   text-white font-bold text-3xl h-1/5  flex items-center justify-start">
-          Chọn cặp từ
+      <div className="w-2/3 h-full flex flex-col justify-center items-center">
+        <div className="flex justify-start items-center w-full h-1/5  text-3xl font-bold text-white">
+          {data?.instruction}
         </div>
-        <div className="relative h-4/5 w-full  grid grid-cols-2 grid-row-1 gap-4">
-          <div className="h-full grid grid-cols-1 grid-rows-5 gap-4 w-1/2 justify-self-end">
-            {sourceCollection.map((content) => (
+        <div className="w-full h-4/5  flex flex-row gap-8">
+          <div className="w-1/2 h-full  flex flex-col gap-2">
+            {sourceOptions?.map((option, index) => (
               <ButtonMatching
-                key={`source-${content.optionId}`}
-                setWrongPickingList={setWrongPickingList}
-                wrongPickingList={wrongPickingList}
-                correctPickingList={correctPickingList}
-                setPickingQueue={setPickingQueue}
-                content={content as IVNContent}
+                buttonHeight={buttonHeight}
+                isInWrongList={wrongList.some(
+                  (item) =>
+                    item.id === option.id &&
+                    item.isSource === option.isSource &&
+                    item.isTarget === option.isTarget
+                )}
+                isApplyReleased={
+                  selectedSource ? option.id === selectedSource.id : false
+                }
+                index={index}
+                disabled={correctList.includes(option.id!)}
+                key={option.id}
+                option={option}
+                onClick={() => {
+                  if (option.id && !correctList.includes(option.id))
+                    setSelectedSource(option);
+                }}
               />
             ))}
           </div>
-          <div className=" h-full grid grid-cols-1 grid-rows-5 gap-4 w-1/2 justify-self-start">
-            {targetCollection.map((content) => (
+          <div className="w-1/2 h-full  flex flex-col gap-2">
+            {targetOptions?.map((option, index) => (
               <ButtonMatching
+                buttonHeight={buttonHeight}
+                isInWrongList={wrongList.some(
+                  (item) =>
+                    item.id === option.id &&
+                    item.isSource === option.isSource &&
+                    item.isTarget === option.isTarget
+                )}
+                isApplyReleased={
+                  selectedTarget ? option.id === selectedTarget.id : false
+                }
+                index={index + maxDisplaySize}
+                disabled={correctList.includes(option.id!)}
+                key={option.id}
+                option={option}
                 onClick={() => {
-                  if (content.audio && content.audio.url) {
-                    playAudio(content.audio.url);
-                  }
+                  if (option.id && !correctList.includes(option.id))
+                    setSelectedTarget(option);
                 }}
-                key={`target-${content.optionId}`}
-                setWrongPickingList={setWrongPickingList}
-                wrongPickingList={wrongPickingList}
-                correctPickingList={correctPickingList}
-                setPickingQueue={setPickingQueue}
-                content={content as IELContent}
               />
             ))}
           </div>

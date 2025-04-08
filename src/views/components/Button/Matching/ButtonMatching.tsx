@@ -1,174 +1,244 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from "@emotion/react";
-import { useEffect, useState } from "react";
-import {
-  IVNContent,
-  IELContent,
-} from "../../../../interfaces/Options/IMatchingOption";
-type Content = IELContent | IVNContent;
-interface IButtonMatching {
-  setPickingQueue: React.Dispatch<React.SetStateAction<any>>;
-  setWrongPickingList: React.Dispatch<React.SetStateAction<any>>;
-  correctPickingList: string[];
-  content: IELContent | IVNContent;
-  wrongPickingList: Content[];
-  onClick?: () => void;
-}
-const isVietnameseContent = (
-  content: IVNContent | IELContent
-): content is IVNContent => {
-  return (content as IVNContent).vietnameseText !== undefined;
-};
+import { usePlayAudio } from "../../LearnPage/Audio/AudioProvider";
+import { useState } from "react";
+import { IMatchingOption } from "../../../../interfaces/Options/IMatchingOption";
 
-const keyframes_ScaleFocus = css`
-  @keyframes scaleFocus {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.05);
-    }
-    100% {
-      transform: scale(1);
-    }
+interface IButtonMatching {
+  option: any;
+  onClick?: () => void;
+  disabled: boolean;
+  index: number;
+  isApplyReleased: boolean;
+  isInWrongList?: boolean;
+  buttonHeight?: string;
+}
+// Voice Wave Animation
+const fluctuate = keyframes`
+  0% { transform: scaleY(1); }
+  25% { transform: scaleY(1.8); }
+  50% { transform: scaleY(0.6); }
+  75% { transform: scaleY(1.5); }
+  100% { transform: scaleY(1); }
+`;
+// Released Button Animation
+const releasedButtonEffect = keyframes`
+  0% {transform: Scale(1.0);}
+  50% {transform: Scale(1.05);}
+  100% {transform: Scale(1.0);}
+`;
+// Button Animation
+const normalButton = css`
+  background: #131f24;
+  border-color: #37464f;
+`;
+const activeButton = css`
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  &:active {
+    border-bottom-width: 2px;
+    transform: TranslateY(1px);
+    transform-color: duration;
   }
 `;
-const keyframes_BorderColor = css`
-  @keyframes borderAnimation {
-    0% {
-      border-color: #37464f;
-    }
-    50% {
-      border-color: #93d333;
-    }
-    100% {
-      border-color: #37464f;
-    }
-  }
+const disabledButtonEffect = keyframes`
+  0% {border-color: #3F85A7; transform:scale(1.0);}
+  50% {border-color: #79B933; color:#79B933; transform:scale(1.05);}
+  100% {border-color: #37464F; transform:scale(1.0);}
 `;
-const bounceInScale = keyframes`
+const disabledButton = css`
+  color: #37464f;
+  cursor: default;
+  animation: ${disabledButtonEffect} 0.3s ease-in-out;
+`;
+const releasedButton = css`
+  background: #202f36 !important;
+  border-color: #3f85a7 !important;
+  animation: ${releasedButtonEffect} 0.3s ease-in-out;
+`;
+// Wrong Button Effect
+const wrongButtonEffect = keyframes`
   0% {
+    border-color: #3f85a7;
+    color:red;
+    transform: scale(1);
+  }
+  25% {
+    border-color: red;
+    color:red;
+    transform: scale(1.06);
+  }
+  35% {
+    border-color: red;
+    color:red;
     transform: scale(1);
   }
   50% {
-    transform: scale(1.05);
+    border-color: red;
+    color:red;
+    transform: scale(1.04);
+  }
+  65% {
+    border-color: red;
+    color:red;
+    transform: scale(1);
   }
   70% {
-    transform: scale(0.9);
+    border-color: red;
+    color:red;
+    transform: scale(1.02);
   }
   100% {
+    border-color: #37464f;
+    color:red;
     transform: scale(1);
   }
 `;
-const CSS_Default = css`
-  ${keyframes_ScaleFocus}
-  &:focus {
-    animation: scaleFocus 0.3s ease-in;
-    background: #202f36;
-    border-color: #3f85a7;
-  }
+
+const wrongButton = css`
+  animation: ${wrongButtonEffect} 0.5s ease-in-out !important;
 `;
 
-const CSS_Correct = css`
-  ${keyframes_BorderColor}
-  ${keyframes_ScaleFocus}
-  color: #37464f;
-  cursor: default;
-  pointer-events: none;
-  animation: scaleFocus 0.3s ease-in, borderAnimation 0.3s ease-in;
-  &:focus {
-    border-color: #37464f;
-    background: #131f23;
-  }
-`;
-const CSS_Wrong = css`
-  ${bounceInScale}
-  color: #b6807e;
-  border-color: #6c5152;
-  animation: ${bounceInScale} 0.5s ease-in-out;
-`;
-// Type guard to check if an item is IVNContent
-function isIVNContent(item: Content): item is IVNContent {
-  return (item as IVNContent).vietnameseText !== undefined;
-}
-
-// Type guard to check if an item is IELContent
-function isIELContent(item: Content): item is IELContent {
-  return (item as IELContent).englishText !== undefined;
-}
-
-function checkSameType(item1: Content, item2: Content) {
-  return (
-    (isVietnameseContent(item1) && isVietnameseContent(item2)) ||
-    (isIELContent(item1) && isIELContent(item2))
-  );
-}
 const ButtonMatching: React.FC<IButtonMatching> = ({
-  content,
-  setPickingQueue,
-  correctPickingList,
-  wrongPickingList,
-  setWrongPickingList,
+  option,
   onClick,
+  disabled,
+  index,
+  isApplyReleased,
+  isInWrongList,
+  buttonHeight,
 }) => {
-  const [tempWrong, setTempWrong] = useState(false);
-  useEffect(() => {
-    const isWrong = wrongPickingList.some((item) => {
-      return item.optionId == content.optionId && checkSameType(item, content);
-    });
-    if (isWrong) {
-      console.log("wrong");
-      setTempWrong(true);
-      const timer = setTimeout(() => {
-        setWrongPickingList([]);
-        setTempWrong(false);
-        if (document.activeElement instanceof HTMLElement) {
-          document.activeElement.blur();
+  // dummy test
+  // Preparing
+  const playAudio = usePlayAudio();
+  const type = option.type;
+  // Audio Handle
+  const [isAudioPlay, setAudioPlay] = useState(false);
+  const waveBars = Array(10).fill(null);
+  const waveBarElements = waveBars.map((_, index) => (
+    <div
+      key={index}
+      css={css`
+        background-color: ${disabled
+          ? `#37464F`
+          : isInWrongList
+          ? "red"
+          : `#41ace0`};
+        width: 5px;
+        height: 10px;
+        border-radius: 9999px;
+        ${isAudioPlay &&
+        !disabled &&
+        !isInWrongList &&
+        css`
+          animation: ${fluctuate} 1.2s ease-in-out;
+          animation-delay: ${index * 0.2}s;
+        `}
+      `}
+    />
+  ));
+  // Handle type
+  const handleType = (option: any) => {
+    switch (option.type) {
+      case "Audio":
+        return waveBarElements;
+      case "EnglishText":
+        return option.englishText;
+      case "VietnameseText":
+        return option.vietnameseText;
+      case "Image":
+        if (option.image && option.image.url) {
+          return (
+            <img
+              className="w-full h-full rounded-lg"
+              src={option.image.url}
+              css={
+                disabled
+                  ? css`
+                      object-fit: cover;
+                      opacity: 0.5;
+                    `
+                  : css`
+                      object-fit: cover;
+                    `
+              }
+            />
+          );
+        } else {
+          return null;
         }
-      }, 500);
-      return () => {
-        clearTimeout(timer);
-      };
+      default:
+        return null;
     }
-  }, [wrongPickingList]);
-
-  const displayText = isVietnameseContent(content)
-    ? content.vietnameseText
-    : content.englishText;
-  const isCorrect = correctPickingList.includes(content.optionId);
-  return (
-    <button
-      css={
-        tempWrong ? CSS_Wrong : isCorrect == true ? CSS_Correct : CSS_Default
+  };
+  //
+  const handlePlayAudio = () => {
+    if (option.audio && option.audio.url) {
+      playAudio(option.audio.url);
+      if (type === "Audio") {
+        setAudioPlay(true);
+        setTimeout(() => {
+          setAudioPlay(false);
+        }, 1000);
       }
+    }
+  };
+  // Button Handle Release
+
+  const [isReleased, setIsReleased] = useState(false);
+  // Return
+  return (
+    <div
       onClick={(e) => {
         e.stopPropagation();
         if (onClick) {
           onClick();
         }
-        setPickingQueue((prev: any) => {
-          const isSelf = prev.some(
-            (item: Content) => JSON.stringify(item) === JSON.stringify(content)
-          );
-          const isSameType = prev.some((item: Content) => {
-            return checkSameType(content, item);
-          });
-          const isSolved = correctPickingList.includes(content.optionId);
-          if (!isSolved) {
-            if (prev.length < 2 && !isSelf && !isSameType && !isSolved) {
-              return [...prev, content];
-            } else {
-              return [content];
-            }
-          } else {
-            return [];
-          }
-        });
       }}
-      className=" cursor-pointer text-white rounded-xl border-2 border-[#37464F] border-b-5 active:border-b-2 active:translate-y-[2px] "
+      onMouseDown={(e) => {
+        e.stopPropagation();
+        setIsReleased(false);
+      }}
+      onMouseUp={(e) => {
+        if (disabled) return;
+        e.stopPropagation();
+
+        handlePlayAudio();
+        setIsReleased(true);
+        setTimeout(() => {
+          // setIsReleased(false);
+        }, 200);
+      }}
+      className="group gap-2 w-full flex justify-start items-center text-white font-bold  rounded-xl
+               border-[#37464F] border-2 border-b-4 
+                 overflow-hidden"
+      style={{ padding: "20px", height: `${buttonHeight}` }}
+      css={
+        disabled
+          ? [disabledButton]
+          : isInWrongList
+          ? wrongButton
+          : isApplyReleased
+          ? isReleased
+            ? [releasedButton]
+            : [activeButton]
+          : [normalButton, activeButton]
+      }
     >
-      {displayText}
-    </button>
+      <div
+        className="border-inherit border-2 rounded-md"
+        style={{ padding: "1px 6px" }}
+      >
+        {index + 1}
+      </div>
+      <div
+        className="w-full h-full flex justify-center items-center gap-1 rounded-lg group-active:bg-[#18252B] overflow-hidden"
+        style={{ padding: "10px 0" }}
+      >
+        {" "}
+        {handleType(option)}
+      </div>
+    </div>
   );
 };
 export default ButtonMatching;
