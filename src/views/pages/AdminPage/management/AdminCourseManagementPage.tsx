@@ -1,14 +1,22 @@
+/** @jsxImportSource @emotion/react */
 import { useEffect, useState } from "react";
 import CourseItem from "../../../components/Admin/Management/CourseItem";
 import LessonItem from "../../../components/Admin/Management/LessonItem";
 import { ICourseValue, ILessonValue } from "../../../../interfaces/Course";
 // import { fakeCourseResponse } from "./MockCourse";
-import StepButton from "../../../components/Admin/Components/StepButton";
-import LessonManagement from "./LessonManagement";
+import AddNewButton from "../../../components/Admin/Components/AddNewButton";
+import LessonManagement from "./LessonManagement/LessonManagement";
 import { getCourseList } from "../../../../services/Course/GetCourseListService";
 import { getLessonByCourseId } from "../../../../services/Lesson/GetLessonByCourseIdService";
+import { css, keyframes } from "@emotion/react";
+import RemoveButton from "../../../components/Admin/Components/RemoveButton";
+import StepButton from "../../../components/Admin/Components/StepButton";
+import PopupDialog from "../../../components/Admin/Components/PopupDialog";
+import PopupDelete from "./PopupContent/PopupDelete";
 const AdminCourseManagementPage: React.FC = () => {
   const [courses, setCourses] = useState<ICourseValue[] | null>(null);
+  // Popup confirm
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
     const fetchCoursesWithLessons = async () => {
@@ -55,22 +63,52 @@ const AdminCourseManagementPage: React.FC = () => {
   const handleBack = () => {
     setIsAdd(false);
   };
+  // CSS effect add button
+
+  // Add New
+  const addNewCourse = () => {
+    console.log("Add new Course !");
+  };
+  const addNewLesson = () => {
+    console.log("Add new Lesson !");
+  };
+  // Remove
+  const removeCourse = () => {
+    console.log("Remove Course");
+    setConfirmDelete(true);
+  };
 
   // Main
+  const [isAddCourse, setIsAddCourse] = useState(false);
+  const [isAddLesson, setIsAddLesson] = useState(false);
   return (
     <div className=" w-full h-full flex flex-row justify-center items-center">
       {/* Popup Content */}
       {isAdd && (
-        <div className="w-full h-full absolute left-0 top-0 z-10">
-          <div className="absolute left-0 top-0 w-[100vw] h-[100vh] flex justify-center items-center !z-20">
-            <LessonManagement
-              onBack={() => handleBack()}
-              selectedCourse={selectedCourse}
-              selectedLesson={selectedLesson}
-            />
-          </div>
-          <div className="absolute left-0 top-0 z-10 w-[100vw] h-[100vh]  bg-black opacity-50 flex justify-center items-center"></div>
-        </div>
+        <PopupDialog>
+          <LessonManagement
+            onBack={() => handleBack()}
+            selectedCourse={selectedCourse}
+            selectedLesson={selectedLesson}
+          />
+        </PopupDialog>
+      )}
+      {confirmDelete && (
+        <PopupDialog containerWidth="40%" containerHeight="50%">
+          <PopupDelete
+            title="DELETE THIS COURSE ?"
+            course={selectedCourse!}
+            onCancel={() => {
+              console.log("Cancel delete");
+              setConfirmDelete(false);
+            }}
+            onDelete={() => {
+              console.log("Deleted course");
+              alert(`Delete Course ${selectedCourse?.name}`);
+              setConfirmDelete(false);
+            }}
+          />
+        </PopupDialog>
       )}
       {/* Main Content */}
       <div className="h-full w-2/3 border-[#E5E5E5] border-r-2">
@@ -81,12 +119,32 @@ const AdminCourseManagementPage: React.FC = () => {
           className="w-full h-9/10  flex flex-col gap-4 overflow-auto"
           style={{ padding: "20px 50px" }}
         >
+          <AddNewButton
+            onClick={() => {
+              setIsAddCourse(true);
+              setTimeout(() => {
+                setIsAddCourse(false);
+              }, 300);
+              addNewCourse();
+            }}
+            isAdd={isAddCourse}
+            content="ADD NEW COURSE"
+          />
           {courses?.map((course) => (
-            <CourseItem
-              courseName={course.name}
-              courseLevel={course.level}
+            <div
+              className="w-full flex flex-row gap-2"
               onClick={() => handleSetSelectedCourse(course)}
-            />
+            >
+              <div className="w-11/12">
+                <CourseItem
+                  courseName={course.name}
+                  courseLevel={course.level}
+                />
+              </div>
+              <div className="w-1/12">
+                <RemoveButton onClick={removeCourse} />
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -117,6 +175,20 @@ const AdminCourseManagementPage: React.FC = () => {
                 className=" w-full  gap-4 flex flex-wrap justify-center items-center "
                 style={{ padding: "0 10px 10px 10px" }}
               >
+                <AddNewButton
+                  key={15}
+                  onClick={() => {
+                    setIsAddLesson(true);
+                    setTimeout(() => {
+                      setIsAddLesson(false);
+                    }, 300);
+                    addNewLesson();
+                  }}
+                  width="150"
+                  height="150"
+                  isAdd={isAddLesson}
+                  content="+"
+                />
                 {selectedCourse.lessons
                   .slice()
                   .sort((a, b) => a.order - b.order)
@@ -127,15 +199,10 @@ const AdminCourseManagementPage: React.FC = () => {
                     >
                       <LessonItem
                         lessonTitle={lesson.title}
-                        lessonQuestionCount={lesson.questionCount}
+                        lessonQuestionCount={lesson.questionCount!}
                         lessonEp={lesson.xpEarned}
                         onClick={() => setIsAdd(true)}
                       />{" "}
-                      {/* <StepButton
-                        content="ADD QUIZ"
-                        width="90%"
-                        onClick={() => setIsAdd(true)}
-                      /> */}
                     </div>
                   ))}
               </div>
