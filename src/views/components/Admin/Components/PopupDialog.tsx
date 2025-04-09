@@ -14,7 +14,7 @@ const PopupDialog: React.FC<IPopupDialog> = ({
     height: containerHeight,
   };
   return (
-    <div className="absolute top-0 left-0 w-full h-full !z-10">
+    <div className="absolute top-0 left-0 w-full h-full !z-20">
       {/* The blur background Behind */}
       <div className="w-[100%] h-[100%] bg-black opacity-70 "></div>
       {/* Main Content */}

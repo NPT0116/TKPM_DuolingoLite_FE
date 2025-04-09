@@ -6,6 +6,8 @@ import { IQuestion } from "../../../../../interfaces/IQuestion";
 import QuestionManagement from "../QuestionManagement/QuestionManagement";
 import PopupHeader from "../../../../components/Admin/Components/PopupHeader";
 import PopupChoseQuestionType from "../PopupContent/PopupChoseQuestionType";
+import PopupDelete from "../PopupContent/PopupDelete";
+import PopupDialog from "../../../../components/Admin/Components/PopupDialog";
 interface ILessonManagement {
   onBack?: () => void;
   selectedCourse?: ICourseValue | null;
@@ -16,14 +18,10 @@ const LessonManagement: React.FC<ILessonManagement> = ({
   selectedCourse,
   selectedLesson,
 }) => {
-  // Handle content
-
   // Fetch QuestionList
   const [questionList, setQuestionList] = useState<IQuestion[]>([]);
   useEffect(() => {
     setQuestionList([]);
-    // console.log(selectedCourse);
-    // console.log(selectedLesson);
     const fetchLesson = async () => {
       console.log("Fetching Question !");
       if (selectedLesson) {
@@ -46,15 +44,27 @@ const LessonManagement: React.FC<ILessonManagement> = ({
   };
   const [isAddQuestionForm, setIsAddQuestionForm] = useState(false);
   // Handle Reload and Delete Lesson
-  const handleReloadLesson = () => {
-    console.log("Reload Lesson");
-  };
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  // Handle Delete
   const handleDeleteLesson = () => {
-    console.log("Delete Lesson");
+    alert(`Delete Lesson ${selectedLesson?.title}`);
+    setConfirmDelete(false);
   };
   return (
     <div className="w-[100vw] h-[100vh] bg-white rounded-xl transition-all duration-300">
       {/* Popup Content */}
+      {confirmDelete && (
+        <PopupDialog containerWidth="40%" containerHeight="30%">
+          <PopupDelete
+            title={"Delete this Lesson ?"}
+            onCancel={() => {
+              setConfirmDelete(false);
+            }}
+            onDelete={handleDeleteLesson}
+          />
+        </PopupDialog>
+      )}
+
       {/* Popup add question */}
       {isAddQuestionForm && (
         <PopupChoseQuestionType
@@ -64,13 +74,18 @@ const LessonManagement: React.FC<ILessonManagement> = ({
           navigatePage={handleClick}
         />
       )}
+      {/* Popup Confirm */}
       {/* Header */}
       <div className="w-full h-1/10">
         <PopupHeader
           isReloadButton={true}
           isDeleteButton={true}
-          handleDelete={handleDeleteLesson}
-          handleReload={handleReloadLesson}
+          handleDelete={() => {
+            setConfirmDelete(true);
+          }}
+          handleReload={() => {
+            console.log("Reload Lesson");
+          }}
           headerTitle={`${selectedLesson?.title}'s Questions`}
         />
       </div>
