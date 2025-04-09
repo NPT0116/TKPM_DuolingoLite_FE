@@ -73,7 +73,7 @@ const AdminTestLessonPage: React.FC<IAdminTestLessonPage> = ({
   console.log(receivedQuestion);
   return (
     <AudioProvider>
-      <div className="bg-[#131F23] w-full h-full overflow-auto flex flex-col">
+      <div className="bg-[#131F23] w-full h-full overflow-auto flex flex-col rounded-br-xl">
         <div className="h-4/5 w-full">{handleLesson(receivedQuestion!)}</div>
         <div className="h-1/5 w-full bg-[#131F23] border-[#37464F] border-t-2 relative">
           {isNext && isButtonCorrect && <FooterStatus type={0} />}
