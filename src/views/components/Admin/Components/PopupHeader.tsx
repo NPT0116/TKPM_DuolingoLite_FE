@@ -25,7 +25,7 @@ const PopupHeader: React.FC<IPopupHeader> = ({
         {headerTitle}
       </div>
       {isDeleteButton && (
-        <div className="!z-20 ">
+        <div className="!z-10 ">
           <RemoveButton
             content="Delete Lesson"
             onClick={() => {
