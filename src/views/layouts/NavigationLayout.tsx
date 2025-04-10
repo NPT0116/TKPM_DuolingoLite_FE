@@ -8,6 +8,7 @@ const NavigationLayout: React.FC = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("previousRanking");
     navigate("/login");
   };
   return (
