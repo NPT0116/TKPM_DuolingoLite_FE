@@ -1,10 +1,11 @@
 import { InputField } from "../../../components/Auth/Input";
 import { Navbar } from "../../../components/Auth/NavBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../../../configs/axiosConfig";
 import facebook_icon from "../../../../assets/imgs/login/facebook_icon.png";
 import google_icon from "../../../../assets/imgs/login/google_icon.png";
+import { getUserRanking } from "../../../../services/LeaderBoard/GetUserRanking";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -28,7 +29,16 @@ const LoginPage: React.FC = () => {
     }
     return count > 0 ? false : true;
   };
-
+  const handleFetchUserRanking = () => {
+    console.log("At First Store current User Ranking");
+    const fetchUserRanking = async () => {
+      const { data } = await getUserRanking();
+      if (data) {
+        localStorage.setItem("previousUserRanking", JSON.stringify(data.rank));
+      }
+    };
+    fetchUserRanking();
+  };
   const handleLogin = async () => {
     const payload = {
       email: email,
@@ -45,6 +55,7 @@ const LoginPage: React.FC = () => {
         });
         console.log("Login Successfully:", response);
         localStorage.setItem("authToken", response.data.value);
+        handleFetchUserRanking();
         navigation("/home");
       } catch (error: any) {
         if (error.response) {

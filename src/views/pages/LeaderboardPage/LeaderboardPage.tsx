@@ -1,452 +1,97 @@
-import trophyImg from "../../../assets/imgs/leaderboard/trophy.png";
+/** @jsxImportSource @emotion/react */
 
+import { useEffect, useRef, useState } from "react";
+import trophyImg from "../../../assets/imgs/leaderboard/trophy.png";
+import { MockUserRankingData, MockCurrentUserRanking } from "./MockUserRanking";
+import { IUserRanking } from "../../../interfaces/IRanking";
+import { css } from "@emotion/react";
+import UserRankingBar from "./UserRankingBar";
+import { getRankingList } from "../../../services/LeaderBoard/GetRankingList";
+import { getUserRanking } from "../../../services/LeaderBoard/GetUserRanking";
+import { ConsoleLogger } from "@microsoft/signalr/dist/esm/Utils";
+
+const hidingScrollBar = css`
+  scrollbar-width: 0px;
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+`;
 const LeaderboardPage: React.FC = () => {
+  const [userRankingData, setUserRankingData] = useState<IUserRanking[]>();
+  const [currentUserRanking, setCurrentUserRanking] = useState<IUserRanking>();
+  const [prevUserRanking, setPrevUserRanking] = useState();
+  useEffect(() => {
+    // Store previous ranking
+    const storedPrevRank = localStorage.getItem("previousUserRanking");
+    if (storedPrevRank) {
+      setPrevUserRanking(JSON.parse(storedPrevRank));
+    }
+    const fetchRankingList = async () => {
+      const { data } = await getRankingList();
+      if (data && data.userRankings) {
+        setUserRankingData(data.userRankings);
+      }
+    };
+    const getCurrentUserRanking = async () => {
+      const { data } = await getUserRanking();
+      if (data) {
+        localStorage.setItem("previousUserRanking", JSON.stringify(data.rank));
+        setCurrentUserRanking(data);
+      }
+    };
+    // setUserRankingData(MockUserRankingData);
+    // setCurrentUserRanking(MockCurrentUserRanking);
+    fetchRankingList();
+    getCurrentUserRanking();
+  }, []);
+  useEffect(() => {
+    console.log("Previous User Ranking: ", prevUserRanking);
+    console.log("Current User Ranking: ", currentUserRanking?.rank);
+  }, [currentUserRanking]);
   return (
-    <div className="max-w-[592px] w-[70%] relative">
-      {/* Introduce Section */}
+    <div className="w-full h-full">
+      {/* Header */}
       <div
-        className="w-full  sticky top-0 z-20 bg-[#131F24]"
-        style={{ paddingTop: "20px" }}
+        className="w-full h-1/3 border-b-2 border-[#37464F]"
+        style={{ padding: "40px 0 0 0" }}
       >
-        <div className="flex justify-center">
-          <img src={trophyImg} alt="medal image" className="w-auto h-[91px]" />
+        <div className="w-full h-full flex flex-col gap-4">
+          <img src={trophyImg} alt="" className="w-full h-1/2 object-contain" />
+          <div className="w-full h-1/3 flex flex-col gap-1 justify-center items-center font-bold text-2xl">
+            {" "}
+            <span> Bảng xếp hạng</span>
+            <div className="font-medium text-lg">
+              Top 10 người dùng có thành tích học tập cao nhất{" "}
+            </div>
+          </div>
         </div>
-        <span
-          className="flex justify-center text-[25px] font-bold"
-          style={{ margin: "24px 0px 20px 0px" }}
-        >
-          Bảng xếp hạng
-        </span>
-        <span
-          className="flex justify-center text-[19px] font-bold text-[#DCE6EC]"
-          style={{ marginBottom: "5px" }}
-        >
-          Tốp 10 sẽ được thăng hạng lên giải đấu cao hơn
-        </span>
-        <span
-          className="flex justify-center text-[17px] font-bold text-[#FFC700]"
-          style={{ marginBottom: "16px" }}
-        >
-          6 ngày
-        </span>
-        <hr className="h-[2px] bg-[#37464F] border-0" />
       </div>
-      {/* Leaderboard List */}
-      <div className="relative">
-        <div
-          className="absolute top-0 left-0 w-full "
-          style={{ paddingBottom: "50px" }}
-        >
-          {/* 1st */}
-          <a
-            href="#"
-            className="flex items-center w-full"
-            style={{ padding: "8px 24px 8px 16px" }}
-          >
-            <img
-              src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/9e4f18c0bc42c7508d5fa5b18346af11.svg"
-              alt=""
+      {/* Ranking List */}
+      <div className="w-full h-2/3 overflow-auto" css={hidingScrollBar}>
+        <div className="w-full h-full flex flex-col">
+          {userRankingData?.map((userRanking, index) => (
+            <UserRankingBar
+              index={index}
+              userRanking={userRanking}
+              currentUserRanking={currentUserRanking!}
             />
-            <div className="relative" style={{ margin: "0px 28px 0px 12px" }}>
-              <img
-                src="https://simg-ssl.duolingo.com/ssr-avatars/1719531763/SSR-1Iz5ZtEi9E/medium"
-                alt=""
-                className="rounded-full"
-              />
-              <div className="absolute top-[-6px] right-[-16px] bg-white rounded-tl-full rounded-r-full">
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/6b8a8db5ac7f847e7e87efe97c8b451a.svg"
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
+          ))}
+          {currentUserRanking?.rank! >= 11 && (
+            <div>
+              <div
+                className="w-full flex justify-center items-center  text-[#FE4C4B] font-bold"
+                style={{ paddingBottom: "10px", paddingTop: "5px" }}
+              >
+                Cố gắng hơn để vào top 10 nhé
               </div>
-            </div>
-            {/* Name */}
-            <span className="font-bold flex-1 items-center w-auto truncate">
-              hurley
-            </span>
-            {/* Experience Point */}
-            <span className="flex items-center justify-end text-[#DCE6EC]">
-              450 KN
-            </span>
-          </a>
-          {/* 2nd */}
-          <a
-            href="#"
-            className="flex items-center w-full"
-            style={{ padding: "8px 24px 8px 16px" }}
-          >
-            <img
-              src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/cc7b8f8582e9cfb88408ab851ec2e9bd.svg"
-              alt=""
-            />
-            <div className="relative" style={{ margin: "0px 28px 0px 12px" }}>
-              <img
-                src="https://simg-ssl.duolingo.com/ssr-avatars/1713230496/SSR-xJNDbWgOtc/medium"
-                alt=""
-                className="rounded-full"
+              <UserRankingBar
+                indexColor="#FE4C4B"
+                index={currentUserRanking?.rank! - 1}
+                userRanking={currentUserRanking!}
+                currentUserRanking={currentUserRanking!}
               />
-              <div className="absolute top-[-6px] right-[-16px] bg-white rounded-tl-full rounded-r-full">
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/6b8a8db5ac7f847e7e87efe97c8b451a.svg"
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
-              </div>
             </div>
-            {/* Name */}
-            <span className="font-bold flex-1 items-center w-auto truncate">
-              balwind
-            </span>
-            {/* Experience Point */}
-            <span className="flex items-center justify-end text-[#DCE6EC]">
-              312 KN
-            </span>
-          </a>
-          {/* 3rd */}
-          <a
-            href="#"
-            className="flex items-center w-full"
-            style={{ padding: "8px 24px 8px 16px" }}
-          >
-            <img
-              src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/eef523c872b71178ef5acb2442d453a2.svg"
-              alt=""
-            />
-            <div className="relative" style={{ margin: "0px 28px 0px 12px" }}>
-              <img
-                src="https://simg-ssl.duolingo.com/ssr-avatars/1719531763/SSR-1Iz5ZtEi9E/medium"
-                alt=""
-                className="rounded-full"
-              />
-              <div className="absolute top-[-6px] right-[-16px] bg-white rounded-tl-full rounded-r-full">
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/6b8a8db5ac7f847e7e87efe97c8b451a.svg"
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
-              </div>
-            </div>
-            {/* Name */}
-            <span className="font-bold flex-1 items-center w-auto truncate">
-              hurley
-            </span>
-            {/* Experience Point */}
-            <span className="flex items-center justify-end text-[#DCE6EC]">
-              183 KN
-            </span>
-          </a>
-          {/* 4st */}
-          <a
-            href="#"
-            className="flex items-center w-full"
-            style={{ padding: "8px 24px 8px 16px" }}
-          >
-            <span className="w-[41px] text-center text-[#79B933] text-[17px] font-bold">
-              4
-            </span>
-            <div className="relative" style={{ margin: "0px 28px 0px 12px" }}>
-              <img
-                src="https://simg-ssl.duolingo.com/ssr-avatars/1719531763/SSR-1Iz5ZtEi9E/medium"
-                alt=""
-                className="rounded-full"
-              />
-              <div className="absolute top-[-6px] right-[-16px] bg-white rounded-tl-full rounded-r-full">
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/6b8a8db5ac7f847e7e87efe97c8b451a.svg"
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
-              </div>
-            </div>
-            {/* Name */}
-            <span className="font-bold flex-1 items-center w-auto truncate">
-              hurley
-            </span>
-            {/* Experience Point */}
-            <span className="flex items-center justify-end text-[#DCE6EC]">
-              183 KN
-            </span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center w-full"
-            style={{ padding: "8px 24px 8px 16px" }}
-          >
-            <span className="w-[41px] text-center text-[#79B933] text-[17px] font-bold">
-              4
-            </span>
-            <div className="relative" style={{ margin: "0px 28px 0px 12px" }}>
-              <img
-                src="https://simg-ssl.duolingo.com/ssr-avatars/1719531763/SSR-1Iz5ZtEi9E/medium"
-                alt=""
-                className="rounded-full"
-              />
-              <div className="absolute top-[-6px] right-[-16px] bg-white rounded-tl-full rounded-r-full">
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/6b8a8db5ac7f847e7e87efe97c8b451a.svg"
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
-              </div>
-            </div>
-            {/* Name */}
-            <span className="font-bold flex-1 items-center w-auto truncate">
-              hurley
-            </span>
-            {/* Experience Point */}
-            <span className="flex items-center justify-end text-[#DCE6EC]">
-              183 KN
-            </span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center w-full"
-            style={{ padding: "8px 24px 8px 16px" }}
-          >
-            <span className="w-[41px] text-center text-[#79B933] text-[17px] font-bold">
-              4
-            </span>
-            <div className="relative" style={{ margin: "0px 28px 0px 12px" }}>
-              <img
-                src="https://simg-ssl.duolingo.com/ssr-avatars/1719531763/SSR-1Iz5ZtEi9E/medium"
-                alt=""
-                className="rounded-full"
-              />
-              <div className="absolute top-[-6px] right-[-16px] bg-white rounded-tl-full rounded-r-full">
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/6b8a8db5ac7f847e7e87efe97c8b451a.svg"
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
-              </div>
-            </div>
-            {/* Name */}
-            <span className="font-bold flex-1 items-center w-auto truncate">
-              hurley
-            </span>
-            {/* Experience Point */}
-            <span className="flex items-center justify-end text-[#DCE6EC]">
-              183 KN
-            </span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center w-full"
-            style={{ padding: "8px 24px 8px 16px" }}
-          >
-            <span className="w-[41px] text-center text-[#79B933] text-[17px] font-bold">
-              4
-            </span>
-            <div className="relative" style={{ margin: "0px 28px 0px 12px" }}>
-              <img
-                src="https://simg-ssl.duolingo.com/ssr-avatars/1719531763/SSR-1Iz5ZtEi9E/medium"
-                alt=""
-                className="rounded-full"
-              />
-              <div className="absolute top-[-6px] right-[-16px] bg-white rounded-tl-full rounded-r-full">
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/6b8a8db5ac7f847e7e87efe97c8b451a.svg"
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
-              </div>
-            </div>
-            {/* Name */}
-            <span className="font-bold flex-1 items-center w-auto truncate">
-              hurley
-            </span>
-            {/* Experience Point */}
-            <span className="flex items-center justify-end text-[#DCE6EC]">
-              183 KN
-            </span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center w-full"
-            style={{ padding: "8px 24px 8px 16px" }}
-          >
-            <span className="w-[41px] text-center text-[#79B933] text-[17px] font-bold">
-              4
-            </span>
-            <div className="relative" style={{ margin: "0px 28px 0px 12px" }}>
-              <img
-                src="https://simg-ssl.duolingo.com/ssr-avatars/1719531763/SSR-1Iz5ZtEi9E/medium"
-                alt=""
-                className="rounded-full"
-              />
-              <div className="absolute top-[-6px] right-[-16px] bg-white rounded-tl-full rounded-r-full">
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/6b8a8db5ac7f847e7e87efe97c8b451a.svg"
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
-              </div>
-            </div>
-            {/* Name */}
-            <span className="font-bold flex-1 items-center w-auto truncate">
-              hurley
-            </span>
-            {/* Experience Point */}
-            <span className="flex items-center justify-end text-[#DCE6EC]">
-              183 KN
-            </span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center w-full"
-            style={{ padding: "8px 24px 8px 16px" }}
-          >
-            <span className="w-[41px] text-center text-[#79B933] text-[17px] font-bold">
-              4
-            </span>
-            <div className="relative" style={{ margin: "0px 28px 0px 12px" }}>
-              <img
-                src="https://simg-ssl.duolingo.com/ssr-avatars/1719531763/SSR-1Iz5ZtEi9E/medium"
-                alt=""
-                className="rounded-full"
-              />
-              <div className="absolute top-[-6px] right-[-16px] bg-white rounded-tl-full rounded-r-full">
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/6b8a8db5ac7f847e7e87efe97c8b451a.svg"
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
-              </div>
-            </div>
-            {/* Name */}
-            <span className="font-bold flex-1 items-center w-auto truncate">
-              hurley
-            </span>
-            {/* Experience Point */}
-            <span className="flex items-center justify-end text-[#DCE6EC]">
-              183 KN
-            </span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center w-full"
-            style={{ padding: "8px 24px 8px 16px" }}
-          >
-            <span className="w-[41px] text-center text-[#79B933] text-[17px] font-bold">
-              4
-            </span>
-            <div className="relative" style={{ margin: "0px 28px 0px 12px" }}>
-              <img
-                src="https://simg-ssl.duolingo.com/ssr-avatars/1719531763/SSR-1Iz5ZtEi9E/medium"
-                alt=""
-                className="rounded-full"
-              />
-              <div className="absolute top-[-6px] right-[-16px] bg-white rounded-tl-full rounded-r-full">
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/6b8a8db5ac7f847e7e87efe97c8b451a.svg"
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
-              </div>
-            </div>
-            {/* Name */}
-            <span className="font-bold flex-1 items-center w-auto truncate">
-              hurley
-            </span>
-            {/* Experience Point */}
-            <span className="flex items-center justify-end text-[#DCE6EC]">
-              183 KN
-            </span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center w-full"
-            style={{ padding: "8px 24px 8px 16px" }}
-          >
-            <span className="w-[41px] text-center text-[#79B933] text-[17px] font-bold">
-              4
-            </span>
-            <div className="relative" style={{ margin: "0px 28px 0px 12px" }}>
-              <img
-                src="https://simg-ssl.duolingo.com/ssr-avatars/1719531763/SSR-1Iz5ZtEi9E/medium"
-                alt=""
-                className="rounded-full"
-              />
-              <div className="absolute top-[-6px] right-[-16px] bg-white rounded-tl-full rounded-r-full">
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/6b8a8db5ac7f847e7e87efe97c8b451a.svg"
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
-              </div>
-            </div>
-            {/* Name */}
-            <span className="font-bold flex-1 items-center w-auto truncate">
-              hurley
-            </span>
-            {/* Experience Point */}
-            <span className="flex items-center justify-end text-[#DCE6EC]">
-              183 KN
-            </span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center w-full"
-            style={{ padding: "8px 24px 8px 16px" }}
-          >
-            <span className="w-[41px] text-center text-[#79B933] text-[17px] font-bold">
-              4
-            </span>
-            <div className="relative" style={{ margin: "0px 28px 0px 12px" }}>
-              <img
-                src="https://simg-ssl.duolingo.com/ssr-avatars/1719531763/SSR-1Iz5ZtEi9E/medium"
-                alt=""
-                className="rounded-full"
-              />
-              <div className="absolute top-[-6px] right-[-16px] bg-white rounded-tl-full rounded-r-full">
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/6b8a8db5ac7f847e7e87efe97c8b451a.svg"
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
-              </div>
-            </div>
-            {/* Name */}
-            <span className="font-bold flex-1 items-center w-auto truncate">
-              hurley
-            </span>
-            {/* Experience Point */}
-            <span className="flex items-center justify-end text-[#DCE6EC]">
-              183 KN
-            </span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center w-full"
-            style={{ padding: "8px 24px 8px 16px" }}
-          >
-            <span className="w-[41px] text-center text-[#79B933] text-[17px] font-bold">
-              4
-            </span>
-            <div className="relative" style={{ margin: "0px 28px 0px 12px" }}>
-              <img
-                src="https://simg-ssl.duolingo.com/ssr-avatars/1719531763/SSR-1Iz5ZtEi9E/medium"
-                alt=""
-                className="rounded-full"
-              />
-              <div className="absolute top-[-6px] right-[-16px] bg-white rounded-tl-full rounded-r-full">
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/6b8a8db5ac7f847e7e87efe97c8b451a.svg"
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
-              </div>
-            </div>
-            {/* Name */}
-            <span className="font-bold flex-1 items-center w-auto truncate">
-              hurley
-            </span>
-            {/* Experience Point */}
-            <span className="flex items-center justify-end text-[#DCE6EC]">
-              183 KN
-            </span>
-          </a>
+          )}
         </div>
       </div>
     </div>
