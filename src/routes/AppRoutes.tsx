@@ -123,11 +123,19 @@ const AppRoutes: React.FC = () => {
             />
             <Route
               path={PATH.ADMIN.lesson.buildSentence}
-              element={<AdminBuildSentencePage />}
+              element={
+                <AdminAddQuestionPage
+                  questionType={QuestionType.BuildSentence}
+                />
+              }
             />
             <Route
               path={PATH.ADMIN.lesson.pronunciation}
-              element={<AdminPronunciationPage />}
+              element={
+                <AdminAddQuestionPage
+                  questionType={QuestionType.Pronunciation}
+                />
+              }
             />
           </Route>
           <Route

@@ -6,6 +6,7 @@ import { IAddQuestion } from "../../../../../interfaces/Questions/IBaseQuestion"
 import { QuestionType } from "../../../../../enums/questionType";
 import MultipleChoiceOptionPrompt from "./MultipleChoiceOptionPrompt";
 import MatchingOptionPrompt from "./MatchingOptionPrompt";
+import BuildSentenceOptionPrompt from "./BuildSentenceOptionPrompt";
 interface OptionPromptProps {
   configureArray: string[];
   question: IAddQuestion;
@@ -115,6 +116,17 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
       case QuestionType.Matching:
         return (
           <MatchingOptionPrompt
+            setQuestion={setQuestion}
+            setShowCreateModal={setShowCreateModal}
+            setModalIndex={setModalIndex}
+            vietnameseTextForced={vietnameseTextForced}
+            englishTextForced={englishTextForced}
+            visibleFields={visibleFields}
+          />
+        );
+      case QuestionType.BuildSentence:
+        return (
+          <BuildSentenceOptionPrompt
             setQuestion={setQuestion}
             setShowCreateModal={setShowCreateModal}
             setModalIndex={setModalIndex}

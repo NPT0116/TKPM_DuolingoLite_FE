@@ -75,25 +75,52 @@ const AdminAddQuestionPage: React.FC<AdminMultipleChoicePageProps> = ({
   useEffect(() => {
     console.log(question);
   }, [question]);
+
+  const getStepConfig = (questionType: QuestionType) => {
+    if (questionType === QuestionType.Pronunciation) {
+      return [
+        {
+          order: 1,
+          content: "Question Configuration",
+          processLine: false,
+          show: true,
+        },
+      ];
+    }
+
+    return [
+      {
+        order: 1,
+        content: "Question Configuration",
+        processLine: true,
+        show: true,
+      },
+      {
+        order: 2,
+        content: "Option Configuration",
+        processLine: false,
+        show: true,
+      },
+    ];
+  };
+  const stepConfig = getStepConfig(questionType);
+
   return (
     <div className="w-full h-full flex flex-row">
       <div
         className="w-3/12 flex flex-col justify-center items-center border-r-2 border-[#E5E5E5]"
         style={{ margin: "20px 0" }}
       >
-        <OrderPrompt
-          order={1}
-          content="Question Configuration"
-          processLine={true}
-          stepCss={step == 0 ? stepCss : {}}
-          contentCss={step == 0 ? contentCss : {}}
-        />
-        <OrderPrompt
-          order={2}
-          content="Option Configuration"
-          stepCss={step == 1 ? stepCss : {}}
-          contentCss={step == 1 ? contentCss : {}}
-        />
+        {stepConfig.map((stepItem, index) => (
+          <OrderPrompt
+            key={index}
+            order={stepItem.order}
+            content={stepItem.content}
+            processLine={stepItem.processLine}
+            stepCss={step === index ? stepCss : {}}
+            contentCss={step === index ? contentCss : {}}
+          />
+        ))}
       </div>
       {/* Main Content */}
       <div className="w-11/12 h-full" style={{ padding: "0 20px" }}>
@@ -141,7 +168,7 @@ const AdminAddQuestionPage: React.FC<AdminMultipleChoicePageProps> = ({
               : successMessage}
           </span>
           <div className="w-1/2 flex justify-end">
-            {step < 1 ? (
+            {step < stepConfig.length - 1 ? (
               <StepButton content="TIẾP TỤC" onClick={HandleSetStateNext} />
             ) : (
               <StepButton content="TẠO" onClick={handleCreate} />

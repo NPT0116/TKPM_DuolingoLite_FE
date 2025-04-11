@@ -1,22 +1,17 @@
-import { AutoComplete, Select } from "antd";
+import { AutoComplete } from "antd";
 import { useEffect, useState } from "react";
 import { Button } from "antd";
 import { getOptionByEnglishText } from "../../../../../services/Option/GetOptionService";
 import { IResource } from "../../../../../interfaces/IResource";
 import { IAddOption } from "../../../../../interfaces/Options/IBaseOption";
 import { IAddQuestion } from "../../../../../interfaces/Questions/IBaseQuestion";
-import { IMatchingOption } from "../../../../../interfaces/Options/IMatchingOption";
-import {
-  MatchingQuestionOptionType,
-  optionDictionary,
-} from "../../../../../enums/matchingQuestionType";
+import { IBuildSentenceOption } from "../../../../../interfaces/Options/IBuildSentenceOption";
 
-const createEmptyOption = (): IMatchingOption => ({
+const createEmptyOption = (): IBuildSentenceOption => ({
+  order: -1,
   optionId: "",
   audio: null,
   vietnameseText: "",
-  sourceType: optionDictionary[MatchingQuestionOptionType.VietnameseText],
-  targetType: optionDictionary[MatchingQuestionOptionType.EnglishText],
   englishText: "",
   image: null,
 });
@@ -30,7 +25,7 @@ const createAddEmptyOption = (): IAddOption => ({
   position: null,
 });
 
-interface MatchingOptionPromptProps {
+interface BuildSentenceOptionPromptProps {
   setQuestion: React.Dispatch<React.SetStateAction<IAddQuestion>>;
   setShowCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
   setModalIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -39,7 +34,7 @@ interface MatchingOptionPromptProps {
   visibleFields: Record<string, boolean>;
 }
 
-const MatchingOptionPrompt: React.FC<MatchingOptionPromptProps> = ({
+const BuildSentenceOptionPrompt: React.FC<BuildSentenceOptionPromptProps> = ({
   setQuestion,
   setShowCreateModal,
   setModalIndex,
@@ -47,31 +42,18 @@ const MatchingOptionPrompt: React.FC<MatchingOptionPromptProps> = ({
   englishTextForced,
   visibleFields,
 }) => {
-  const [sourceType, setSourceType] = useState<MatchingQuestionOptionType>(
-    MatchingQuestionOptionType.VietnameseText
-  );
-  const [targetType, setTargetType] = useState<MatchingQuestionOptionType>(
-    MatchingQuestionOptionType.EnglishText
-  );
   const [addAnswerOptions, setAddAnswerOptions] = useState<IAddOption[]>([]);
 
   // Các Answer Option để hiện thị, check image, audio, vietnameseText, englishText
-  const [existedOptions, setExistedOptions] = useState<IMatchingOption[]>([]);
+  const [existedOptions, setExistedOptions] = useState<IBuildSentenceOption[]>(
+    []
+  );
   const [filteredExistedOptions, setFilteredExistedOptions] = useState<
-    IMatchingOption[]
+    IBuildSentenceOption[]
   >([]);
-  const [answerOptions, setAnswerOptions] = useState<IMatchingOption[]>([]);
-
-  useEffect(() => {
-    setQuestion((prev) => ({
-      ...prev,
-      options: prev.options.map((option) => ({
-        ...option,
-        sourceType,
-        targetType,
-      })),
-    }));
-  }, [sourceType, targetType]);
+  const [answerOptions, setAnswerOptions] = useState<IBuildSentenceOption[]>(
+    []
+  );
 
   useEffect(() => {
     const filtered = filterSearchOption(existedOptions);
@@ -79,13 +61,7 @@ const MatchingOptionPrompt: React.FC<MatchingOptionPromptProps> = ({
   }, [visibleFields]);
 
   const handleAddOption = () => {
-    const newOption: IAddOption = {
-      ...createAddEmptyOption(),
-      sourceType,
-      targetType,
-    };
-
-    setAddAnswerOptions((prev) => [...prev, newOption]);
+    setAddAnswerOptions((prev) => [...prev, createAddEmptyOption()]);
     setAnswerOptions((prev) => [...prev, createEmptyOption()]);
   };
 
@@ -93,14 +69,14 @@ const MatchingOptionPrompt: React.FC<MatchingOptionPromptProps> = ({
     if (!value) return;
 
     const result =
-      ((await getOptionByEnglishText(value)) as IMatchingOption[]) ?? [];
+      ((await getOptionByEnglishText(value)) as IBuildSentenceOption[]) ?? [];
     setExistedOptions(result);
     const filtered = filterSearchOption(result);
 
     setFilteredExistedOptions(filtered);
   };
 
-  const filterSearchOption = (options: IMatchingOption[]) => {
+  const filterSearchOption = (options: IBuildSentenceOption[]) => {
     // Gộp logic loại bớt trường thừa trước khi filter
     const filteredVisibleFields = { ...visibleFields };
 
@@ -114,7 +90,7 @@ const MatchingOptionPrompt: React.FC<MatchingOptionPromptProps> = ({
       return Object.entries(filteredVisibleFields).every(([key, isVisible]) => {
         if (key === "instruction") return true;
 
-        const value = option[key as keyof IMatchingOption];
+        const value = option[key as keyof IBuildSentenceOption];
 
         if (key === "audio" || key === "image") {
           return isVisible
@@ -147,36 +123,8 @@ const MatchingOptionPrompt: React.FC<MatchingOptionPromptProps> = ({
     }));
   }, [addAnswerOptions, setQuestion]);
 
-  const optionTypes = Object.values(MatchingQuestionOptionType)
-    .filter((v) => !isNaN(Number(v))) // chỉ lấy giá trị số
-    .map((value) => ({
-      value: value as MatchingQuestionOptionType,
-      label: optionDictionary[value as MatchingQuestionOptionType],
-    }));
   return (
     <div className="w-full h-5/6 flex flex-col justify-start gap-4">
-      <div className="flex flex-col gap-2">
-        <span className="font-bold">
-          <span className="text-red-500">* </span>Source Type
-        </span>
-        <Select
-          style={{ width: "100%" }}
-          value={sourceType} // kiểu số: 0, 1, 2, 3
-          onChange={(value) => setSourceType(value)}
-          options={optionTypes}
-        />
-      </div>
-      <div className="flex flex-col gap-2">
-        <span className="font-bold">
-          <span className="text-red-500">* </span>Target Type
-        </span>
-        <Select
-          style={{ width: "100%" }}
-          value={targetType}
-          onChange={(value) => setTargetType(value)}
-          options={optionTypes}
-        />
-      </div>
       <Button
         type="dashed"
         className="w-full flex justify-center"
@@ -226,14 +174,12 @@ const MatchingOptionPrompt: React.FC<MatchingOptionPromptProps> = ({
                   onSearch={handleSearch}
                   onSelect={(value, option) => {
                     const data = option.optionData;
-                    const selected = data as IMatchingOption;
+                    const selected = data as IBuildSentenceOption;
                     const addSelected = {
-                      order: index + 1,
+                      order: -1,
                       optionId: data.id,
-                      isCorrect: true,
+                      isCorrect: false,
                       position: null,
-                      sourceType: sourceType,
-                      targetType: targetType,
                     } as IAddOption;
                     const addUpdated = [...addAnswerOptions];
                     addUpdated[index] = addSelected;
@@ -266,4 +212,4 @@ const MatchingOptionPrompt: React.FC<MatchingOptionPromptProps> = ({
   );
 };
 
-export default MatchingOptionPrompt;
+export default BuildSentenceOptionPrompt;
