@@ -9,7 +9,7 @@ export interface ILessonValue {
   title: string;
   order: number;
   questions: any[];
-  questionCount: number;
+  questionCount?: number;
   xpEarned: number;
 }
 export interface ICourse {

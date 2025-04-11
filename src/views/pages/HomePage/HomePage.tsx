@@ -13,6 +13,7 @@ import { getUserCurrentCourse } from "../../../services/Course/GetUserCourseServ
 import { getCourseById } from "../../../services/Course/GetCourseByIdService";
 import { getUserProfile } from "../../../services/Authentication/AuthService";
 import { LessonOrderContext } from "../../../context/LessonContext";
+import { getUserRanking } from "../../../services/LeaderBoard/GetUserRanking";
 
 const scrollContainerStyle = css`
   scrollbar-width: 0px;
@@ -20,19 +21,6 @@ const scrollContainerStyle = css`
     width: 0px;
   }
 `;
-// React.Dispatch<React.SetStateAction<number>>;
-// const fetchCourse = async (
-//   setCourse: React.Dispatch<React.SetStateAction<ICourse | null>>
-// ) => {
-//   await api
-//     .get("/Course")
-//     .then((response) => {
-//       setCourse(response.data);
-//     })
-//     .catch((error) => {
-//       console.error("Error fetching the mock data:", error);
-//     });
-// };
 
 const fetchLessonDetail = async (
   courseId: string,

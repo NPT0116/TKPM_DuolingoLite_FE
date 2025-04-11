@@ -11,7 +11,7 @@ const RightSideBar: React.FC = () => {
   const location = useLocation();
   const fetched = useRef(false);
   const navigate = useNavigate();
-
+  const [currentIconUrl, setCurrentIconUrl] = useState<string>("");
   useEffect(() => {
     if (!fetched.current) {
       fetched.current = true; // Đánh dấu rằng API đã được gọi
@@ -141,90 +141,7 @@ const RightSideBar: React.FC = () => {
       )}
       {location.pathname === "/leaderboard" ? (
         //  Emoji box
-        <div
-          className="flex flex-col  top-0  gap-[10px] border-2 border-[#37464f] rounded-xl"
-          style={{ padding: "20px" }}
-        >
-          {/* Header tool box */}
-          <div
-            className="flex justify-between items-center"
-            style={{ marginBottom: "15px" }}
-          >
-            <span className="text-[19px] font-bold">
-              Đặt biểu tượng trạng thái
-            </span>
-            <span className="text-[15px] font-bold text-[#49C0F8]">XOÁ</span>
-          </div>
-          {/* Avartar & Emoji choices */}
-          <div className="flex flex-col gap-[10px] items-center">
-            <div
-              className="w-[80px] h-[85px] relative"
-              style={{ marginBottom: "22px" }}
-            >
-              <img
-                className="w-[80px] h-[80px] rounded-full"
-                src="//simg-ssl.duolingo.com/ssr-avatars/1700707066/SSR-u1wpOO8VJE/xxlarge"
-                alt=""
-              />
-              <div className="bg-[#93D333] h-[40px] w-[40px] rounded-tl-full rounded-r-full flex items-center absolute right-[-16px] top-[-12px]">
-                <img
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/2439bac00452e99ba7bf6a7ed0b04196.svg"
-                  alt=""
-                />
-              </div>
-            </div>
-            {/* Emoji row 1 */}
-            <div className="flex flex-col-6 gap-[8px]">
-              {/* Emoji col 1 */}
-              <button className="bg-[#93D333] rounded-[12px] w-[48px] h-[48px] border-2 border-b-4 border-[#397896]">
-                <img
-                  className="w-[44px] h-[42px]"
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/2439bac00452e99ba7bf6a7ed0b04196.svg"
-                  alt=""
-                />
-              </button>
-              {/* Emoji col 2 */}
-              <button className="bg-[#131F24] w-[48px] h-[48px] rounded-[12px] border-2 border-b-4 border-[#313F47]">
-                <img
-                  className="w-[44px] h-[42px]"
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/2ceb401cae52712705b66a77df83ce40.svg"
-                  alt=""
-                />
-              </button>
-              {/* Emoji col 3 */}
-              <button className="bg-[#131F24] w-[48px] h-[48px] rounded-[12px] border-2 border-b-4 border-[#313F47]">
-                <img
-                  className="w-[44px] h-[42px]"
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/6b8a8db5ac7f847e7e87efe97c8b451a.svg"
-                  alt=""
-                />
-              </button>
-              {/* Emoji col 4 */}
-              <button className="bg-[#131F24] w-[48px] h-[48px] rounded-[12px] border-2 border-b-4 border-[#313F47]">
-                <img
-                  className="w-[44px] h-[42px]"
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/a8e5c18e80054228b2c61168846ff643.svg"
-                  alt=""
-                />
-              </button>
-              {/* Emoji col 5 */}
-              <button className="bg-[#131F24] w-[48px] h-[48px] rounded-[12px] border-2 border-b-4 border-[#313F47]">
-                <img
-                  className="w-[44px] h-[42px]"
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/573de2bc90b2499eeb2b3738cff90133.svg"
-                  alt=""
-                />
-              </button>
-              <button className="bg-[#131F24] w-[48px] h-[48px] rounded-[12px] border-2 border-b-4 border-[#313F47]">
-                <img
-                  className="w-[44px] h-[42px]"
-                  src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/535fc27de224cc7d311dbb5de4f33be6.svg"
-                  alt=""
-                />
-              </button>
-            </div>
-          </div>
-        </div>
+        <div></div>
       ) : (
         // Ranking box
         <div

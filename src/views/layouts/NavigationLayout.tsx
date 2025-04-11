@@ -8,6 +8,7 @@ const NavigationLayout: React.FC = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("previousRanking");
     navigate("/login");
   };
   return (
@@ -21,7 +22,7 @@ const NavigationLayout: React.FC = () => {
     >
       {/* Left side bar */}
       <div
-        className="h-full w-1/5 sticky top-0"
+        className="h-full w-1/4 sticky top-0"
         style={{
           borderRight: "2px solid #37464F",
           paddingLeft: "16px",
@@ -93,7 +94,7 @@ const NavigationLayout: React.FC = () => {
       </div>
 
       <div
-        className="w-full min-w-[812px] flex justify-center gap-[40px] h-full relative overflow-y-auto flex-nowrap"
+        className="w-full h-full min-w-[812px] flex justify-center gap-[40px] relative overflow-y-auto flex-nowrap"
         style={{
           padding: "0px 24px 24px 24px",
         }}

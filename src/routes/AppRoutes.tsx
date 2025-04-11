@@ -16,6 +16,7 @@ import ChooseCoursePage from "../views/pages/ChooseCoursePage/ChooseCoursePage";
 import BuyPremiumPage from "../views/pages/BuyPremiumPage/BuyPremiumPage";
 import ReviewLayout from "../views/layouts/ReviewLayout";
 import ReviewPage from "../views/pages/ReviewPage/ReviewPage";
+import CourseManagementPage from "../views/pages/ChooseCoursePage/CourseManagementPage";
 // Admin
 import AdminLayout from "../views/layouts/AdminLayout";
 import AdminCourseManagementPage from "../views/pages/AdminPage/management/AdminCourseManagementPage";
@@ -45,9 +46,10 @@ const AppRoutes: React.FC = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         {/* Choose Course for user after login*/}
-        <Route path="/courses" element={<ChooseCoursePage />} />
         {/* For component that have layout, only access when have authToken */}
+        <Route path="/courses" element={<ChooseCoursePage />} />
         <Route element={<NavigationLayout />}>
+          {/* <Route path="/courses" element={<CourseManagementPage />} /> */}
           <Route path={PATH.USER.index} element={<GuestPage />} />
           <Route path={PATH.USER.outlets.home} element={<HomePage />} />
           <Route path={PATH.USER.outlets.profile} element={<ProfilePage />} />
@@ -142,6 +144,10 @@ const AppRoutes: React.FC = () => {
             path={PATH.ADMIN.lesson.management}
             element={<AdminCourseManagementPage />}
           />
+          {/* <Route
+            path={PATH.ADMIN.lesson.test}
+            element={<AdminTestLessonPage />}
+          /> */}
           {/* Có thể thêm /admin/course, /admin/question tương tự */}
         </Route>
       </Routes>

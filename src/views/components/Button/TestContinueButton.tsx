@@ -9,7 +9,7 @@ interface ITestContinueButton {
   hoverColor: string;
   paddingWidth: number;
   positionRight: number;
-  type: string;
+  type?: string;
 }
 
 const TestContinueButton: React.FC<ITestContinueButton> = ({
@@ -20,6 +20,7 @@ const TestContinueButton: React.FC<ITestContinueButton> = ({
   isSubmit,
   paddingWidth,
   positionRight,
+  type,
 }) => {
   const mainColor = "3B4EFF",
     borderColor = "3F22EC",
