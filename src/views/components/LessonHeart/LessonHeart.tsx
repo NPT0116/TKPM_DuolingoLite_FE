@@ -50,6 +50,7 @@ const LessonHeart: React.FC<LessonHeartProps> = ({
       try {
         const userHeartData = await getUserHeart();
         setUserHeart(userHeartData.value.remainingHearts);
+        // setUserHeart(10);
       } catch (err) {
         console.log("Failed to fetch user heart in RightSideLayout" + err);
       }
