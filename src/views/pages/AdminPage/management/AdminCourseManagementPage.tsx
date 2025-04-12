@@ -8,15 +8,19 @@ import AddNewButton from "../../../components/Admin/Components/AddNewButton";
 import LessonManagement from "./LessonManagement/LessonManagement";
 import { getCourseList } from "../../../../services/Course/GetCourseListService";
 import { getLessonByCourseId } from "../../../../services/Lesson/GetLessonByCourseIdService";
-import { css, keyframes } from "@emotion/react";
 import RemoveButton from "../../../components/Admin/Components/RemoveButton";
-import StepButton from "../../../components/Admin/Components/StepButton";
 import PopupDialog from "../../../components/Admin/Components/PopupDialog";
 import PopupDelete from "./PopupContent/PopupDelete";
+import PopupAddCourse from "../../../components/Admin/Components/PopupAddCourse";
+import { addCourse } from "../../../../services/Course/AddCourseService";
+import { deleteCourse } from "../../../../services/Course/DeleteCourseService";
+
 const AdminCourseManagementPage: React.FC = () => {
+  const [errorDeleteMsg, setErrorDeleteMsg] = useState("");
   const [courses, setCourses] = useState<ICourseValue[] | null>(null);
   // Popup confirm
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [showAddCourseForm, setShowAddCourseForm] = useState(false);
 
   useEffect(() => {
     const fetchCoursesWithLessons = async () => {
@@ -66,16 +70,26 @@ const AdminCourseManagementPage: React.FC = () => {
   // CSS effect add button
 
   // Add New
-  const addNewCourse = () => {
-    console.log("Add new Course !");
+  const addNewCourse = async (courseName: string) => {
+    const response = await addCourse(courseName);
+    if (response.error) {
+      console.log("Error adding course:", response.error);
+    } else {
+      const newCourse = response.data.value as ICourseValue;
+      setCourses((prev) => (prev ? [...prev, newCourse] : [newCourse]));
+    }
+    setShowAddCourseForm(false);
   };
   const addNewLesson = () => {
     console.log("Add new Lesson !");
   };
   // Remove
-  const removeCourse = () => {
-    console.log("Remove Course");
-    setConfirmDelete(true);
+  const removeCourse = async (courseId: string) => {
+    try {
+      await deleteCourse(courseId);
+    } catch (error) {
+      console.error("Error deleting course:", error);
+    }
   };
 
   // Main
@@ -103,8 +117,7 @@ const AdminCourseManagementPage: React.FC = () => {
               setConfirmDelete(false);
             }}
             onDelete={() => {
-              console.log("Deleted course");
-              alert(`Delete Course ${selectedCourse?.name}`);
+              removeCourse(selectedCourse!.id);
               setConfirmDelete(false);
             }}
           />
@@ -121,11 +134,11 @@ const AdminCourseManagementPage: React.FC = () => {
         >
           <AddNewButton
             onClick={() => {
+              setShowAddCourseForm(true);
               setIsAddCourse(true);
               setTimeout(() => {
                 setIsAddCourse(false);
               }, 300);
-              addNewCourse();
             }}
             isAdd={isAddCourse}
             content="ADD NEW COURSE"
@@ -142,7 +155,11 @@ const AdminCourseManagementPage: React.FC = () => {
                 />
               </div>
               <div className="w-1/12">
-                <RemoveButton onClick={removeCourse} />
+                <RemoveButton
+                  onClick={() => {
+                    setConfirmDelete(true);
+                  }}
+                />
               </div>
             </div>
           ))}
@@ -210,6 +227,16 @@ const AdminCourseManagementPage: React.FC = () => {
           )}
         </div>
       </div>
+      {showAddCourseForm && (
+        <PopupDialog containerWidth="fit" containerHeight="fit">
+          <PopupAddCourse
+            onCancel={() => setShowAddCourseForm(false)}
+            onCreate={(name) => {
+              addNewCourse(name);
+            }}
+          />
+        </PopupDialog>
+      )}
     </div>
   );
 };

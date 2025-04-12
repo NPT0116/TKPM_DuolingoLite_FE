@@ -16,14 +16,10 @@ import ChooseCoursePage from "../views/pages/ChooseCoursePage/ChooseCoursePage";
 import BuyPremiumPage from "../views/pages/BuyPremiumPage/BuyPremiumPage";
 import ReviewLayout from "../views/layouts/ReviewLayout";
 import ReviewPage from "../views/pages/ReviewPage/ReviewPage";
-import CourseManagementPage from "../views/pages/ChooseCoursePage/CourseManagementPage";
 // Admin
 import AdminLayout from "../views/layouts/AdminLayout";
 import AdminCourseManagementPage from "../views/pages/AdminPage/management/AdminCourseManagementPage";
 import AdminAddQuestionPage from "../views/pages/AdminPage/AdminAddQuestionPage";
-import AdminMatchingPage from "../views/pages/AdminPage/AdminMatchingPage";
-import AdminBuildSentencePage from "../views/pages/AdminPage/AdminBuildSentencePage";
-import AdminPronunciationPage from "../views/pages/AdminPage/AdminPronunciationPage";
 import { QuestionType } from "../enums/questionType";
 
 interface ProtectedRouteProps {
@@ -144,11 +140,6 @@ const AppRoutes: React.FC = () => {
             path={PATH.ADMIN.lesson.management}
             element={<AdminCourseManagementPage />}
           />
-          {/* <Route
-            path={PATH.ADMIN.lesson.test}
-            element={<AdminTestLessonPage />}
-          /> */}
-          {/* Có thể thêm /admin/course, /admin/question tương tự */}
         </Route>
       </Routes>
     </div>
