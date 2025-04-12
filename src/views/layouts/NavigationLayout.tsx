@@ -8,7 +8,8 @@ const NavigationLayout: React.FC = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("authToken");
-    localStorage.removeItem("previousRanking");
+    localStorage.removeItem("previousUserRanking");
+    localStorage.removeItem("userId");
     navigate("/login");
   };
   return (
@@ -22,7 +23,7 @@ const NavigationLayout: React.FC = () => {
     >
       {/* Left side bar */}
       <div
-        className="h-full w-1/4 sticky top-0"
+        className="h-full w-2/7 sticky top-0"
         style={{
           borderRight: "2px solid #37464F",
           paddingLeft: "16px",
@@ -46,6 +47,12 @@ const NavigationLayout: React.FC = () => {
             iconLink="https://d35aaqx5ub95lt.cloudfront.net/vendor/784035717e2ff1d448c0f6cc4efc89fb.svg"
             content="HỌC"
             path="/home"
+          />
+          <NavigationButton
+            isAvatar={false}
+            iconLink="https://d35aaqx5ub95lt.cloudfront.net/vendor/784035717e2ff1d448c0f6cc4efc89fb.svg"
+            content="QUẢN LÝ KHÓA HỌC"
+            path="/courses"
           />
           <NavigationButton
             isAvatar={false}

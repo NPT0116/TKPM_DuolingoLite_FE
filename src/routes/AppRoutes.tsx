@@ -47,9 +47,9 @@ const AppRoutes: React.FC = () => {
         <Route path="/register" element={<RegisterPage />} />
         {/* Choose Course for user after login*/}
         {/* For component that have layout, only access when have authToken */}
-        <Route path="/courses" element={<ChooseCoursePage />} />
+        {/* <Route path="/courses" element={<ChooseCoursePage />} /> */}
         <Route element={<NavigationLayout />}>
-          {/* <Route path="/courses" element={<CourseManagementPage />} /> */}
+          <Route path="/courses" element={<CourseManagementPage />} />
           <Route path={PATH.USER.index} element={<GuestPage />} />
           <Route path={PATH.USER.outlets.home} element={<HomePage />} />
           <Route path={PATH.USER.outlets.profile} element={<ProfilePage />} />

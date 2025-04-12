@@ -53,6 +53,8 @@ const fetchUserCourse = async (
     }
 
     const courseData = await getUserCurrentCourse(userProfiledData.value);
+    console.log("Fetch course in home page");
+    console.log(courseData);
     if (courseData === null) {
       navigate("/courses");
     } else if (courseData.value) {

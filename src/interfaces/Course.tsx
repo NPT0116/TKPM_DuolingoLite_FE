@@ -59,3 +59,10 @@ export interface IResponse {
   isSuccess: boolean;
   value: any;
 }
+// register course
+export interface IRegisteredCourse {
+  courseId: string;
+  lessonOrder: number;
+  totalLesson: number;
+  courseName: string;
+}

@@ -64,7 +64,7 @@ const CourseInfoCard: React.FC<ICourseInfoCard> = ({
           {!isBlock ? (
             <StepButton
               onClick={onClick}
-              content="HỌC"
+              content={currentLesson === totalLesson ? "ÔN" : "HỌC"}
               width="90%"
               bgColor="#FFFFFF"
               textColor="#FF64BF"

@@ -6,6 +6,7 @@ import api from "../../../../configs/axiosConfig";
 import facebook_icon from "../../../../assets/imgs/login/facebook_icon.png";
 import google_icon from "../../../../assets/imgs/login/google_icon.png";
 import { getUserRanking } from "../../../../services/LeaderBoard/GetUserRanking";
+import { fetchUserId } from "../../../../services/Authentication/AuthService";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -39,6 +40,7 @@ const LoginPage: React.FC = () => {
     };
     fetchUserRanking();
   };
+
   const handleLogin = async () => {
     const payload = {
       email: email,
