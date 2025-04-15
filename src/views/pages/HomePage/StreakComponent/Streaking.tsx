@@ -28,14 +28,8 @@ const Streaking: React.FC<StreakingProps> = ({ streakNumber }) => {
   useEffect(() => {
     fetchUserActivity();
   }, []);
-  const lastDateActivity = userActivity?.userStats.lastActiveDate;
-  const weekDayNumber = lastDateActivity
-    ? new Date(lastDateActivity).getDay()
-    : 0;
-  const currentDate = new Date();
-  const currentDateNumber = currentDate.getDay();
-  console.log(lastDateActivity);
-  console.log(weekDayNumber);
+  const currentDateNumber = new Date().getDay();
+  const startStreakDay = 0;
 
   return (
     <div
@@ -57,9 +51,9 @@ const Streaking: React.FC<StreakingProps> = ({ streakNumber }) => {
       </span>
       <div>
         <StreakDisplay
-          startDay={currentDateNumber}
-          endDay={weekDayNumber}
-          streakCount={userActivity!.userStats.currentStreak}
+          startDay={startStreakDay}
+          endDay={currentDateNumber}
+          streakCount={userActivity ? userActivity!.userStats.currentStreak : 0}
         />
       </div>
     </div>
