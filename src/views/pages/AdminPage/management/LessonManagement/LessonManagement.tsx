@@ -11,11 +11,13 @@ import PopupDialog from "../../../../components/Admin/Components/PopupDialog";
 import { deleteLesson } from "../../../../../services/Course/DeleteLessonService";
 interface ILessonManagement {
   onBack?: () => void;
+  turnOff?: () => void;
   selectedCourse?: ICourseValue | null;
   selectedLesson?: ILessonValue | null;
 }
 const LessonManagement: React.FC<ILessonManagement> = ({
   onBack,
+  turnOff,
   selectedCourse,
   selectedLesson,
 }) => {
@@ -95,6 +97,9 @@ const LessonManagement: React.FC<ILessonManagement> = ({
       {/* Header */}
       <div className="w-full h-1/10">
         <PopupHeader
+          turnOff={() => {
+            if (turnOff) turnOff();
+          }}
           isReloadButton={true}
           isDeleteButton={true}
           handleDelete={() => {
