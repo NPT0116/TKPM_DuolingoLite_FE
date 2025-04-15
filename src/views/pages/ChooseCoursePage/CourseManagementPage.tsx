@@ -12,13 +12,11 @@ import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCourseList } from "../../../services/Course/GetCourseListService";
-import {
-  finishCourse,
-  registerCourse,
-} from "../../../services/Course/RegisterCourseService";
+import { registerCourse } from "../../../services/Course/RegisterCourseService";
 import { getUserCurrentCourse } from "../../../services/Course/GetUserCourseService";
 import { IUserProgress } from "../../../interfaces/IUser";
 import { getUserRegisterCourse } from "../../../services/User/GetUserRegisterdCourse";
+import { useCourseContext } from "../../../context/CourseContext";
 
 const scrollBar = css`
   ::webkit-scrollbar {
@@ -28,20 +26,17 @@ const scrollBar = css`
   scrollbar-width: none;
 `;
 const CourseManagementPage: React.FC = () => {
+  const { setSwitchCourse, setRegisteredCourses } = useCourseContext();
+
   const [courses, setCourses] = useState<ICourseValue[]>([]);
   const [userRegisterdCourses, setUserRegisterCourses] = useState<
     IRegisteredCourse[] | null
   >();
   const navigate = useNavigate();
-  console.log(courses);
-  // useEffect(() => {
-  //   setCourses(CourseMockData);
-  // }, []);
   useEffect(() => {
     const fetchCourses = async () => {
       try {
         const courseList = await getCourseList();
-        console.log(courseList.value);
         setCourses(courseList.value);
       } catch (err) {
         console.log("Failed to fetch course list: " + err);
@@ -51,8 +46,6 @@ const CourseManagementPage: React.FC = () => {
     const fetchUserRegisterdCourse = async () => {
       try {
         const result = await getUserRegisterCourse();
-        console.log("User's Register Course: ");
-        console.log(result);
         if (result) {
           setUserRegisterCourses(result.value);
         }
@@ -64,8 +57,15 @@ const CourseManagementPage: React.FC = () => {
     fetchUserRegisterdCourse();
   }, []);
   const handleCourseSelected = async (course: ICourseValue) => {
-    await finishCourse(course.id);
-    await registerCourse(course.id);
+    console.log("User enrolled into course ", course.id);
+    const checkRegistered = userRegisterdCourses?.some(
+      (registeredCourse: IRegisteredCourse) => {
+        return registeredCourse.courseId === course.id;
+      }
+    );
+    if (!checkRegistered) await registerCourse(course.id);
+    setSwitchCourse(course);
+    setRegisteredCourses(userRegisterdCourses!);
     navigate("/home");
   };
   return (
@@ -91,12 +91,6 @@ const CourseManagementPage: React.FC = () => {
           if (matchingCourse) {
             currentLesson = matchingCourse.lessonOrder;
             isBlock = false;
-            console.log(
-              "Current lesson of: ",
-              course.id,
-              " is ",
-              currentLesson
-            );
           }
           return (
             <CourseInfoCard
