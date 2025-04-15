@@ -8,44 +8,72 @@ import AddNewButton from "../../../components/Admin/Components/AddNewButton";
 import LessonManagement from "./LessonManagement/LessonManagement";
 import { getCourseList } from "../../../../services/Course/GetCourseListService";
 import { getLessonByCourseId } from "../../../../services/Lesson/GetLessonByCourseIdService";
-import { css, keyframes } from "@emotion/react";
 import RemoveButton from "../../../components/Admin/Components/RemoveButton";
-import StepButton from "../../../components/Admin/Components/StepButton";
 import PopupDialog from "../../../components/Admin/Components/PopupDialog";
 import PopupDelete from "./PopupContent/PopupDelete";
+import { addCourse } from "../../../../services/Course/AddCourseService";
+import { deleteCourse } from "../../../../services/Course/DeleteCourseService";
+import { addLesson } from "../../../../services/Course/AddLessonService";
+import EditButton from "../../../components/Admin/Components/EditButton";
+import { editCourse } from "../../../../services/Course/EditCourseService";
+import PopupCourseForm from "../../../components/Admin/Components/PopupCourseForm";
+import { CRUDType } from "../../../../enums/CRUDType";
+import PopupLessonForm from "../../../components/Admin/Components/PopupLessonForm";
+import { editLesson } from "../../../../services/Course/EditLessonService";
+
 const AdminCourseManagementPage: React.FC = () => {
+  // Add Course
+  const [addCourseError, setAddCourseError] = useState("");
+  const [isAddCourseSuccess, setIsAddCourseSuccess] = useState(false);
+  const [showAddCourseForm, setShowAddCourseForm] = useState(false);
+
+  // Add Lesson
+  const [addLessonError, setAddLessonError] = useState("");
+  const [isAddLessonSuccess, setIsAddLessonSuccess] = useState(false);
+  const [showAddLessonForm, setShowAddLessonForm] = useState(false);
+
+  // Edit Course
+  const [editCourseError, setEditCourseError] = useState("");
+  const [isEditCourseSuccess, setIsEditCourseSuccess] = useState(false);
+  const [showEditCourseForm, setShowEditCourseForm] = useState(false);
+
+  // Edit Lesson
+  const [editLessonError, setEditLessonError] = useState("");
+  const [isEditLessonSuccess, setIsEditLessonSuccess] = useState(false);
+  const [showEditLessonForm, setShowEditLessonForm] = useState(false);
+
   const [courses, setCourses] = useState<ICourseValue[] | null>(null);
   // Popup confirm
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteCourseError, setDeleteCourseError] = useState("");
+  const [isDeleteCourseSuccess, setIsDeleteCourseSuccess] = useState(false);
 
+  const fetchCoursesWithLessons = async (): Promise<ICourseValue[]> => {
+    try {
+      const data = await getCourseList();
+      const courseList = data.value;
+
+      const coursesWithLessons = await Promise.all(
+        courseList.map(async (course: ICourseValue) => {
+          const lessonResult = await getLessonByCourseId(course.id);
+          console.log("Lessons: ", lessonResult.data.value);
+          return {
+            ...course,
+            lessons: lessonResult?.data.value || [],
+          };
+        })
+      );
+      setCourses(coursesWithLessons);
+      return coursesWithLessons;
+    } catch (error) {
+      console.error("Error fetching course list with lessons:", error);
+      return [];
+    }
+  };
   useEffect(() => {
-    const fetchCoursesWithLessons = async () => {
-      try {
-        const data = await getCourseList();
-        const courseList = data.value;
-
-        const coursesWithLessons = await Promise.all(
-          courseList.map(async (course: ICourseValue) => {
-            const lessonResult = await getLessonByCourseId(course.id);
-            console.log("Lessons: ", lessonResult.data.value);
-            return {
-              ...course,
-              lessons: lessonResult?.data.value || [],
-            };
-          })
-        );
-        setCourses(coursesWithLessons);
-      } catch (error) {
-        console.error("Error fetching course list with lessons:", error);
-      }
-    };
-
     fetchCoursesWithLessons();
-    // console.log("Fetch Mock Courses");
-    // setCourses(fakeCourseResponse.value);
   }, []);
 
-  // console.log(courses);
   // Handle Selected Course
   const [selectedCourse, setSelectedCourse] = useState<ICourseValue | null>(
     null
@@ -63,19 +91,159 @@ const AdminCourseManagementPage: React.FC = () => {
   const handleBack = () => {
     setIsAdd(false);
   };
-  // CSS effect add button
 
-  // Add New
-  const addNewCourse = () => {
-    console.log("Add new Course !");
+  // Add New Course
+  const addNewCourse = async (courseName: string) => {
+    if (!courseName) {
+      setAddCourseError("PLEASE ENTER COURSE NAME");
+      return;
+    }
+
+    setAddCourseError("");
+    setIsAddCourseSuccess(false);
+
+    const response = await addCourse(courseName);
+
+    if ("error" in response) {
+      console.error("Error adding course:", response.error);
+      setAddCourseError(response.error);
+      setIsAddCourseSuccess(false);
+    } else {
+      setIsAddCourseSuccess(true);
+      await fetchCoursesWithLessons();
+
+      setTimeout(() => {
+        setShowAddCourseForm(false);
+      }, 1000);
+    }
   };
-  const addNewLesson = () => {
-    console.log("Add new Lesson !");
+
+  // Edit Course
+  const handleEditCourse = async (newName: string) => {
+    if (!newName) {
+      setEditCourseError("PLEASE ENTER COURSE NAME");
+      return;
+    }
+
+    setEditCourseError("");
+    setIsEditCourseSuccess(false);
+
+    const response = await editCourse(selectedCourse!.id, newName);
+
+    if ("error" in response) {
+      setEditCourseError(response.error);
+      setIsEditCourseSuccess(false);
+    } else {
+      setIsEditCourseSuccess(true);
+      await fetchCoursesWithLessons();
+
+      const refreshedCourse = courses?.find((c) => c.id === selectedCourse?.id);
+      if (refreshedCourse) {
+        handleSetSelectedCourse(refreshedCourse);
+      }
+
+      setTimeout(() => {
+        setShowEditCourseForm(false);
+      }, 1000);
+    }
+  };
+
+  // Edit Lesson
+  const handleEditLesson = async (title: string, xpEarned: string) => {
+    const trimmedTitle = title.trim();
+    const xp = Number(xpEarned);
+
+    if (!trimmedTitle) {
+      setEditLessonError("Title is require");
+      return;
+    }
+
+    if (!/^\d+$/.test(xpEarned)) {
+      setEditLessonError("XP must be a valid number.");
+      return;
+    }
+
+    if (xp < 0) {
+      setEditLessonError("XP cannot be negative.");
+      return;
+    }
+
+    const result = await editLesson(
+      selectedCourse!.id,
+      selectedLesson!.order,
+      trimmedTitle,
+      xp
+    );
+
+    if ("error" in result) {
+      setEditLessonError(result.error);
+    } else {
+      setIsEditLessonSuccess(true);
+      const updatedCourses = await fetchCoursesWithLessons();
+      const refreshedCourse = updatedCourses.find(
+        (c) => c.id === selectedCourse?.id
+      );
+      if (refreshedCourse) {
+        handleSetSelectedCourse(refreshedCourse);
+      }
+
+      setTimeout(() => {
+        setShowEditLessonForm(false);
+      }, 1000);
+    }
+  };
+
+  const addNewLesson = async (title: string, xpEarned: string) => {
+    const trimmedTitle = title.trim();
+    const xp = Number(xpEarned);
+
+    if (!trimmedTitle) {
+      setAddLessonError("Title is require");
+      return;
+    }
+
+    if (!/^\d+$/.test(xpEarned)) {
+      setAddLessonError("XP must be a valid number.");
+      return;
+    }
+
+    if (xp < 0) {
+      setAddLessonError("XP cannot be negative.");
+      return;
+    }
+
+    const result = await addLesson(selectedCourse!.id, trimmedTitle, xp);
+    if ("error" in result) {
+      setAddLessonError(result.error);
+    } else {
+      setIsAddLessonSuccess(true);
+
+      const updatedCourses = await fetchCoursesWithLessons();
+      const refreshedCourse = updatedCourses.find(
+        (c) => c.id === selectedCourse?.id
+      );
+      if (refreshedCourse) {
+        handleSetSelectedCourse(refreshedCourse);
+      }
+
+      setTimeout(() => {
+        setShowAddLessonForm(false);
+      }, 1000);
+    }
   };
   // Remove
-  const removeCourse = () => {
-    console.log("Remove Course");
-    setConfirmDelete(true);
+  const removeCourse = async (courseId: string) => {
+    const result = await deleteCourse(courseId);
+    if ("error" in result) {
+      setDeleteCourseError(result.error);
+    } else {
+      await fetchCoursesWithLessons();
+      setIsDeleteCourseSuccess(true);
+
+      setTimeout(() => {
+        setConfirmDelete(false);
+      }, 1000);
+    }
   };
 
   // Main
@@ -83,33 +251,6 @@ const AdminCourseManagementPage: React.FC = () => {
   const [isAddLesson, setIsAddLesson] = useState(false);
   return (
     <div className=" w-full h-full flex flex-row justify-center items-center">
-      {/* Popup Content */}
-      {isAdd && (
-        <PopupDialog>
-          <LessonManagement
-            onBack={() => handleBack()}
-            selectedCourse={selectedCourse}
-            selectedLesson={selectedLesson}
-          />
-        </PopupDialog>
-      )}
-      {confirmDelete && (
-        <PopupDialog containerWidth="40%" containerHeight="50%">
-          <PopupDelete
-            title="DELETE THIS COURSE ?"
-            course={selectedCourse!}
-            onCancel={() => {
-              console.log("Cancel delete");
-              setConfirmDelete(false);
-            }}
-            onDelete={() => {
-              console.log("Deleted course");
-              alert(`Delete Course ${selectedCourse?.name}`);
-              setConfirmDelete(false);
-            }}
-          />
-        </PopupDialog>
-      )}
       {/* Main Content */}
       <div className="h-full w-2/3 border-[#E5E5E5] border-r-2">
         <div className="w-full h-1/10 text-center flex justify-center items-center font-bold 2xl:text-3xl text-2xl text-black border-b-2 border-[#E5E5E5]">
@@ -121,11 +262,13 @@ const AdminCourseManagementPage: React.FC = () => {
         >
           <AddNewButton
             onClick={() => {
+              setShowAddCourseForm(true);
               setIsAddCourse(true);
+              setAddCourseError("");
+              setIsAddCourseSuccess(false);
               setTimeout(() => {
                 setIsAddCourse(false);
               }, 300);
-              addNewCourse();
             }}
             isAdd={isAddCourse}
             content="ADD NEW COURSE"
@@ -135,14 +278,27 @@ const AdminCourseManagementPage: React.FC = () => {
               className="w-full flex flex-row gap-2"
               onClick={() => handleSetSelectedCourse(course)}
             >
-              <div className="w-11/12">
+              <div className="w-10/12">
                 <CourseItem
                   courseName={course.name}
                   courseLevel={course.level}
                 />
               </div>
               <div className="w-1/12">
-                <RemoveButton onClick={removeCourse} />
+                <EditButton
+                  onClick={() => {
+                    setEditCourseError("");
+                    setIsEditCourseSuccess(false);
+                    setShowEditCourseForm(true);
+                  }}
+                />
+              </div>
+              <div className="w-1/12">
+                <RemoveButton
+                  onClick={() => {
+                    setConfirmDelete(true);
+                  }}
+                />
               </div>
             </div>
           ))}
@@ -178,11 +334,13 @@ const AdminCourseManagementPage: React.FC = () => {
                 <AddNewButton
                   key={15}
                   onClick={() => {
+                    setAddLessonError("");
+                    setIsAddLessonSuccess(false);
                     setIsAddLesson(true);
                     setTimeout(() => {
                       setIsAddLesson(false);
                     }, 300);
-                    addNewLesson();
+                    setShowAddLessonForm(true);
                   }}
                   width="150"
                   height="150"
@@ -194,9 +352,29 @@ const AdminCourseManagementPage: React.FC = () => {
                   .sort((a, b) => a.order - b.order)
                   .map((lesson) => (
                     <div
-                      className="flex flex-col justify-center items-center gap-1"
+                      className="flex flex-col justify-center items-center gap-1 relative"
                       onClick={() => setSelectedLesson(lesson)}
                     >
+                      <button
+                        onClick={() => setShowEditLessonForm(true)}
+                        className="absolute top-3 right-3 z-10 group cursor-pointer"
+                      >
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="transition duration-200 ease-in-out group-hover:fill-red-500"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M10.8637 2.28623L12.1531 1.00038C13.4906 -0.33346 15.659 -0.333457 16.9965 1.00038C18.3339 2.33421 18.3339 4.49679 16.9965 5.83062L15.7071 7.11648L10.8637 2.28623ZM9.34202 3.80383L0.902018 12.2209C0.0785876 13.0421 -0.354215 16.9413 0.363097 17.6567C1.08041 18.3722 4.90788 17.8864 5.7454 17.0512L14.1854 8.63408L9.34202 3.80383Z"
+                            className="fill-white group-hover:fill-[#b4b4b4] transition duration-200"
+                          ></path>
+                        </svg>
+                      </button>
                       <LessonItem
                         lessonTitle={lesson.title}
                         lessonQuestionCount={lesson.questionCount!}
@@ -210,6 +388,87 @@ const AdminCourseManagementPage: React.FC = () => {
           )}
         </div>
       </div>
+      {/* Popup Content */}
+      {isAdd && (
+        <PopupDialog>
+          <LessonManagement
+            onBack={() => handleBack()}
+            selectedCourse={selectedCourse}
+            selectedLesson={selectedLesson}
+          />
+        </PopupDialog>
+      )}
+      {confirmDelete && (
+        <PopupDialog containerWidth="40%" containerHeight="50%">
+          <PopupDelete
+            title="DELETE THIS COURSE ?"
+            course={selectedCourse!}
+            onCancel={() => {
+              setDeleteCourseError("");
+              setConfirmDelete(false);
+            }}
+            onDelete={() => {
+              removeCourse(selectedCourse!.id);
+            }}
+            errorMessage={deleteCourseError}
+            isDeleteSuccess={isDeleteCourseSuccess}
+          />
+        </PopupDialog>
+      )}
+      {showAddCourseForm && (
+        <PopupDialog containerWidth="fit" containerHeight="fit">
+          <PopupCourseForm
+            mode={CRUDType.CREATE}
+            onCancel={() => setShowAddCourseForm(false)}
+            onCreate={(name) => {
+              addNewCourse(name);
+            }}
+            isSuccess={isAddCourseSuccess}
+            errorMessage={addCourseError}
+          />
+        </PopupDialog>
+      )}
+      {showAddLessonForm && (
+        <PopupDialog containerWidth="fit" containerHeight="fit">
+          <PopupLessonForm
+            mode={CRUDType.CREATE}
+            onCancel={() => setShowAddLessonForm(false)}
+            onCreate={(title, xpEarned) => {
+              addNewLesson(title, xpEarned);
+            }}
+            isSuccess={isAddLessonSuccess}
+            errorMessage={addLessonError}
+          />
+        </PopupDialog>
+      )}
+      {showEditCourseForm && (
+        <PopupDialog containerWidth="fit" containerHeight="fit">
+          <PopupCourseForm
+            mode={CRUDType.UPDATE}
+            onCancel={() => setShowEditCourseForm(false)}
+            onCreate={(name) => {
+              handleEditCourse(name);
+            }}
+            isSuccess={isEditCourseSuccess}
+            errorMessage={editCourseError}
+            course={selectedCourse}
+          />
+        </PopupDialog>
+      )}
+      {showEditLessonForm && (
+        <PopupDialog containerWidth="fit" containerHeight="fit">
+          <PopupLessonForm
+            mode={CRUDType.UPDATE}
+            onCancel={() => setShowEditLessonForm(false)}
+            onCreate={(title, xpEarned) => {
+              handleEditLesson(title, xpEarned);
+            }}
+            isSuccess={isEditLessonSuccess}
+            errorMessage={editLessonError}
+            lesson={selectedLesson}
+          />
+        </PopupDialog>
+      )}
     </div>
   );
 };

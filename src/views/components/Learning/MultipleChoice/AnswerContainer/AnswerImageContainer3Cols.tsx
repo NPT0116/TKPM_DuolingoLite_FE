@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import AnswerImageCard from "../AnswerCard/AnswerImageCard";
 import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
@@ -35,7 +35,11 @@ const AnswerImageContainer3Cols: React.FC<AnswerImageContainer3ColsProps> = ({
   }, [isNext, setIsButtonActive, setIsNext]);
   const playAudio = usePlayAudio();
   return (
-    <div className="h-[300px] w-full flex flex-col-3 gap-[8px] items-center">
+    <div
+      className={`h-[300px] w-full grid  ${
+        options.length >= 4 ? `grid-cols-2` : `grid-cols-3`
+      } gap-[10px] items-center`}
+    >
       {options.map((option, index) => (
         <AnswerImageCard
           key={index}

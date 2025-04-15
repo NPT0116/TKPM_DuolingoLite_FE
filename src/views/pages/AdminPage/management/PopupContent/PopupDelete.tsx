@@ -9,6 +9,8 @@ interface IPopupDelete {
   question?: IQuestion;
   onCancel: () => void;
   onDelete: () => void;
+  errorMessage?: string;
+  isDeleteSuccess?: boolean;
 }
 
 const PopupDelete: React.FC<IPopupDelete> = ({
@@ -18,6 +20,8 @@ const PopupDelete: React.FC<IPopupDelete> = ({
   question,
   onDelete,
   onCancel,
+  errorMessage,
+  isDeleteSuccess,
 }) => {
   return (
     <div className="w-full h-full" style={{ padding: "30px" }}>
@@ -51,6 +55,15 @@ const PopupDelete: React.FC<IPopupDelete> = ({
             onClick={onCancel}
           />
         </div>
+        {isDeleteSuccess ? (
+          <span className="font-bold text-green-500 text-[18px]">
+            Delete successfully
+          </span>
+        ) : (
+          errorMessage && (
+            <span className="font-bold text-red-500">{errorMessage}</span>
+          )
+        )}
       </div>
     </div>
   );

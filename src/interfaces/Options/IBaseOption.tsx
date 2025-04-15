@@ -12,3 +12,11 @@ export interface IAddOption {
   targetType: MatchingQuestionOptionType | null;
   position: number | null;
 }
+
+export interface IAddNewOption {
+  vietnameseText: string;
+  image: string | null;
+  audio: string | null;
+  englishText: string;
+  needAudio: boolean;
+}

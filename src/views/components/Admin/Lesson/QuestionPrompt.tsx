@@ -5,6 +5,7 @@ import { IAddConfigure } from "../../../../interfaces/Configure/Configure";
 import { IAddQuestion } from "../../../../interfaces/Questions/IBaseQuestion";
 import FileUpload from "../Components/Upload";
 import { IResource } from "../../../../interfaces/IResource";
+import { QuestionType } from "../../../../enums/questionType";
 
 interface QuestionPromptProps {
   configureArray: string[];
@@ -29,6 +30,27 @@ const QuestionPrompt: React.FC<QuestionPromptProps> = ({
   });
   const [imgUpload, setImgUpload] = useState<IResource | null>(null);
   const [audioUpload, setAudioUpload] = useState<IResource | null>(null);
+
+  useEffect(() => {
+    setQuestion((prev) => {
+      return {
+        ...prev,
+        instruction: visibleFields.instruction ? prev.instruction || "" : "",
+        vietnameseText: visibleFields.vietnameseText
+          ? prev.vietnameseText || ""
+          : "",
+        englishText: visibleFields.englishText ? prev.englishText || "" : "",
+        sentence:
+          question.type === QuestionType.BuildSentence
+            ? prev.sentence || ""
+            : "",
+
+        audio: visibleFields.audio ? prev.audio || null : null,
+        image: visibleFields.image ? prev.image || null : null,
+      };
+    });
+  }, [visibleFields]);
+
   const handleCheckBox = (field: string) => () => {
     const key = toCamelCase(field);
     const newValue = !visibleFields[key];
@@ -163,9 +185,7 @@ const QuestionPrompt: React.FC<QuestionPromptProps> = ({
                 <span className="text-red-500">*</span> English Text
               </label>
               <Input
-                onChange={() => {
-                  handleInputChange("englishText");
-                }}
+                onChange={handleInputChange("englishText")}
                 placeholder="VD: Which is the table?"
                 size="large"
                 className="rounded-md bg-gray-50 text-gray-700"
@@ -190,6 +210,19 @@ const QuestionPrompt: React.FC<QuestionPromptProps> = ({
                 <span className="text-red-500">*</span> Image
               </label>
               <FileUpload type="image" setImageUpload={setImgUpload} />
+            </div>
+          )}
+          {question.type === QuestionType.BuildSentence && (
+            <div className="flex flex-col gap-2">
+              <label className="text-base font-medium">
+                <span className="text-red-500">*</span> Sentence
+              </label>
+              <Input
+                onChange={handleInputChange("sentence")}
+                placeholder="VD: I love coffee"
+                size="large"
+                className="rounded-md bg-gray-50 text-gray-700"
+              />
             </div>
           )}
         </section>
