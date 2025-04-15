@@ -1,8 +1,8 @@
-import { Button, Input } from "antd";
-import { IMultipleChoiceOption } from "../../../../interfaces/Options/IMultipleChoiceOption";
-import React, { useState } from "react";
+import { Button, Checkbox, Input } from "antd";
+import React, { useEffect, useState } from "react";
 import FileUpload from "../Components/Upload";
 import { addOption } from "../../../../services/Option/AddOptionService";
+import { IAddNewOption } from "../../../../interfaces/Options/IBaseOption";
 
 interface CreateOptionFormProps {
   setShowCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,14 +14,34 @@ const CreateOptionForm: React.FC<CreateOptionFormProps> = ({
   modalIndex,
 }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [tempOption, setTempOption] = useState<IMultipleChoiceOption>({
-    optionId: "",
-    isCorrect: false,
-    vietnameseText: null,
+  const [tempOption, setTempOption] = useState<IAddNewOption>({
+    vietnameseText: "",
     englishText: "",
     image: null,
     audio: null,
+    needAudio: false,
   });
+  const [useAI, setUseAI] = useState(false);
+  useEffect(() => {
+    if (useAI) {
+      setTempOption((prev) => ({ ...prev, audio: null }));
+    }
+    const shouldNeedAudio = useAI || tempOption.audio !== null;
+    setTempOption((prev) => ({ ...prev, needAudio: shouldNeedAudio }));
+  }, [useAI, tempOption.audio]);
+
+  useEffect(() => {
+    console.log(tempOption);
+  }, [tempOption]);
+
+  const handleCreate = async () => {
+    const response = await addOption(tempOption);
+    if ("error" in response) {
+      setErrorMessage(response.error);
+    } else {
+      setShowCreateModal(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
@@ -59,11 +79,32 @@ const CreateOptionForm: React.FC<CreateOptionFormProps> = ({
 
         <div className="flex flex-col gap-2">
           <span>Image</span>
-          <FileUpload type="image" />
+          <FileUpload
+            type="image"
+            onUploadSuccess={(url) =>
+              setTempOption((prev) => ({ ...prev, image: url }))
+            }
+            onRemoveFile={() =>
+              setTempOption((prev) => ({ ...prev, image: null }))
+            }
+          />
         </div>
         <div className="flex flex-col gap-2">
-          <span>Audio</span>
-          <FileUpload type="audio" />
+          <div className="flex gap-4">
+            <span>Audio</span>
+            <Checkbox onChange={() => setUseAI(!useAI)}>Use AI</Checkbox>
+          </div>
+          {!useAI && (
+            <FileUpload
+              type="audio"
+              onUploadSuccess={(url) =>
+                setTempOption((prev) => ({ ...prev, audio: url }))
+              }
+              onRemoveFile={() =>
+                setTempOption((prev) => ({ ...prev, audio: null }))
+              }
+            />
+          )}
         </div>
         {errorMessage && (
           <div className="text-red-500 text-center font-semibold">
@@ -72,29 +113,7 @@ const CreateOptionForm: React.FC<CreateOptionFormProps> = ({
         )}
         <div className="flex justify-between mt-4">
           <Button onClick={() => setShowCreateModal(false)}>Cancel</Button>
-          <Button
-            type="primary"
-            onClick={async () => {
-              try {
-                const response = await addOption(tempOption);
-                if (response) {
-                  setShowCreateModal(false);
-                } else {
-                  setErrorMessage(
-                    "Failed to create option. Please check the fields."
-                  );
-                }
-              } catch (err: any) {
-                const serverError = err?.response?.data?.errors;
-                if (serverError) {
-                  const firstKey = Object.keys(serverError)[0];
-                  setErrorMessage(serverError[firstKey][0]);
-                } else {
-                  setErrorMessage("An unexpected error occurred.");
-                }
-              }
-            }}
-          >
+          <Button type="primary" onClick={() => handleCreate()}>
             Add
           </Button>
         </div>

@@ -8,6 +8,7 @@ import PopupHeader from "../../../../components/Admin/Components/PopupHeader";
 import PopupChoseQuestionType from "../PopupContent/PopupChoseQuestionType";
 import PopupDelete from "../PopupContent/PopupDelete";
 import PopupDialog from "../../../../components/Admin/Components/PopupDialog";
+import { deleteLesson } from "../../../../../services/Course/DeleteLessonService";
 interface ILessonManagement {
   onBack?: () => void;
   selectedCourse?: ICourseValue | null;
@@ -18,21 +19,24 @@ const LessonManagement: React.FC<ILessonManagement> = ({
   selectedCourse,
   selectedLesson,
 }) => {
+  const [errorDeleteLesson, setErrorDeleteLesson] = useState("");
+  const [isDeleteLessonSuccess, setIsDeleteLessonSuccess] = useState(false);
+
   // Fetch QuestionList
   const [questionList, setQuestionList] = useState<IQuestion[]>([]);
-  useEffect(() => {
-    setQuestionList([]);
-    const fetchLesson = async () => {
-      console.log("Fetching Question !");
-      if (selectedLesson) {
-        for (let i = 1; i <= selectedLesson.questionCount!; i++) {
-          const { data } = await getQuestionDetail(selectedLesson.id, i);
-          if (data) {
-            setQuestionList((prev) => [...prev, data]);
-          }
+  const fetchLesson = async () => {
+    console.log("Fetching Question !");
+    if (selectedLesson) {
+      for (let i = 1; i <= selectedLesson.questionCount!; i++) {
+        const { data } = await getQuestionDetail(selectedLesson.id, i);
+        if (data) {
+          setQuestionList((prev) => [...prev, data]);
         }
       }
-    };
+    }
+  };
+  useEffect(() => {
+    setQuestionList([]);
     fetchLesson();
   }, [selectedLesson]);
 
@@ -46,9 +50,20 @@ const LessonManagement: React.FC<ILessonManagement> = ({
   // Handle Reload and Delete Lesson
   const [confirmDelete, setConfirmDelete] = useState(false);
   // Handle Delete
-  const handleDeleteLesson = () => {
-    alert(`Delete Lesson ${selectedLesson?.title}`);
-    setConfirmDelete(false);
+  const handleDeleteLesson = async () => {
+    const result = await deleteLesson(
+      selectedCourse!.id,
+      selectedLesson!.order
+    );
+    if ("error" in result) {
+      setErrorDeleteLesson(result.error);
+    } else {
+      setIsDeleteLessonSuccess(true);
+      fetchLesson();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
   };
   return (
     <div className="w-[100vw] h-[100vh] bg-white rounded-xl transition-all duration-300">
@@ -61,6 +76,8 @@ const LessonManagement: React.FC<ILessonManagement> = ({
               setConfirmDelete(false);
             }}
             onDelete={handleDeleteLesson}
+            errorMessage={errorDeleteLesson}
+            isDeleteLessonSuccess={isDeleteLessonSuccess}
           />
         </PopupDialog>
       )}
@@ -81,6 +98,7 @@ const LessonManagement: React.FC<ILessonManagement> = ({
           isReloadButton={true}
           isDeleteButton={true}
           handleDelete={() => {
+            setErrorDeleteLesson("");
             setConfirmDelete(true);
           }}
           handleReload={() => {
@@ -96,6 +114,7 @@ const LessonManagement: React.FC<ILessonManagement> = ({
             setIsAddQuestionForm(true);
           }}
           questionList={questionList}
+          selectedLesson={selectedLesson}
         />
       </div>
     </div>

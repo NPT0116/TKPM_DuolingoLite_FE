@@ -9,13 +9,15 @@ interface FileUploadProps {
   setImageUpload?: React.Dispatch<React.SetStateAction<IResource | null>>;
   setAudioUpload?: React.Dispatch<React.SetStateAction<IResource | null>>;
   onUploadSuccess?: (url: string) => void;
+  onRemoveFile?: () => void;
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({
   type,
-  onUploadSuccess,
   setImageUpload,
   setAudioUpload,
+  onUploadSuccess,
+  onRemoveFile,
 }) => {
   const [imgUrl, setImgUrl] = useState("");
   const [audioUrl, setAudioUrl] = useState("");
@@ -49,11 +51,13 @@ const FileUpload: React.FC<FileUploadProps> = ({
         setFileList([newFile]);
 
         if (type === "image" && setImageUpload) {
-          console.log("aaaa");
-          console.log(result.value);
           setImageUpload(result.value);
         } else if (setAudioUpload) {
           setAudioUpload(result.value);
+        }
+
+        if (onUploadSuccess) {
+          onUploadSuccess(url);
         }
 
         message.success("Upload successfully!");
@@ -84,6 +88,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
       setAudioUrl("");
       if (setAudioUpload) setAudioUpload(null);
       if (setImageUpload) setImageUpload(null);
+      if (onRemoveFile) onRemoveFile();
     },
     fileList,
     maxCount: 1,

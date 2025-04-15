@@ -23,6 +23,10 @@ const AnswerSection: React.FC<AnswerSectionProps> = ({
     data.englishText.length === 0 &&
     // data.vietnameseText?.length === 0 &&
     !data.picture;
+  const onlyOptionAudio =
+    data.optionConfigure.audio != null &&
+    data.englishText.length === 0 &&
+    !data.picture;
   return (
     <div className="flex flex-col gap-[24px] w-full h-full ">
       {/* Question Section */}
@@ -47,6 +51,7 @@ const AnswerSection: React.FC<AnswerSectionProps> = ({
           isEnglish={data.optionConfigure.englishText}
           isSubmit={isSubmit}
           onlyAudio={onlyAudio}
+          onlyOptionAudio={onlyOptionAudio}
         />
       </div>
     </div>
