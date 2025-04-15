@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { IMultipleChoiceOption } from "../../../../../interfaces/Options/IMultipleChoiceOption";
 import AnswerCard from "../AnswerCard/AnswerCard";
 import { usePlayAudio } from "../../../LearnPage/Audio/AudioProvider";
+import AnswerAudio from "../AnswerCard/AnswerAudio";
 
 interface AnswerContainerProps {
   options: IMultipleChoiceOption[];
@@ -12,6 +13,7 @@ interface AnswerContainerProps {
   setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
   isSubmit: boolean;
   onlyAudio: boolean;
+  onlyOptionAudio: boolean;
 }
 
 const AnswerContainer: React.FC<AnswerContainerProps> = ({
@@ -23,6 +25,7 @@ const AnswerContainer: React.FC<AnswerContainerProps> = ({
   setIsNext,
   isSubmit,
   onlyAudio,
+  onlyOptionAudio,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   useEffect(() => {
@@ -42,25 +45,44 @@ const AnswerContainer: React.FC<AnswerContainerProps> = ({
       } gap-[8px]`}
     >
       {/* Answer Cards */}
-      {options.map((option, index) => (
-        <AnswerCard
-          key={index}
-          option={option}
-          isEnglish={isEnglish}
-          index={index}
-          isSelected={selectedIndex === index}
-          onSelect={() => {
-            if (isSubmit) return;
-            setSelectedIndex(index);
-            setIsButtonActive(true);
-            setIsButtonCorrect(option.isCorrect);
-            if (option.audio && option.audio.url) {
-              playAudio(option.audio.url);
-            }
-          }}
-          isSubmit={isSubmit}
-        />
-      ))}
+      {options.map((option, index) =>
+        onlyOptionAudio ? (
+          <AnswerAudio
+            key={index}
+            option={option}
+            index={index}
+            isSelected={selectedIndex === index}
+            isSubmit={isSubmit}
+            onSelect={() => {
+              if (isSubmit) return;
+              setSelectedIndex(index);
+              setIsButtonActive(true);
+              setIsButtonCorrect(option.isCorrect);
+              if (option.audio && option.audio.url) {
+                playAudio(option.audio.url);
+              }
+            }}
+          />
+        ) : (
+          <AnswerCard
+            key={index}
+            option={option}
+            isEnglish={isEnglish}
+            index={index}
+            isSelected={selectedIndex === index}
+            onSelect={() => {
+              if (isSubmit) return;
+              setSelectedIndex(index);
+              setIsButtonActive(true);
+              setIsButtonCorrect(option.isCorrect);
+              if (option.audio && option.audio.url) {
+                playAudio(option.audio.url);
+              }
+            }}
+            isSubmit={isSubmit}
+          />
+        )
+      )}
     </div>
   );
 };

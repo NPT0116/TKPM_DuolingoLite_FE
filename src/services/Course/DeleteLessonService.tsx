@@ -1,14 +1,15 @@
 import api from "../../configs/axiosConfig";
 import { handleApiError } from "../../ultils/handleApiError";
 
-export const deleteCourse = async (
-  courseId: string
+export const deleteLesson = async (
+  courseId: string,
+  lessonOrder: number
 ): Promise<{ success: true } | { error: string }> => {
   try {
-    await api.delete(`/Course/${courseId}`);
+    await api.delete(`/Course/${courseId}/lesson/${lessonOrder}`);
     return { success: true };
   } catch (error) {
-    console.error("Error delete course:", error);
+    console.log("Error delete last lesson:", error);
     const errorMessage = handleApiError(error);
     return { error: errorMessage };
   }

@@ -53,7 +53,7 @@ const AnswerImageCard: React.FC<AnswerImageCardProps> = ({
       }}
     >
       <img
-        src={option.image!.url}
+        src={option.image?.url ? option.image.url : ""}
         alt="card-image"
         className="w-auto h-[160px] mb-[10px]"
       />

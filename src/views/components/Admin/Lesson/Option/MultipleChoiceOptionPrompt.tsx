@@ -32,6 +32,7 @@ interface MultipleChoiceOptionPromptProps {
   vietnameseTextForced: boolean;
   englishTextForced: boolean;
   visibleFields: Record<string, boolean>;
+  isOnlyAudio: boolean;
 }
 
 const MultipleChoiceOptionPrompt: React.FC<MultipleChoiceOptionPromptProps> = ({
@@ -41,6 +42,7 @@ const MultipleChoiceOptionPrompt: React.FC<MultipleChoiceOptionPromptProps> = ({
   vietnameseTextForced,
   englishTextForced,
   visibleFields,
+  isOnlyAudio,
 }) => {
   const [addAnswerOptions, setAddAnswerOptions] = useState<IAddOption[]>([]);
 
@@ -100,7 +102,7 @@ const MultipleChoiceOptionPrompt: React.FC<MultipleChoiceOptionPromptProps> = ({
       return Object.entries(visibleFields).every(([key, isVisible]) => {
         if (key === "instruction") return true;
         const value = option[key as keyof IMultipleChoiceOption];
-        if (key === "englishText" && englishTextForced) {
+        if (isOnlyAudio || (key === "englishText" && englishTextForced)) {
           return true;
         } else if (key === "vietnameseText" && vietnameseTextForced) {
           return true;

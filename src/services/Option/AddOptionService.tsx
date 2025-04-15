@@ -1,20 +1,17 @@
-import axios from "axios";
 import { API_BASE_URL } from "../../configs/apiConfig";
-import { IMultipleChoiceOption } from "../../interfaces/Options/IMultipleChoiceOption";
+import api from "../../configs/axiosConfig";
+import { IAddNewOption } from "../../interfaces/Options/IBaseOption";
+import { handleApiError } from "../../ultils/handleApiError";
 
 export const addOption = async (
-  option: IMultipleChoiceOption
-): Promise<IMultipleChoiceOption | null> => {
+  option: IAddNewOption
+): Promise<{ data: { value: IAddNewOption } } | { error: string }> => {
   try {
-    const response = await axios.post(`${API_BASE_URL}Option`, option, {
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-      },
-    });
-    return response.data?.value ?? null;
+    const response = await api.post(`${API_BASE_URL}Option`, option);
+    return { data: response.data };
   } catch (error) {
     console.error("Error create new option: ", error);
-    return null;
+    const errorMessage = handleApiError(error);
+    return { error: errorMessage };
   }
 };

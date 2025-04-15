@@ -63,7 +63,7 @@ const AdminAddQuestionPage: React.FC<AdminMultipleChoicePageProps> = ({
         setSuccessMessage("");
         setLoadingMessage("");
       } else {
-        setSuccessMessage("TẠO CÂU HỎI THÀNH CÔNG");
+        setSuccessMessage("Create question successfully");
         setErrorMessage("");
         setLoadingMessage("");
       }

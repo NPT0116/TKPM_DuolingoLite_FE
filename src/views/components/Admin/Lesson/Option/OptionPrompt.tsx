@@ -32,6 +32,7 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
   });
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [modalIndex, setModalIndex] = useState(0);
+  const [isOnlyAudio, setIsOnlyAudio] = useState(false);
   // useEffect(() => {
   //   if (question.questionConfiguration.englishText) {
   //     setEnglishTextForced(true);
@@ -98,6 +99,13 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
   useEffect(() => {
     const { id, ...restConfig } = question.optionConfiguration;
     setVisibleFields(restConfig);
+
+    //Check onlyAudio
+    const configWithoutId = { ...restConfig };
+    const { audio, ...others } = configWithoutId;
+
+    const areOthersFalse = Object.values(others).every((value) => !value);
+    setIsOnlyAudio(audio === true && areOthersFalse);
   }, [question.optionConfiguration]);
 
   const renderOptionPrompt = () => {
@@ -111,6 +119,7 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
             vietnameseTextForced={vietnameseTextForced}
             englishTextForced={englishTextForced}
             visibleFields={visibleFields}
+            isOnlyAudio={isOnlyAudio}
           />
         );
       case QuestionType.Matching:

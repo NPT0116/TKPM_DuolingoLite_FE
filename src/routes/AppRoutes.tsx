@@ -21,6 +21,7 @@ import AdminLayout from "../views/layouts/AdminLayout";
 import AdminCourseManagementPage from "../views/pages/AdminPage/management/AdminCourseManagementPage";
 import AdminAddQuestionPage from "../views/pages/AdminPage/AdminAddQuestionPage";
 import { QuestionType } from "../enums/questionType";
+import CourseManagementPage from "../views/pages/ChooseCoursePage/CourseManagementPage";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
