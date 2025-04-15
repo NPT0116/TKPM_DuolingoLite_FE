@@ -50,7 +50,7 @@ const NavigationLayout: React.FC = () => {
           />
           <NavigationButton
             isAvatar={false}
-            iconLink="https://d35aaqx5ub95lt.cloudfront.net/vendor/784035717e2ff1d448c0f6cc4efc89fb.svg"
+            iconLink="https://d35aaqx5ub95lt.cloudfront.net/vendor/7ef36bae3f9d68fc763d3451b5167836.svg"
             content="QUẢN LÝ KHÓA HỌC"
             path="/courses"
           />

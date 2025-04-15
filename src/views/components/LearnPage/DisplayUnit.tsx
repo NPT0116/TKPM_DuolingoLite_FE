@@ -11,6 +11,7 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
   lessonsList,
   lessonsInformation,
   setShowToast,
+  onClick,
 }) => {
   const whiteIcon = [
     "https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg",
@@ -64,9 +65,11 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
     return templates[randomIndex];
   };
   const lessonOrder = useContext(LessonOrderContext);
+  console.log("Lesson order ne", lessonOrder);
   const randomTemplate = getRandomTemplate();
   return (
-    <div className="flex flex-col h-full justify-center w-full font-bold gap-8 items-center relative ">
+    <div className="flex flex-col h-full justify-start w-full font-bold gap-8 items-center relative ">
+      {/* Course Summary */}
       <div
         className="flex h-[100px] justify-between rounded-2xl w-[90%] items-center"
         style={{
@@ -76,11 +79,11 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
         }}
       >
         <div className="flex flex-col justify-start items-start">
-          <span className="text-md">Part 2, Gate 31</span>
+          {/* <span className="text-md">Part 2, Gate 31</span> */}
           <span className="text-xl"> {title}</span>
         </div>
         <div
-          className="flex border-2 border-b-4 justify-between rounded-2xl cursor-pointer gap-4 hover:opacity-80 items-center"
+          className="flex w-[170px] border-2 border-b-4 justify-between rounded-2xl cursor-pointer  hover:opacity-80 items-center"
           style={{
             padding: "12px 10px",
             borderColor: `#${randomTemplate.botColor}`,
@@ -93,8 +96,9 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
           HƯỚNG DẪN
         </div>
       </div>
+      {/* Course Title */}
       <div
-        className="flex flex-row justify-center text-white w-full font-bold items-center"
+        className=" flex flex-row justify-center text-white w-full font-bold items-center"
         style={{ padding: "0px 40px" }}
       >
         <hr className="border-[#52656D] border-[1px] rounded-full w-full" />
@@ -103,12 +107,13 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
         </span>
         <hr className="border-[#52656D] border-[1px] rounded-full w-full" />
       </div>
+      {/* Course Lesson node */}
       {lessonsInformation
         ?.slice()
         .sort((a, b) => a.order - b.order)
         .map((item, index) => (
           <div key={item.id} className="relative">
-            {lessonOrder == item.order && (
+            {lessonOrder == index + 1 && (
               <motion.div
                 className={`absolute top-[-60px] whitespace-nowrap rounded-2xl border-2 border-[#37464F] bg-[#131F23] z-10`}
                 style={{
@@ -145,17 +150,22 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
               </motion.div>
             )}
             <LessonNode
+              onClick={() => {
+                if (onClick) {
+                  onClick();
+                }
+              }}
               courseId={courseId}
               lessonInformation={item}
               topColor={randomTemplate.topColor}
               botColor={randomTemplate.botColor}
               shadowColor={randomTemplate.shadowColor}
               transX={layouts[type][index]}
-              isEnable={lessonOrder >= item.order}
-              isFinished={lessonOrder > item.order}
+              isEnable={lessonOrder >= index + 1}
+              isFinished={lessonOrder > index + 1}
               whiteIcon={whiteIcon[index]}
               grayIcon={grayIcon[index]}
-              currentOrder={item.order}
+              currentOrder={index + 1}
               setShowToast={setShowToast}
             />
           </div>

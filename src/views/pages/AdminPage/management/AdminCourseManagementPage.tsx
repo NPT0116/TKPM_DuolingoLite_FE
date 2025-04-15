@@ -392,6 +392,9 @@ const AdminCourseManagementPage: React.FC = () => {
       {isAdd && (
         <PopupDialog>
           <LessonManagement
+            turnOff={() => {
+              setIsAdd(false);
+            }}
             onBack={() => handleBack()}
             selectedCourse={selectedCourse}
             selectedLesson={selectedLesson}

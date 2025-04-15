@@ -30,6 +30,7 @@ export interface IUserCourseValue {
   courseId: string;
   lessonOrder: number;
   userId: string;
+  lessons?: ILessonValue[];
 }
 
 export interface IDisplayUnit {
@@ -39,6 +40,7 @@ export interface IDisplayUnit {
   lessonsList?: ILessonValue[];
   lessonsInformation?: ILessonInformation[];
   setShowToast: React.Dispatch<React.SetStateAction<boolean>>;
+  onClick?: () => void;
 }
 export interface IError {
   code: string;

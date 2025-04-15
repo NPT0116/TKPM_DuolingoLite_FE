@@ -1,10 +1,11 @@
 import AppRoutes from "./routes/AppRoutes";
+import { CourseProvider } from "./context/CourseContext";
 
 const App: React.FC = () => {
   return (
-    <div>
+    <CourseProvider>
       <AppRoutes />;
-    </div>
+    </CourseProvider>
   );
 };
 export default App;

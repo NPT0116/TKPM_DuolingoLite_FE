@@ -1,19 +1,23 @@
 /** @jsxImportSource @emotion/react */
 import DisplayUnit from "../../components/LearnPage/DisplayUnit";
 import { css } from "@emotion/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import api from "../../../configs/axiosConfig";
 import {
   ICourseValue,
   IUserCourseValue,
   ILessonInformation,
+  IRegisteredCourse,
 } from "../../../interfaces/Course";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getUserCurrentCourse } from "../../../services/Course/GetUserCourseService";
 import { getCourseById } from "../../../services/Course/GetCourseByIdService";
 import { getUserProfile } from "../../../services/Authentication/AuthService";
 import { LessonOrderContext } from "../../../context/LessonContext";
 import { getUserRanking } from "../../../services/LeaderBoard/GetUserRanking";
+import { useCourseContext } from "../../../context/CourseContext";
+import StepButton from "../../components/Admin/Components/StepButton";
+import { getUserRegisterCourse } from "../../../services/User/GetUserRegisterdCourse";
 
 const scrollContainerStyle = css`
   scrollbar-width: 0px;
@@ -22,56 +26,87 @@ const scrollContainerStyle = css`
   }
 `;
 
-const fetchLessonDetail = async (
-  courseId: string,
-  setLessonsInformation: React.Dispatch<
-    React.SetStateAction<ILessonInformation[]>
-  >
-) => {
-  await api
-    .get(`/Lesson/${courseId}`)
-    .then((response) => {
-      setLessonsInformation(response.data.value);
-    })
-    .catch((error) => {
-      console.error("Error while fetching course's lessons:", error);
-    });
-};
+const HomePage: React.FC = () => {
+  const { switchCourse, registeredCourses, setRegisteredCourses } =
+    useCourseContext();
 
-// Lấy course hiện tại của user và course detail của course đó
-const fetchUserCourse = async (
-  navigate: ReturnType<typeof useNavigate>,
-  setSelectedCourse: React.Dispatch<
-    React.SetStateAction<IUserCourseValue | null>
-  >,
-  setCourseDetail: React.Dispatch<React.SetStateAction<ICourseValue | null>>
-) => {
-  try {
-    const userProfiledData = await getUserProfile();
-    if (!userProfiledData) {
-      navigate("/login");
+  const fetchLessonDetail = async (
+    courseId: string,
+    setLessonsInformation: React.Dispatch<
+      React.SetStateAction<ILessonInformation[]>
+    >
+  ) => {
+    await api
+      .get(`/Lesson/${courseId}`)
+      .then((response) => {
+        setLessonsInformation(response.data.value);
+      })
+      .catch((error) => {
+        console.error("Error while fetching course's lessons:", error);
+      });
+  };
+  const fetchUserRegisteredCourse = async () => {
+    try {
+      const result = await getUserRegisterCourse();
+      console.log("SWITCHHHH COURSE NEE", switchCourse);
+      const courseId =
+        result!.value.length === 0
+          ? ""
+          : switchCourse
+          ? switchCourse!.id
+          : result!.value[0].courseId;
+      console.log(result);
+      console.log("ID NE", courseId);
+      if (result) {
+        setRegisteredCourses(result.value);
+        const courseData = {
+          value: courseId
+            ? {
+                userId: localStorage.getItem("userId"),
+                courseId: courseId,
+                lessonOrder: result.value!.find(
+                  (registeredCourse) => registeredCourse.courseId === courseId
+                )?.lessonOrder,
+              }
+            : null,
+        };
+        console.log("COURSE DATA", courseData);
+        return courseData;
+      }
+    } catch (error) {
+      console.log("Error while fetching user current course: ", error);
     }
-
-    const courseData = await getUserCurrentCourse(userProfiledData.value);
-    console.log("Fetch course in home page");
-    console.log(courseData);
-    if (courseData === null) {
-      navigate("/courses");
-    } else if (courseData.value) {
+  };
+  // Lấy course hiện tại của user và course detail của course đó
+  const fetchUserCourse = async (
+    navigate: ReturnType<typeof useNavigate>,
+    setSelectedCourse: React.Dispatch<
+      React.SetStateAction<IUserCourseValue | null>
+    >,
+    setCourseDetail: React.Dispatch<React.SetStateAction<ICourseValue | null>>
+  ) => {
+    try {
+      const userProfiledData = await getUserProfile();
+      if (!userProfiledData) {
+        navigate("/login");
+      }
+      // const courseData = await getUserCurrentCourse(userProfiledData.value);
+      // Refetch
+      console.log("New fetch and Re-Fetch user progress");
+      const courseData = await fetchUserRegisteredCourse();
+      console.log(courseData);
       setSelectedCourse(courseData.value);
       try {
-        const courseDetail = await getCourseById(courseData.value.courseId);
+        const courseDetail = await getCourseById(courseData!.value.courseId);
         setCourseDetail(courseDetail.value);
       } catch (err) {
         console.error("Failed to fetch course detail:", err);
       }
+    } catch (err) {
+      console.error("Failed to fetch user profile:", err);
     }
-  } catch (err) {
-    console.error("Failed to fetch user profile:", err);
-  }
-};
+  };
 
-const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<IUserCourseValue | null>(
@@ -90,6 +125,8 @@ const HomePage: React.FC = () => {
     if (selectedCourse?.courseId) {
       console.log(selectedCourse.courseId);
       fetchLessonDetail(selectedCourse.courseId, setLessonsInformation);
+      console.log("Selected Course:", selectedCourse);
+      console.log("Lesson information:", lessonsInformation);
       console.log("length", lessonsInformation.length);
     }
   }, [selectedCourse]);
@@ -101,14 +138,48 @@ const HomePage: React.FC = () => {
     >
       <div className="h-full w-full overflow-auto" css={scrollContainerStyle}>
         <LessonOrderContext.Provider value={selectedCourse?.lessonOrder ?? 0}>
-          <DisplayUnit
-            setShowToast={setShowToast}
-            courseId={selectedCourse?.courseId}
-            title={courseDetail?.name}
-            type={1}
-            lessonsList={selectedCourse?.lessons}
-            lessonsInformation={lessonsInformation}
-          />
+          {selectedCourse ? (
+            <DisplayUnit
+              onClick={() => {
+                localStorage.setItem(
+                  "prevLessonOrder",
+                  JSON.stringify(selectedCourse?.lessonOrder ?? 0)
+                );
+              }}
+              setShowToast={setShowToast}
+              courseId={selectedCourse?.courseId}
+              title={courseDetail?.name}
+              type={1}
+              lessonsList={selectedCourse?.lessons}
+              lessonsInformation={lessonsInformation}
+            />
+          ) : (
+            <div className="w-full h-full  flex justify-center items-center font-bold">
+              <img
+                src="https://d35aaqx5ub95lt.cloudfront.net/images/pathSections/exampleSentences/7f2dfc9cc806971c2230c8f91b5b8bdd.svg"
+                alt=""
+              />
+              <div
+                className="w-full flex flex-col gap-2"
+                style={{ margin: "10px" }}
+              >
+                <span
+                  className="h-2/3 border-2 rounded-xl border-[#37464F]  text-lg"
+                  style={{ padding: "20px" }}
+                >
+                  Bạn chưa đăng ký khóa học nào, hãy đăng ký một khóa học !
+                </span>
+                <div className="h-[80px]">
+                  <StepButton
+                    content="Đăng ký"
+                    onClick={() => {
+                      navigate("/courses");
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </LessonOrderContext.Provider>
       </div>
       {showToast && (

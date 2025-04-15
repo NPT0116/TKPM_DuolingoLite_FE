@@ -27,28 +27,28 @@ export const registerCourse = async (courseId: string): Promise<any> => {
     return null;
   }
 };
-export const finishCourse = async (courseId: string): Promise<any> => {
-  try {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      console.warn("No authentication token found");
-      return null;
-    }
+// export const finishCourse = async (courseId: string): Promise<any> => {
+//   try {
+//     const token = localStorage.getItem("authToken");
+//     if (!token) {
+//       console.warn("No authentication token found");
+//       return null;
+//     }
 
-    const response = await axios.post(
-      `${API_BASE_URL}Course/finish-lesson`,
-      { courseId: courseId },
-      {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+//     const response = await axios.post(
+//       `${API_BASE_URL}Course/finish-lesson`,
+//       { courseId: courseId },
+//       {
+//         headers: {
+//           Accept: "*/*",
+//           Authorization: `Bearer ${token}`,
+//           "Content-Type": "application/json",
+//         },
+//       }
+//     );
 
-    return response.data;
-  } catch (error) {
-    console.log("Error while finish course: ", error);
-  }
-};
+//     return response.data;
+//   } catch (error) {
+//     console.log("Error while finish course: ", error);
+//   }
+// };
