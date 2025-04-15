@@ -49,24 +49,28 @@ const HomePage: React.FC = () => {
     try {
       const result = await getUserRegisterCourse();
       console.log("SWITCHHHH COURSE NEE", switchCourse);
-      const courseId = result!.value.length === 0 ? "" : switchCourse!.id;
+      const courseId =
+        result!.value.length === 0
+          ? ""
+          : switchCourse
+          ? switchCourse!.id
+          : result!.value[0].courseId;
+      console.log(result);
+      console.log("ID NE", courseId);
       if (result) {
         setRegisteredCourses(result.value);
-        console.log("Re-Fetch Register Courses");
-        console.log(result.value);
         const courseData = {
           value: courseId
             ? {
                 userId: localStorage.getItem("userId"),
                 courseId: courseId,
-                lessonOrder:
-                  result.value!.find(
-                    (registeredCourse) =>
-                      registeredCourse.courseId === switchCourse!.id
-                  )?.lessonOrder ?? 0,
+                lessonOrder: result.value!.find(
+                  (registeredCourse) => registeredCourse.courseId === courseId
+                )?.lessonOrder,
               }
             : null,
         };
+        console.log("COURSE DATA", courseData);
         return courseData;
       }
     } catch (error) {

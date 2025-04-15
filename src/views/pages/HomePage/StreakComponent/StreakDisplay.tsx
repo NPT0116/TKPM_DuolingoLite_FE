@@ -1,10 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from "@emotion/react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { GetAllUser } from "../../../../services/User/GetAllUser";
 
-const StreakBar: React.FC = () => {
-  const startDay = 3;
-  const endDay = 5;
+const StreakBar: React.FC<{
+  startDay: number;
+  endDay: number;
+  streakCount: number;
+}> = ({ startDay, endDay, streakCount }) => {
+  // const startDay = 3;
+  // const endDay = 5;
   const bounceKeyframe = keyframes`
   0% {
     transform: translateX(${endDay * 2}px) scale(1.0);
@@ -35,13 +40,13 @@ const StreakBar: React.FC = () => {
         </div>
       )
     ) : i < endDay ? (
-      <div></div>
+      <div key={i}></div>
     ) : null
   );
-  console.log(dayElements);
+  // console.log(dayElements);
   return (
     <div
-      className="group-hover:flex hidden flex-col gap-4 border-[#37464F] bg-[#CC7900] border-2 rounded-3xl absolute top-[10%] left-0  w-full h-[40%] "
+      className="group-hover:flex hidden flex-col gap-4 border-[#37464F] bg-[#CC7900] border-2 rounded-2xl absolute top-[7%] left-0  w-full h-[40%] "
       style={{ padding: "20px 20px" }}
     >
       <div className="w-full h-3/5 flex flex-row justify-between items-center">
@@ -58,7 +63,9 @@ const StreakBar: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-2">
-            <div className="font-bold text-white text-2xl">142 ngày streak</div>
+            <div className="font-bold text-white text-2xl">
+              {streakCount} ngày streak
+            </div>
             <div className="font-medium text-white">
               Hãy tiếp tục duy trì nhé !
             </div>
@@ -81,13 +88,13 @@ const StreakBar: React.FC = () => {
           id="weekday"
           className="w-[95%] flex justify-between grid-rows-1 text-[#52656D] font-bold"
         >
+          <span className="">CN</span>
           <span className="">T2</span>
           <span className="">T3</span>
           <span className="">T4</span>
           <span className="">T5</span>
           <span className="">T6</span>
           <span className="">T7</span>
-          <span className="">CN</span>
         </div>
         <div className="grid grid-cols-7 grid-rows-1 relative w-[98%] h-[30px] bg-[#24373d] rounded-full ">
           {dayElements}
