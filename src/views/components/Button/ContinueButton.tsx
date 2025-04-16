@@ -3,6 +3,7 @@ import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import { finishLesson } from "../../../services/Course/FinishLessonService";
 import { useStopAudio } from "../LearnPage/Audio/AudioProvider";
+import { postRecordActivity } from "../../../services/UserActivity/PostRecordActivityService";
 interface IContinueButton {
   setXp: React.Dispatch<
     React.SetStateAction<{ accumulated: number; total: number }>
@@ -36,8 +37,10 @@ const handleFinishLesson = async (
   type: string,
   courseId?: string
 ) => {
-  if (currentOrder === lessonOrder)
+  if (currentOrder === lessonOrder) {
     await finishLesson(courseId ? courseId : "");
+    await postRecordActivity();
+  }
 
   if (type === "review") {
     navigate("/review");

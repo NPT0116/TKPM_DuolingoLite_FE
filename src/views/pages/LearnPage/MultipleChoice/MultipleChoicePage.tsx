@@ -28,6 +28,7 @@ const MultipleChoicePage: React.FC<MultipleChoiceProps> = ({
   useEffect(() => {
     setIsNext(true);
   }, [state]);
+  console.log(data);
 
   return (
     <div className="w-full h-full flex justify-center items-center overflow-y-auto">

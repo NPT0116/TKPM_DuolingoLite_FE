@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Upload, message } from "antd";
 import type { UploadFile, UploadProps } from "antd";
 import { API_BASE_URL } from "../../../../configs/apiConfig";
@@ -10,6 +10,7 @@ interface FileUploadProps {
   setAudioUpload?: React.Dispatch<React.SetStateAction<IResource | null>>;
   onUploadSuccess?: (url: string) => void;
   onRemoveFile?: () => void;
+  defaultValue: string | null;
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({
@@ -18,10 +19,30 @@ const FileUpload: React.FC<FileUploadProps> = ({
   setAudioUpload,
   onUploadSuccess,
   onRemoveFile,
+  defaultValue,
 }) => {
   const [imgUrl, setImgUrl] = useState("");
   const [audioUrl, setAudioUrl] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  useEffect(() => {
+    if (defaultValue) {
+      const newFile: UploadFile = {
+        uid: "default",
+        name: defaultValue.split("/").pop() || "file",
+        status: "done",
+        url: defaultValue,
+      };
+
+      setFileList([newFile]);
+
+      if (type === "image") {
+        setImgUrl(defaultValue);
+      } else {
+        setAudioUrl(defaultValue);
+      }
+    }
+  }, [defaultValue, type]);
 
   const handleUpload = async (file: File) => {
     const formData = new FormData();
