@@ -35,6 +35,7 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
   isQuestionRetry,
   state,
 }) => {
+  console.log(data);
   // Set up data
   const questionElements = data.words
     .sort((a, b) => a.order - b.order)
@@ -51,7 +52,9 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
   const [answer, setAnswer] = useState("");
   const [isRecord, setIsRecord] = useState(false);
   const [countRetry, setCountRetry] = useState(0);
-
+  const [isRecordButtonActive, setIsRecordButtonActive] = useState(true);
+  console.log("Can user press the record button ?");
+  console.log(isRecordButtonActive);
   useEffect(() => {
     if (data && data.englishText) {
       const cleanText = data.englishText.replace(/[^\w\s]/g, "");
@@ -59,8 +62,10 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
     }
   }, []);
   useEffect(() => {
+    console.log("Record audio file processed !");
     if (result.toLowerCase() == answer.toLowerCase() && answer !== "") {
       console.log("Correct");
+      setIsRecordButtonActive(false); // Set Disabled Button
       setIsNext(true);
       setIsButtonCorrect(true);
       setIsButtonActive(true);
@@ -69,6 +74,7 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
       console.log("Incorrect");
       if (countRetry >= 1) setIsRetry(true);
       if (countRetry === retryTimes) {
+        setIsRecordButtonActive(false); // Set Disabled Button
         setIsNext(true);
         setIsButtonCorrect(false);
         setIsButtonActive(true);
@@ -107,6 +113,8 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
   };
   // Stop Recording
   const stopRecording = () => {
+    setIsRecordButtonActive(false);
+
     const mediaRecorder = mediaRecorderRef.current;
     if (!mediaRecorder) return;
     mediaRecorder.stop();
@@ -128,11 +136,14 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
         });
         console.log("Upload response:", response.data);
         setAnswer(response.data.transcript);
+        setIsRecordButtonActive(true);
         if (response.data.transcript == "") {
           setIsRetry(true);
           if (countRetry === retryTimes) {
             setIsButtonActive(true);
             setIsRetry(false);
+            setIsRecordButtonActive(false); // Set Disabled Button
+
             setIsButtonCorrect(false);
             setIsNext(true);
           }
@@ -170,7 +181,7 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
       <div className="w-1/2 h-full  flex flex-col justify-evenly items-center">
         {" "}
         <div className="font-bold text-3xl text-white w-full h-1/5 flex justify-start items-center">
-          Đọc câu này
+          {data.instruction || "Đọc câu này"}
         </div>
         <div className="relative w-full h-5/6 flex flex-col justify-center items-center ">
           <div
@@ -179,11 +190,7 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
           >
             <div className="w-full h-2/3 flex flex-row gap-8">
               {" "}
-              <img
-                src="https://duoplanet.com/wp-content/uploads/2022/04/Duolingo-Lily-1.png"
-                alt=""
-                className="h-full"
-              />
+              <img src={data.picture?.url} alt="" className="h-full" />
               <div className="w-full h-full flex justify-start items-center">
                 {" "}
                 <QuestionBox
@@ -195,6 +202,7 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
           </div>
           <div className="relative w-full h-2/6  flex flex-row justify-start items-center">
             <button
+              disabled={!isRecordButtonActive}
               className="absolute top-0  w-full"
               onClick={handleRecordButton}
             >

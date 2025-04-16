@@ -30,7 +30,7 @@ const Streaking: React.FC<StreakingProps> = ({ streakNumber }) => {
   }, []);
   const currentDateNumber = new Date().getDay();
   const startStreakDay = 0;
-
+  console.log(userActivity);
   return (
     <div
       onMouseEnter={() => {
