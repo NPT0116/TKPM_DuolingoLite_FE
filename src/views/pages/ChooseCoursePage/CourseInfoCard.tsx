@@ -22,6 +22,15 @@ const CourseInfoCard: React.FC<ICourseInfoCard> = ({
   isBlock,
   onClick,
 }) => {
+  const handleCurrentLesson = () => {
+    return currentLesson;
+    // return currentLesson ===
+    //   (parseInt(localStorage.getItem("prevLessonOrder") || "0", 10) ?? 0)
+    //   ? currentLesson
+    //   : currentLesson - 1 > 0
+    //   ? currentLesson - 1
+    //   : 0;
+  };
   return (
     <div
       className="w-full h-[35vh] flex flex-row  flex-shrink-0 bg-[#FF64BF] rounded-2xl"
@@ -46,7 +55,7 @@ const CourseInfoCard: React.FC<ICourseInfoCard> = ({
           <div className="w-full h-1/2 flex items-center">
             {!isBlock ? (
               <CourseProgressBar
-                currentLesson={currentLesson}
+                currentLesson={handleCurrentLesson()}
                 totalLesson={totalLesson}
               />
             ) : (
@@ -64,7 +73,7 @@ const CourseInfoCard: React.FC<ICourseInfoCard> = ({
           {!isBlock ? (
             <StepButton
               onClick={onClick}
-              content={currentLesson === totalLesson ? "ÔN" : "HỌC"}
+              content={handleCurrentLesson() === totalLesson ? "ÔN" : "HỌC"}
               width="90%"
               bgColor="#FFFFFF"
               textColor="#FF64BF"

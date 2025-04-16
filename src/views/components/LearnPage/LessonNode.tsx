@@ -18,6 +18,7 @@ interface ILessonNode {
   grayIcon: string;
   currentOrder: number;
   setShowToast: React.Dispatch<React.SetStateAction<boolean>>;
+  onClick?: () => void;
 }
 const LessonNode: React.FC<ILessonNode> = ({
   topColor,
@@ -32,6 +33,7 @@ const LessonNode: React.FC<ILessonNode> = ({
   grayIcon,
   currentOrder,
   setShowToast,
+  onClick,
 }) => {
   const [userHeart, setUserHeart] = useState<number>(0);
   const navigate = useNavigate();
@@ -62,8 +64,8 @@ const LessonNode: React.FC<ILessonNode> = ({
   };
 
   const handleClick = () => {
+    if (onClick) onClick();
     if (!isEnable) return;
-
     if (userHeart !== 0) {
       goToLessonPage();
     } else {

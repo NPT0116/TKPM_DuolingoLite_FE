@@ -37,9 +37,6 @@ const PopupHeader: React.FC<IPopupHeader> = ({
       {isReloadButton && (
         <img
           onClick={() => {
-            if (turnOff) {
-              turnOff();
-            }
             if (handleReload) {
               handleReload();
             }
@@ -53,7 +50,12 @@ const PopupHeader: React.FC<IPopupHeader> = ({
       )}
 
       <img
-        onClick={turnOff}
+        onClick={() => {
+          console.log("Turn off");
+          if (turnOff) {
+            turnOff();
+          }
+        }}
         style={{ padding: "5px" }}
         className="cursor-pointer !z-10 hover:bg-gray-100 rounded-full transition-all duration-200"
         src="https://schools-cdn.duolingo.com/images/820ea64de9b060e534c11110cd80b7fd.svg"
