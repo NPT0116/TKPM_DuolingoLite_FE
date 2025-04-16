@@ -10,7 +10,7 @@ const LessonFinishNotify: React.FC<LessonFinishNotifyProps> = ({
   return (
     <li className="cursor-pointer rounded-xl">
       <div
-        className="bg-[#FFCC00]  hover:bg-[#ffd635] transition-colors ease-in-out flex rounded-xl relative"
+        className="bg-[#FFCC00]  hover:bg-[#ffd635] transition-colors ease-in-out duration-300 flex rounded-xl relative"
         style={{ padding: "10px" }}
       >
         <div

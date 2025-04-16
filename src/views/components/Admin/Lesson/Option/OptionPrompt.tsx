@@ -1,12 +1,22 @@
 import { Checkbox } from "antd";
 import { useEffect, useState } from "react";
 import { IAddConfigure } from "../../../../../interfaces/Configure/Configure";
-import CreateOptionForm from "../CreateOptionForm";
+import PopupOptionForm from "../PopupOptionForm";
 import { IAddQuestion } from "../../../../../interfaces/Questions/IBaseQuestion";
 import { QuestionType } from "../../../../../enums/questionType";
 import MultipleChoiceOptionPrompt from "./MultipleChoiceOptionPrompt";
 import MatchingOptionPrompt from "./MatchingOptionPrompt";
 import BuildSentenceOptionPrompt from "./BuildSentenceOptionPrompt";
+import { CRUDType } from "../../../../../enums/CRUDType";
+import PopupDelete from "../../../../pages/AdminPage/management/PopupContent/PopupDelete";
+import PopupDialog from "../../Components/PopupDialog";
+import {
+  IAddNewOption,
+  IAddOption,
+} from "../../../../../interfaces/Options/IBaseOption";
+import { deleteOption } from "../../../../../services/Option/DeleteOptionService";
+import { addOption } from "../../../../../services/Option/AddOptionService";
+import { editOption } from "../../../../../services/Option/EditOptionService";
 interface OptionPromptProps {
   configureArray: string[];
   question: IAddQuestion;
@@ -30,7 +40,22 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
     audio: false,
     image: false,
   });
+  const [autoCompleteValues, setAutoCompleteValues] = useState<string[]>([]);
+  //Create Option
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [errorCreateOption, setErrorCreateOption] = useState("");
+  const [isCreateOptionSuccess, setIsCreateOptionSuccess] = useState(false);
+
+  //Edit Option
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [errorEditOption, setErrorEditOption] = useState("");
+  const [isEditOptionSuccess, setIsEditOptionSuccess] = useState(false);
+  // Delete Option
+  const [selectAddNewOption, setSelectAddNewOption] =
+    useState<IAddNewOption | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [errorDeleteOption, setErrorDeleteOption] = useState("");
+  const [isDeleteOptionSuccess, setIsDeleteOptionSuccess] = useState(false);
   const [modalIndex, setModalIndex] = useState(0);
   const [isOnlyAudio, setIsOnlyAudio] = useState(false);
   // useEffect(() => {
@@ -63,7 +88,10 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
         }));
       }
       setAudioForced(newValue);
-      if (questionType === QuestionType.MultipleChoice) {
+      if (
+        questionType === QuestionType.MultipleChoice ||
+        QuestionType.BuildSentence
+      ) {
         setVietnameseTextForced(newValue);
       }
     } else if (key === "vietnameseText") {
@@ -77,7 +105,10 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
           englishText: false,
         }));
       }
-      if (questionType === QuestionType.MultipleChoice) {
+      if (
+        questionType === QuestionType.MultipleChoice ||
+        QuestionType.BuildSentence
+      ) {
         setEnglishTextForced(newValue);
       }
     } else if (!audioForced || key !== "audio") {
@@ -94,6 +125,7 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
         ...(key === "englishText" ? { audio: newValue } : {}),
       },
     }));
+    setAutoCompleteValues(new Array(question.options.length).fill(""));
   };
 
   useEffect(() => {
@@ -115,6 +147,11 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
           <MultipleChoiceOptionPrompt
             setQuestion={setQuestion}
             setShowCreateModal={setShowCreateModal}
+            setShowEditModal={setShowEditModal}
+            setShowDeleteModal={setShowDeleteModal}
+            setSelectAddNewOption={setSelectAddNewOption}
+            setAutoCompleteValues={setAutoCompleteValues}
+            autoCompleteValues={autoCompleteValues}
             setModalIndex={setModalIndex}
             vietnameseTextForced={vietnameseTextForced}
             englishTextForced={englishTextForced}
@@ -127,10 +164,16 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
           <MatchingOptionPrompt
             setQuestion={setQuestion}
             setShowCreateModal={setShowCreateModal}
+            setShowEditModal={setShowEditModal}
+            setShowDeleteModal={setShowDeleteModal}
+            setSelectAddNewOption={setSelectAddNewOption}
+            setAutoCompleteValues={setAutoCompleteValues}
+            autoCompleteValues={autoCompleteValues}
             setModalIndex={setModalIndex}
             vietnameseTextForced={vietnameseTextForced}
             englishTextForced={englishTextForced}
             visibleFields={visibleFields}
+            isOnlyAudio={isOnlyAudio}
           />
         );
       case QuestionType.BuildSentence:
@@ -138,10 +181,16 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
           <BuildSentenceOptionPrompt
             setQuestion={setQuestion}
             setShowCreateModal={setShowCreateModal}
+            setShowEditModal={setShowEditModal}
+            setShowDeleteModal={setShowDeleteModal}
+            setSelectAddNewOption={setSelectAddNewOption}
+            setAutoCompleteValues={setAutoCompleteValues}
+            autoCompleteValues={autoCompleteValues}
             setModalIndex={setModalIndex}
             vietnameseTextForced={vietnameseTextForced}
             englishTextForced={englishTextForced}
             visibleFields={visibleFields}
+            isOnlyAudio={isOnlyAudio}
           />
         );
 
@@ -149,6 +198,62 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
         return null;
     }
   };
+
+  const handleCreateOption = async (option: IAddNewOption) => {
+    const result = await addOption(option);
+    if ("error" in result) {
+      setErrorCreateOption(result.error);
+    } else {
+      setIsCreateOptionSuccess(true);
+
+      setTimeout(() => {
+        setShowCreateModal(false);
+      }, 1000);
+    }
+  };
+
+  const handleEditOption = async (option: IAddNewOption) => {
+    const result = await editOption(option);
+    if ("error" in result) {
+      setErrorEditOption(result.error);
+    } else {
+      setIsEditOptionSuccess(true);
+      setAutoCompleteValues(new Array(question.options.length).fill(""));
+      setTimeout(() => {
+        setShowEditModal(false);
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    setIsCreateOptionSuccess(false);
+    setErrorCreateOption("");
+  }, [showCreateModal]);
+
+  const handleDeleteOption = async () => {
+    const result = await deleteOption(selectAddNewOption!.optionId!);
+    if ("error" in result) {
+      setErrorDeleteOption(result.error);
+    } else {
+      setIsDeleteOptionSuccess(true);
+      setAutoCompleteValues(new Array(question.options.length).fill(""));
+
+      setTimeout(() => {
+        setShowDeleteModal(false);
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    setErrorDeleteOption("");
+    setIsDeleteOptionSuccess(false);
+  }, [selectAddNewOption]);
+
+  useEffect(() => {
+    setErrorCreateOption("");
+    setIsEditOptionSuccess(false);
+  }, [selectAddNewOption]);
+
   return (
     <div className="w-full h-full flex flex-col justify-evenly overflow-y-auto">
       <header className="h-1/6 bg-gray-300">
@@ -184,10 +289,40 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
       {renderOptionPrompt()}
 
       {showCreateModal && (
-        <CreateOptionForm
-          setShowCreateModal={setShowCreateModal}
+        <PopupOptionForm
+          mode={CRUDType.CREATE}
+          onCancel={() => setShowCreateModal(false)}
+          onCreate={(option) => handleCreateOption(option)}
+          isSuccess={isCreateOptionSuccess}
+          errorMessage={errorCreateOption}
           modalIndex={modalIndex}
         />
+      )}
+      {showEditModal && (
+        <PopupOptionForm
+          mode={CRUDType.UPDATE}
+          onCancel={() => setShowEditModal(false)}
+          onCreate={(option) => handleEditOption(option)}
+          isSuccess={isEditOptionSuccess}
+          errorMessage={errorEditOption}
+          modalIndex={modalIndex}
+          option={selectAddNewOption}
+        />
+      )}
+      {showDeleteModal && (
+        <PopupDialog containerWidth="fit" containerHeight="fit">
+          <PopupDelete
+            title="DELETE THIS OPTION ?"
+            onCancel={() => {
+              setShowDeleteModal(false);
+            }}
+            onDelete={() => {
+              handleDeleteOption();
+            }}
+            errorMessage={errorDeleteOption}
+            isDeleteSuccess={isDeleteOptionSuccess}
+          />
+        </PopupDialog>
       )}
     </div>
   );

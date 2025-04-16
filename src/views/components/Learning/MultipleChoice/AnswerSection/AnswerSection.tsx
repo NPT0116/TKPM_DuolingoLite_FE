@@ -25,8 +25,8 @@ const AnswerSection: React.FC<AnswerSectionProps> = ({
     !data.picture;
   const onlyOptionAudio =
     data.optionConfigure.audio != null &&
-    data.englishText.length === 0 &&
-    !data.picture;
+    !data.optionConfigure.englishText &&
+    !data.optionConfigure.image;
   return (
     <div className="flex flex-col gap-[24px] w-full h-full ">
       {/* Question Section */}

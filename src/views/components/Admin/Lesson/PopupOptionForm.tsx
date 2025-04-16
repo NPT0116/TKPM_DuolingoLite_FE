@@ -3,25 +3,45 @@ import React, { useEffect, useState } from "react";
 import FileUpload from "../Components/Upload";
 import { addOption } from "../../../../services/Option/AddOptionService";
 import { IAddNewOption } from "../../../../interfaces/Options/IBaseOption";
+import { CRUDType } from "../../../../enums/CRUDType";
 
-interface CreateOptionFormProps {
-  setShowCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
+interface PopupOptionFormProps {
+  mode: CRUDType;
+  onCancel: () => void;
+  onCreate: (tempOption: IAddNewOption) => void;
+  errorMessage: string;
+  isSuccess: boolean;
   modalIndex: number;
+  option?: IAddNewOption | null;
 }
 
-const CreateOptionForm: React.FC<CreateOptionFormProps> = ({
-  setShowCreateModal,
+const PopupOptionForm: React.FC<PopupOptionFormProps> = ({
+  mode,
+  onCancel,
+  onCreate,
+  errorMessage,
+  isSuccess,
   modalIndex,
+  option,
 }) => {
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [tempOption, setTempOption] = useState<IAddNewOption>({
+    optionId: "",
     vietnameseText: "",
     englishText: "",
     image: null,
     audio: null,
     needAudio: false,
+    needImage: false,
   });
   const [useAI, setUseAI] = useState(false);
+
+  useEffect(() => {
+    if (option) {
+      setTempOption(option);
+      setUseAI(option.needAudio && !option.audio);
+    }
+  }, [option]);
+
   useEffect(() => {
     if (useAI) {
       setTempOption((prev) => ({ ...prev, audio: null }));
@@ -34,14 +54,12 @@ const CreateOptionForm: React.FC<CreateOptionFormProps> = ({
     console.log(tempOption);
   }, [tempOption]);
 
-  const handleCreate = async () => {
-    const response = await addOption(tempOption);
-    if ("error" in response) {
-      setErrorMessage(response.error);
-    } else {
-      setShowCreateModal(false);
-    }
-  };
+  const successMessage =
+    mode === CRUDType.CREATE
+      ? "Create option successfully"
+      : "Update option successfully";
+
+  const buttonText = mode === CRUDType.CREATE ? "CREATE" : "UPDATE";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
@@ -55,6 +73,7 @@ const CreateOptionForm: React.FC<CreateOptionFormProps> = ({
           <span>Vietnamese Text</span>
           <Input
             placeholder="Vietnamese Text"
+            value={tempOption.vietnameseText}
             onChange={(e) =>
               setTempOption((prev) => ({
                 ...prev,
@@ -68,6 +87,7 @@ const CreateOptionForm: React.FC<CreateOptionFormProps> = ({
           <span>English Text</span>
           <Input
             placeholder="English Text"
+            value={tempOption.englishText}
             onChange={(e) =>
               setTempOption((prev) => ({
                 ...prev,
@@ -81,6 +101,7 @@ const CreateOptionForm: React.FC<CreateOptionFormProps> = ({
           <span>Image</span>
           <FileUpload
             type="image"
+            defaultValue={tempOption.image}
             onUploadSuccess={(url) =>
               setTempOption((prev) => ({ ...prev, image: url }))
             }
@@ -97,6 +118,7 @@ const CreateOptionForm: React.FC<CreateOptionFormProps> = ({
           {!useAI && (
             <FileUpload
               type="audio"
+              defaultValue={tempOption.audio}
               onUploadSuccess={(url) =>
                 setTempOption((prev) => ({ ...prev, audio: url }))
               }
@@ -106,15 +128,21 @@ const CreateOptionForm: React.FC<CreateOptionFormProps> = ({
             />
           )}
         </div>
-        {errorMessage && (
-          <div className="text-red-500 text-center font-semibold">
-            {errorMessage}
+        {isSuccess ? (
+          <div className="text-green-500 text-center font-semibold">
+            {successMessage}
           </div>
+        ) : (
+          errorMessage && (
+            <div className="text-red-500 text-center font-semibold">
+              {errorMessage}
+            </div>
+          )
         )}
         <div className="flex justify-between mt-4">
-          <Button onClick={() => setShowCreateModal(false)}>Cancel</Button>
-          <Button type="primary" onClick={() => handleCreate()}>
-            Add
+          <Button onClick={() => onCancel()}>Cancel</Button>
+          <Button type="primary" onClick={() => onCreate(tempOption)}>
+            {buttonText}
           </Button>
         </div>
       </div>
@@ -122,4 +150,4 @@ const CreateOptionForm: React.FC<CreateOptionFormProps> = ({
   );
 };
 
-export default CreateOptionForm;
+export default PopupOptionForm;

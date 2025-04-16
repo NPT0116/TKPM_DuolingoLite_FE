@@ -15,6 +15,7 @@ import { putRecordThroughRecordId } from "../../services/SpaceRepetition/PutReco
 import { fetchUserId } from "../../services/Authentication/AuthService";
 import { renderQuestion } from "../pages/LearnPage/renderQuestion";
 import LessonHeart from "../components/LessonHeart/LessonHeart";
+import { AudioProvider } from "../components/LearnPage/Audio/AudioProvider";
 
 // https://d35aaqx5ub95lt.cloudfront.net/images/bd13fa941b2407b4914296afe4435646.svg
 
@@ -99,66 +100,68 @@ const ReviewLayout: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <audio
-        autoPlay
-        loop
-        muted
-        // style={{ display: "none" }}
-      >
-        alo
-        <source
-          src="https://drive.google.com/uc?export=download&id=1wSv4wBK2GaLTuv0G_WkoqUj6UOAOFJFr"
-          type="audio/mpeg"
-        />
-        Your browser does not support the audio element.
-      </audio>
-      {/* XP Bar & Heart*/}
-      <div className="flex h-[10vh] justify-center w-[70%] gap-[20px] items-center max-w-[1000px]">
-        <XPBar accumulated={xp.accumulated} total={xp.total} />
-        <LessonHeart
-          state={state}
-          isButtonCorrect={isButtonCorrect}
-          isSubmit={isSubmit}
-        />
+    <AudioProvider>
+      <div className="flex flex-col items-center">
+        <audio
+          autoPlay
+          loop
+          muted
+          // style={{ display: "none" }}
+        >
+          alo
+          <source
+            src="https://drive.google.com/uc?export=download&id=1wSv4wBK2GaLTuv0G_WkoqUj6UOAOFJFr"
+            type="audio/mpeg"
+          />
+          Your browser does not support the audio element.
+        </audio>
+        {/* XP Bar & Heart*/}
+        <div className="flex h-[10vh] justify-center w-[70%] gap-[20px] items-center max-w-[1000px]">
+          <XPBar accumulated={xp.accumulated} total={xp.total} />
+          <LessonHeart
+            state={state}
+            isButtonCorrect={isButtonCorrect}
+            isSubmit={isSubmit}
+          />
+        </div>
+        {/* Main Layout */}
+        <div className="h-[70vh] w-[100vw]">
+          {questionList?.[0] ? handleLesson(questionList[state - 1]) : null}
+        </div>
+        {/* Navigation Bar */}
+        <div
+          className="bg-[#131F23] border-[#37464F] border-t-2 h-[20vh] w-[100vw] relative"
+          // style={{ background: isNext ? "#202F36" : "" }}
+        >
+          {isNext && isButtonCorrect && <FooterStatus type={0} />}
+          {isNext && !isButtonCorrect && <FooterStatus type={1} />}
+          {!isNext && isRetry && <FooterStatus type={2} />}
+          <ContinueButton
+            setXp={setXp}
+            setIsSubmit={setIsSubmit}
+            isNext={isNext}
+            isFinished={isFinished}
+            setIsButtonActive={setIsButtonActive}
+            setIsButtonCorrect={setIsButtonCorrect}
+            setIsNext={setIsNext}
+            maxState={questionList.length}
+            isButtonActivate={isButtonActivate}
+            isButtonCorrect={isButtonCorrect}
+            state={state}
+            setState={setState}
+            mainColor="3B4EFF"
+            borderColor="3F22EC"
+            hoverColor="4156FF"
+            paddingWidth={80}
+            positionRight={250}
+            courseId="" //Giá trị giả
+            currentOrder={1} //Giá trị giả
+            lessonOrder={0} //Giá trị giả
+            type="review"
+          />
+        </div>
       </div>
-      {/* Main Layout */}
-      <div className="h-[70vh] w-[100vw]">
-        {questionList?.[0] ? handleLesson(questionList[state - 1]) : null}
-      </div>
-      {/* Navigation Bar */}
-      <div
-        className="bg-[#131F23] border-[#37464F] border-t-2 h-[20vh] w-[100vw] relative"
-        // style={{ background: isNext ? "#202F36" : "" }}
-      >
-        {isNext && isButtonCorrect && <FooterStatus type={0} />}
-        {isNext && !isButtonCorrect && <FooterStatus type={1} />}
-        {!isNext && isRetry && <FooterStatus type={2} />}
-        <ContinueButton
-          setXp={setXp}
-          setIsSubmit={setIsSubmit}
-          isNext={isNext}
-          isFinished={isFinished}
-          setIsButtonActive={setIsButtonActive}
-          setIsButtonCorrect={setIsButtonCorrect}
-          setIsNext={setIsNext}
-          maxState={questionList.length}
-          isButtonActivate={isButtonActivate}
-          isButtonCorrect={isButtonCorrect}
-          state={state}
-          setState={setState}
-          mainColor="3B4EFF"
-          borderColor="3F22EC"
-          hoverColor="4156FF"
-          paddingWidth={80}
-          positionRight={250}
-          courseId="" //Giá trị giả
-          currentOrder={1} //Giá trị giả
-          lessonOrder={0} //Giá trị giả
-          type="review"
-        />
-      </div>
-    </div>
+    </AudioProvider>
   );
 };
 export default ReviewLayout;
