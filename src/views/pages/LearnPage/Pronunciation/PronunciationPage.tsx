@@ -190,7 +190,15 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
           >
             <div className="w-full h-2/3 flex flex-row gap-8">
               {" "}
-              <img src={data.picture?.url} alt="" className="h-full" />
+              <img
+                src={
+                  data.picture && data.picture.url
+                    ? data.picture.url
+                    : "https://duoplanet.com/wp-content/uploads/2022/04/Duolingo-Lily-1.png"
+                }
+                alt=""
+                className="h-full"
+              />
               <div className="w-full h-full flex justify-start items-center">
                 {" "}
                 <QuestionBox
