@@ -393,6 +393,7 @@ const AdminCourseManagementPage: React.FC = () => {
         <PopupDialog>
           <LessonManagement
             onBack={() => handleBack()}
+            turnOff={() => handleBack()}
             selectedCourse={selectedCourse}
             selectedLesson={selectedLesson}
           />
