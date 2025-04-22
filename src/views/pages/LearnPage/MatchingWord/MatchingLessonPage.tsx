@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { IMatchingQuestion } from "../../../../interfaces/Questions/IMatchingQuestion";
 import { IMatchingOption } from "../../../../interfaces/Options/IMatchingOption";
 import ButtonMatching from "../../../components/Button/Matching/ButtonMatching";
+import incorrectSound from "../../../../assets/sounds/duo_incorrect_sound.mp4";
+import { usePlayAudio } from "../../../components/LearnPage/Audio/AudioProvider";
 
 interface IMatchingLessonPage {
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -138,6 +140,13 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
   // Check Correct
   const [correctList, setCorrectList] = useState<string[]>([]);
   const [wrongList, setWrongList] = useState<IWrongItem[]>([]);
+  // play Audio if wrong
+  const playAudio = usePlayAudio();
+  if (wrongList.length) {
+    playAudio(incorrectSound);
+    // console.log(incorrectSound);
+  }
+
   if (selectedSource && selectedTarget) {
     if (selectedSource.id == selectedTarget.id) {
       if (!correctList.includes(selectedSource.id)) {

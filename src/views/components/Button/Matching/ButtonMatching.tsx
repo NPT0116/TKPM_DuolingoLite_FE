@@ -171,7 +171,6 @@ const ButtonMatching: React.FC<IButtonMatching> = ({
         return null;
     }
   };
-  //
   const handlePlayAudio = () => {
     if (option.audio && option.audio.url) {
       playAudio(option.audio.url);
