@@ -16,7 +16,7 @@ const Streaking: React.FC<StreakingProps> = ({ streakNumber }) => {
     try {
       const data = await GetAllUser();
       const userId = localStorage.getItem("userId");
-      const currentUser = data!.find((u: any) => {
+      const currentUser = data!.find((u): u is IUser => {
         return u.userStats.userId == userId;
       });
       setUserActivity(currentUser);
@@ -40,7 +40,7 @@ const Streaking: React.FC<StreakingProps> = ({ streakNumber }) => {
         setIsStreakVisible(false);
       }}
       className="group flex justify-center items-center gap-2 rounded-xl hover:bg-[#202F36]"
-      style={{ padding: "10px 15px" }}
+      style={{ padding: "20px" }}
     >
       <img
         src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/398e4298a3b39ce566050e5c041949ef.svg"

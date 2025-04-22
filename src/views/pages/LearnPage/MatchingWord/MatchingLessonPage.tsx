@@ -144,7 +144,6 @@ const MatchingLessonPage: React.FC<IMatchingLessonPage> = ({
   const playAudio = usePlayAudio();
   if (wrongList.length) {
     playAudio(incorrectSound);
-    // console.log(incorrectSound);
   }
 
   if (selectedSource && selectedTarget) {
