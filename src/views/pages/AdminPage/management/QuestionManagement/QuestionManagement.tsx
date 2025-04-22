@@ -75,7 +75,7 @@ const QuestionManagement: React.FC<IQuestionManagement> = ({
               handleDeleteQuestion();
             }}
             errorMessage={deleteQuestionError}
-            isDeleteLessonSuccess={successDeleteQuestion}
+            isDeleteSuccess={successDeleteQuestion}
           />
         </PopupDialog>
       )}

@@ -4,7 +4,7 @@ import StepButton from "../../components/Admin/Components/StepButton";
 import { useEffect, useState } from "react";
 import { addMultipleChoiceQuestion } from "../../../services/Lesson/AddMultipleChoiceQuestionService";
 import { IAddQuestion } from "../../../interfaces/Questions/IBaseQuestion";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { createEmptyQuestion } from "./utils/createEmptyQuestion";
 import { QuestionType } from "../../../enums/questionType";
 import OptionPrompt from "../../components/Admin/Lesson/Option/OptionPrompt";
@@ -104,23 +104,37 @@ const AdminAddQuestionPage: React.FC<AdminMultipleChoicePageProps> = ({
     ];
   };
   const stepConfig = getStepConfig(questionType);
+  const navigate = useNavigate();
 
   return (
     <div className="w-full h-full flex flex-row">
-      <div
-        className="w-3/12 flex flex-col justify-center items-center border-r-2 border-[#E5E5E5]"
-        style={{ margin: "20px 0" }}
-      >
-        {stepConfig.map((stepItem, index) => (
-          <OrderPrompt
-            key={index}
-            order={stepItem.order}
-            content={stepItem.content}
-            processLine={stepItem.processLine}
-            stepCss={step === index ? stepCss : {}}
-            contentCss={step === index ? contentCss : {}}
+      <div className="w-3/12 flex flex-col  border-r-2 border-[#E5E5E5]">
+        <div
+          className="w-full h-10/12 flex flex-col justify-center items-center"
+          style={{ margin: "20px 0" }}
+        >
+          {stepConfig.map((stepItem, index) => (
+            <OrderPrompt
+              key={index}
+              order={stepItem.order}
+              content={stepItem.content}
+              processLine={stepItem.processLine}
+              stepCss={step === index ? stepCss : {}}
+              contentCss={step === index ? contentCss : {}}
+            />
+          ))}
+        </div>
+        <div className="w-full h-2/12 flex justify-center items-center">
+          <StepButton
+            content="TRỞ VỀ"
+            width="90%"
+            bgColor="Blue"
+            textColor="White"
+            onClick={() => {
+              navigate("/admin/course");
+            }}
           />
-        ))}
+        </div>
       </div>
       {/* Main Content */}
       <div className="w-11/12 h-full" style={{ padding: "0 20px" }}>
