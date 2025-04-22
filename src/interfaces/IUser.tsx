@@ -14,6 +14,7 @@ export interface IUserStats {
 }
 
 export interface IUser {
+  find(arg0: (u: any) => boolean): unknown;
   id: string;
   firstName: string;
   lastName: string;

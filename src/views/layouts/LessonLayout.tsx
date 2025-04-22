@@ -204,6 +204,7 @@ const LessonLayout: React.FC = () => {
       isQuestionRetry,
       setIsNext,
       setIsRetry,
+      setIsSubmit,
       setIsButtonActive,
       setIsButtonCorrect,
     });

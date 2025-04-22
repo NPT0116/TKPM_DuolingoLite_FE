@@ -11,15 +11,14 @@ const Streaking: React.FC<StreakingProps> = ({ streakNumber }) => {
   const [isStreakVisible, setIsStreakVisible] = useState(false);
   const [userActivity, setUserActivity] = useState<IUser>();
   // Fetch User Activity
-  console.log(userActivity);
   const fetchUserActivity = async () => {
     try {
-      const data = await GetAllUser();
+      const { data: users } = await GetAllUser();
       const userId = localStorage.getItem("userId");
-      const currentUser = data!.find((u: any) => {
+      const currentUser = users!.find((u): u is IUser => {
         return u.userStats.userId == userId;
       });
-      setUserActivity(currentUser);
+      setUserActivity(currentUser as IUser);
     } catch (error) {
       console.log("Error while get all user:", error);
     }
@@ -30,7 +29,8 @@ const Streaking: React.FC<StreakingProps> = ({ streakNumber }) => {
   }, []);
   const currentDateNumber = new Date().getDay();
   const startStreakDay = 0;
-  console.log(userActivity);
+  console.log("current User activity:");
+  console.log(userActivity?.userStats);
   return (
     <div
       onMouseEnter={() => {
@@ -40,7 +40,7 @@ const Streaking: React.FC<StreakingProps> = ({ streakNumber }) => {
         setIsStreakVisible(false);
       }}
       className="group flex justify-center items-center gap-2 rounded-xl hover:bg-[#202F36]"
-      style={{ padding: "10px 15px" }}
+      style={{ padding: "20px" }}
     >
       <img
         src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/398e4298a3b39ce566050e5c041949ef.svg"
@@ -51,7 +51,9 @@ const Streaking: React.FC<StreakingProps> = ({ streakNumber }) => {
       </span>
       <div>
         <StreakDisplay
-          startDay={startStreakDay}
+          startDay={
+            currentDateNumber - userActivity!.userStats.currentStreak + 1 ?? 0
+          }
           endDay={currentDateNumber}
           streakCount={userActivity ? userActivity!.userStats.currentStreak : 0}
         />

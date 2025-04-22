@@ -15,14 +15,14 @@ const StreakBar: React.FC<{
     transform: translateX(${endDay * 2}px) scale(1.0);
   }
   50% {
-    transform: translateX(${endDay * 2}px) scale(1.12);
+    transform: translateX(${endDay * 2}px) scale(1.1);
   }
   100% {
     transform: translateX(${endDay * 2}px) scale(1.0);
   }
   `;
   const bounceEffect = css`
-    animation: ${bounceKeyframe} 0.6s ease-in-out 0.5s;
+    animation: ${bounceKeyframe} infinite ease-in-out 1s;
     transform: translateX(${endDay * 2}px);
   `;
   const dayElements = Array.from({ length: 6 }, (_, i) =>
@@ -46,7 +46,7 @@ const StreakBar: React.FC<{
   // console.log(dayElements);
   return (
     <div
-      className="group-hover:flex hidden flex-col gap-4 border-[#37464F] bg-[#CC7900] border-2 rounded-2xl absolute top-[7%] left-0  w-full h-[40%] "
+      className="group-hover:flex hidden flex-col gap-4 border-[#37464F] bg-[#CC7900] border-2 rounded-2xl absolute top-[6%] left-0  w-full h-[50%] "
       style={{ padding: "20px 20px" }}
     >
       <div className="w-full h-3/5 flex flex-row justify-between items-center">

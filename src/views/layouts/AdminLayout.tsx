@@ -6,19 +6,19 @@ import ic_courses from "../../assets/icons/ic_courses.svg";
 import ic_add from "../../assets/icons/ic_add.svg";
 
 const lessonItems = [
-  {
-    key: "lesson",
-    icon: (
-      <img
-        src={ic_flag}
-        alt="icon lesson"
-        className="object-cover"
-        style={{ width: 20, height: 16.09, objectPosition: "0 0" }}
-      />
-    ),
-    label: "Lessons",
-    children: [{ key: "Lessons", label: "Lessons" }],
-  },
+  // {
+  //   key: "lesson",
+  //   icon: (
+  //     <img
+  //       src={ic_flag}
+  //       alt="icon lesson"
+  //       className="object-cover"
+  //       style={{ width: 20, height: 16.09, objectPosition: "0 0" }}
+  //     />
+  //   ),
+  //   label: "Lessons",
+  //   children: [{ key: "Lessons", label: "Lessons" }],
+  // },
   {
     key: "course",
     icon: (
@@ -31,19 +31,19 @@ const lessonItems = [
     label: "Courses",
     children: [{ key: "Courses", label: "Courses" }],
   },
-  {
-    key: "",
-    icon: (
-      <img src={ic_add} alt="icon question" style={{ width: 20, height: 20 }} />
-    ),
-    label: "Question",
-    children: [
-      { key: "multiple", label: "Multiple Choice" },
-      { key: "sentence", label: "Build Sentence" },
-      { key: "matching", label: "Matching" },
-      { key: "pronunciation", label: "Pronunciation" },
-    ],
-  },
+  // {
+  //   key: "",
+  //   icon: (
+  //     <img src={ic_add} alt="icon question" style={{ width: 20, height: 20 }} />
+  //   ),
+  //   label: "Question",
+  //   children: [
+  //     { key: "multiple", label: "Multiple Choice" },
+  //     { key: "sentence", label: "Build Sentence" },
+  //     { key: "matching", label: "Matching" },
+  //     { key: "pronunciation", label: "Pronunciation" },
+  //   ],
+  // },
 ];
 
 const AdminLayout: React.FC = () => {

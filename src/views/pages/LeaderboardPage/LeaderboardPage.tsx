@@ -8,7 +8,8 @@ import { css } from "@emotion/react";
 import UserRankingBar from "./UserRankingBar";
 import { getRankingList } from "../../../services/LeaderBoard/GetRankingList";
 import { getUserRanking } from "../../../services/LeaderBoard/GetUserRanking";
-import { ConsoleLogger } from "@microsoft/signalr/dist/esm/Utils";
+import { IUser } from "../../../interfaces/IUser";
+import { GetAllUser } from "../../../services/User/GetAllUser";
 
 const hidingScrollBar = css`
   scrollbar-width: 0px;
@@ -21,28 +22,51 @@ const LeaderboardPage: React.FC = () => {
   const [currentUserRanking, setCurrentUserRanking] = useState<IUserRanking>();
   const [prevUserRanking, setPrevUserRanking] = useState();
   useEffect(() => {
-    // Store previous ranking
-    const storedPrevRank = localStorage.getItem("previousUserRanking");
-    if (storedPrevRank) {
-      setPrevUserRanking(JSON.parse(storedPrevRank));
-    }
-    const fetchRankingList = async () => {
-      const { data } = await getRankingList();
-      if (data && data.userRankings) {
-        setUserRankingData(data.userRankings);
+    const loadAll = async () => {
+      const stored = localStorage.getItem("previousUserRanking");
+      if (stored) {
+        setPrevUserRanking(JSON.parse(stored));
+      }
+      try {
+        const [
+          { data: users },
+          { data: userRankings },
+          { data: currentRanking },
+        ] = await Promise.all([
+          GetAllUser(),
+          getRankingList(),
+          getUserRanking(),
+        ]);
+
+        const rawRankings = userRankings?.userRankings || [];
+        const merged = rawRankings.map((r) => {
+          const u = users!.find((u) => {
+            return u.userStats.userId === r.userId;
+          }) as IUser;
+          return {
+            ...r,
+            profileImageUrl:
+              u.profileImageUrl ??
+              "https://simg-ssl.duolingo.com/ssr-avatars/1288943247/SSR-Dnq9imvO9g/xxlarge",
+          };
+        });
+        const findUser = users?.find((u) => {
+          return u.userStats.userId === currentRanking?.userId;
+        }) as IUser;
+        const currentUserRanking = {
+          ...currentRanking!,
+          profileImageUrl:
+            findUser?.profileImageUrl ??
+            "https://simg-ssl.duolingo.com/ssr-avatars/1288943247/SSR-Dnq9imvO9g/xxlarge",
+        };
+
+        setUserRankingData(merged!);
+        setCurrentUserRanking(currentUserRanking);
+      } catch (error) {
+        console.error("Error while fetching leaderboard data: ", error);
       }
     };
-    const getCurrentUserRanking = async () => {
-      const { data } = await getUserRanking();
-      if (data) {
-        localStorage.setItem("previousUserRanking", JSON.stringify(data.rank));
-        setCurrentUserRanking(data);
-      }
-    };
-    // setUserRankingData(MockUserRankingData);
-    // setCurrentUserRanking(MockCurrentUserRanking);
-    fetchRankingList();
-    getCurrentUserRanking();
+    loadAll();
   }, []);
   useEffect(() => {
     console.log("Previous User Ranking: ", prevUserRanking);
