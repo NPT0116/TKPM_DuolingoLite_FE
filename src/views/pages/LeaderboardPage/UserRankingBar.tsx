@@ -17,10 +17,12 @@ const UserRankingBar: React.FC<IUserRankingBar> = ({
   currentUserRanking,
   indexColor,
 }) => {
+  // console.log(userRanking);
+  console.log(currentUserRanking);
   return (
     <div
       css={
-        currentUserRanking && currentUserRanking.rank - 1 === index
+        currentUserRanking && currentUserRanking.userId === userRanking.userId
           ? currentUserRankingCss
           : css``
       }
@@ -47,8 +49,11 @@ const UserRankingBar: React.FC<IUserRankingBar> = ({
       </div>
       <div className="w-1/12">
         <img
-          className="rounded-full w-[50px]"
-          src="https://simg-ssl.duolingo.com/ssr-avatars/1288943247/SSR-Dnq9imvO9g/xxlarge"
+          className="rounded-full w-[50px] aspect-square object-cover"
+          src={
+            userRanking.profileImageUrl ??
+            "https://simg-ssl.duolingo.com/ssr-avatars/1288943247/SSR-Dnq9imvO9g/xxlarge"
+          }
           alt="avatar"
         />
       </div>

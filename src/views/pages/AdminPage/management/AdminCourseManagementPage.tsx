@@ -20,8 +20,16 @@ import PopupCourseForm from "../../../components/Admin/Components/PopupCourseFor
 import { CRUDType } from "../../../../enums/CRUDType";
 import PopupLessonForm from "../../../components/Admin/Components/PopupLessonForm";
 import { editLesson } from "../../../../services/Course/EditLessonService";
+import { useAdmin } from "../../../../context/AdminContext";
 
 const AdminCourseManagementPage: React.FC = () => {
+  const {
+    setSelectedCourse,
+    setSelectedLesson,
+    selectedCourse,
+    selectedLesson,
+  } = useAdmin();
+
   // Add Course
   const [addCourseError, setAddCourseError] = useState("");
   const [isAddCourseSuccess, setIsAddCourseSuccess] = useState(false);
@@ -52,7 +60,6 @@ const AdminCourseManagementPage: React.FC = () => {
     try {
       const data = await getCourseList();
       const courseList = data.value;
-
       const coursesWithLessons = await Promise.all(
         courseList.map(async (course: ICourseValue) => {
           const lessonResult = await getLessonByCourseId(course.id);
@@ -73,24 +80,46 @@ const AdminCourseManagementPage: React.FC = () => {
   useEffect(() => {
     fetchCoursesWithLessons();
   }, []);
+  useEffect(() => {
+    if (selectedCourse && selectedLesson) {
+      console.log("Lesson ne:");
+      console.log(courses);
+      const newSelectedCourse = courses?.find(
+        (c) => c.id === selectedCourse?.id
+      );
+      const newSelectedLesson = newSelectedCourse?.lessons.find(
+        (l) => l.id === selectedLesson?.id
+      );
+      // console.log(selectedLesson);
+      console.log(newSelectedLesson);
+      if (newSelectedLesson) setSelectedLesson(newSelectedLesson);
+    }
+  });
 
-  // Handle Selected Course
-  const [selectedCourse, setSelectedCourse] = useState<ICourseValue | null>(
-    null
-  );
+  // Handle Selected Course & Selected Lesson
+  // const [selectedCourse, setSelectedCourse] = useState<ICourseValue | null>(
+  //   null
+  // );
+  // const [selectedLesson, setSelectedLesson] = useState<ILessonValue | null>(
+  //   null
+  // );
   const handleSetSelectedCourse = (course: ICourseValue) => {
     console.log("Course is Selected !");
     setSelectedCourse(course);
   };
-  // Handle Selected Lesson
-  const [selectedLesson, setSelectedLesson] = useState<ILessonValue | null>(
-    null
-  );
   // Handle State of Pop up
   const [isAdd, setIsAdd] = useState(false);
-  const handleBack = () => {
+  const handleBack = () => {};
+  const handleTurnOff = () => {
+    setSelectedCourse(null);
+    setSelectedLesson(null);
     setIsAdd(false);
   };
+  useEffect(() => {
+    if (selectedCourse && selectedLesson) {
+      setIsAdd(true);
+    }
+  }, [isAdd]);
 
   // Add New Course
   const addNewCourse = async (courseName: string) => {
@@ -353,7 +382,9 @@ const AdminCourseManagementPage: React.FC = () => {
                   .map((lesson) => (
                     <div
                       className="flex flex-col justify-center items-center gap-1 relative"
-                      onClick={() => setSelectedLesson(lesson)}
+                      onClick={() => {
+                        setSelectedLesson(lesson);
+                      }}
                     >
                       <button
                         onClick={() => setShowEditLessonForm(true)}
@@ -393,6 +424,7 @@ const AdminCourseManagementPage: React.FC = () => {
         <PopupDialog>
           <LessonManagement
             onBack={() => handleBack()}
+            turnOff={() => handleTurnOff()}
             selectedCourse={selectedCourse}
             selectedLesson={selectedLesson}
           />

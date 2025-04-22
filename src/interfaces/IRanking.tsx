@@ -9,8 +9,9 @@ export interface IRankingValue {
   userRankings: IUserRanking[];
 }
 export interface IUserRanking {
-  userId: string;
-  rank: number;
-  nickName: string;
-  experiencePoint: number;
+  profileImageUrl?: string | undefined;
+  userId: string | undefined;
+  rank: number | undefined;
+  nickName: string | undefined;
+  experiencePoint: number | undefined;
 }

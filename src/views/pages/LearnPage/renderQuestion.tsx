@@ -19,7 +19,7 @@ interface HandleLessonProps {
   setIsRetry: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsSubmit: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSubmit?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const renderQuestion = ({

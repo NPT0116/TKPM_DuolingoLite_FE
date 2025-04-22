@@ -27,16 +27,28 @@ const LessonManagement: React.FC<ILessonManagement> = ({
   // Fetch QuestionList
   const [questionList, setQuestionList] = useState<IQuestion[]>([]);
   const fetchLesson = async () => {
-    console.log("Fetching Question !");
-    if (selectedLesson) {
-      for (let i = 1; i <= selectedLesson.questionCount!; i++) {
-        const { data } = await getQuestionDetail(selectedLesson.id, i);
-        if (data) {
-          setQuestionList((prev) => [...prev, data]);
-        }
-      }
+    if (!selectedLesson) return;
+
+    setQuestionList([]);
+
+    const fetches = Array.from(
+      { length: selectedLesson.questionCount! },
+      (_, idx) => getQuestionDetail(selectedLesson.id, idx + 1)
+    );
+
+    try {
+      const responses = await Promise.all(fetches);
+
+      const questions = responses
+        .map((res) => res.data)
+        .filter((q): q is IQuestion => Boolean(q));
+
+      setQuestionList(questions);
+    } catch (err) {
+      console.error("Error fetching questions:", err);
     }
   };
+
   useEffect(() => {
     setQuestionList([]);
     fetchLesson();
@@ -79,7 +91,7 @@ const LessonManagement: React.FC<ILessonManagement> = ({
             }}
             onDelete={handleDeleteLesson}
             errorMessage={errorDeleteLesson}
-            isDeleteLessonSuccess={isDeleteLessonSuccess}
+            isDeleteSuccess={isDeleteLessonSuccess}
           />
         </PopupDialog>
       )}
@@ -100,7 +112,7 @@ const LessonManagement: React.FC<ILessonManagement> = ({
           turnOff={() => {
             if (turnOff) turnOff();
           }}
-          isReloadButton={true}
+          isReloadButton={false}
           isDeleteButton={true}
           handleDelete={() => {
             setErrorDeleteLesson("");
