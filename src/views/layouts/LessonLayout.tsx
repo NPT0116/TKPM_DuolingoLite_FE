@@ -1,14 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import api from "../../configs/axiosConfig";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import correctSound from "../../assets/sounds/duo_correct_sound.mp4";
 import incorrectSound from "../../assets/sounds/duo_incorrect_sound.mp4";
 // Audio
-import {
-  AudioProvider,
-  useStopAudio,
-} from "../components/LearnPage/Audio/AudioProvider";
+import { AudioProvider } from "../components/LearnPage/Audio/AudioProvider";
 
 //
 import XPBar from "../components/XPBar/XPBar";
@@ -24,6 +21,7 @@ import {
 import { fetchUserId } from "../../services/Authentication/AuthService";
 import { submitLessonReport } from "../../services/SpaceRepetition/PostLessonReport";
 import { renderQuestion } from "../pages/LearnPage/renderQuestion";
+import CongratulationPage from "../pages/LearnPage/CongratulationPage/CongratulationPage";
 
 // https://d35aaqx5ub95lt.cloudfront.net/images/bd13fa941b2407b4914296afe4435646.svg
 
@@ -58,6 +56,25 @@ const LessonLayout: React.FC = () => {
   const [xp, setXp] = useState({ accumulated: 0, total: 1 });
   const [state, setState] = useState(1);
   const [questionList, setQuestionList] = useState<IQuestion[]>([]);
+  const [originalQuestionList, setOriginalQuestionList] = useState<IQuestion[]>(
+    []
+  ); // Lưu lại danh sách câu hỏi gốc
+
+  const [isCongratulation, setIsCongratulation] = useState(false);
+
+  const [correctRate, setCorrectRate] = useState(0);
+
+  useEffect(() => {
+    setOriginalQuestionList(questionList);
+  });
+  //Sử dụng để tính toán tỉ lệ đúng
+  useEffect(() => {
+    if (isNext && isButtonCorrect && !isRetry) {
+      const oneRate = Math.floor((1 / originalQuestionList.length) * 100);
+      setCorrectRate((prev) => prev + oneRate);
+      console.log(correctRate);
+    }
+  }, [isNext, isButtonCorrect]);
 
   // Care
   const location = useLocation();
@@ -226,19 +243,29 @@ const LessonLayout: React.FC = () => {
           />
           Your browser does not support the audio element.
         </audio>
-        {/* XP Bar & Heart*/}
-        <div className="flex h-[10vh] justify-end w-[70%] gap-[20px] items-center max-w-[1000px]">
-          <XPBar accumulated={xp.accumulated} total={xp.total} />
-          <LessonHeart
-            state={state}
-            isButtonCorrect={isButtonCorrect}
-            isSubmit={isSubmit}
+        {isCongratulation ? (
+          <CongratulationPage
+            xp={lessonInformation.xpEarned}
+            correctRate={correctRate}
           />
-        </div>
-        {/* Main Layout */}
-        <div className="h-[70vh] w-[100vw]">
-          {questionList?.[0] ? handleLesson(questionList[state - 1]) : null}
-        </div>
+        ) : (
+          <>
+            {/* XP Bar & Heart */}
+            <div className="flex h-[10vh] justify-end w-[70%] gap-[20px] items-center max-w-[1000px]">
+              <XPBar accumulated={xp.accumulated} total={xp.total} />
+              <LessonHeart
+                state={state}
+                isButtonCorrect={isButtonCorrect}
+                isSubmit={isSubmit}
+              />
+            </div>
+
+            {/* Main Layout */}
+            <div className="h-[70vh] w-[100vw]">
+              {questionList?.[0] ? handleLesson(questionList[state - 1]) : null}
+            </div>
+          </>
+        )}
         {/* Navigation Bar */}
         <div
           className="bg-[#131F23] border-[#37464F] border-t-2 h-[20vh] w-[100vw] relative"
@@ -250,6 +277,7 @@ const LessonLayout: React.FC = () => {
           <ContinueButton
             setXp={setXp}
             setIsSubmit={setIsSubmit}
+            setIsCongratulation={setIsCongratulation}
             isNext={isNext}
             isFinished={isFinished}
             setIsButtonActive={setIsButtonActive}
@@ -258,6 +286,7 @@ const LessonLayout: React.FC = () => {
             maxState={questionList.length}
             isButtonActivate={isButtonActivate}
             isButtonCorrect={isButtonCorrect}
+            isCongratulation={isCongratulation}
             state={state}
             setState={setState}
             mainColor="3B4EFF"
@@ -268,7 +297,7 @@ const LessonLayout: React.FC = () => {
             courseId={courseId}
             currentOrder={currentOrder}
             lessonOrder={lessonOrder}
-            type="learn" //Nếu type learn thì navigate về home, nếu review navigate về review
+            type="lesson" //Nếu type lesson thì navigate về home, nếu review navigate về review
           />
         </div>
       </div>

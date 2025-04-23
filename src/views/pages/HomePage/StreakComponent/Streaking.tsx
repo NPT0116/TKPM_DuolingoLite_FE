@@ -52,7 +52,10 @@ const Streaking: React.FC<StreakingProps> = ({ streakNumber }) => {
       <div>
         <StreakDisplay
           startDay={
-            currentDateNumber - userActivity!.userStats.currentStreak + 1 ?? 0
+            userActivity
+              ? currentDateNumber - userActivity!.userStats.currentStreak + 1 ??
+                0
+              : 0
           }
           endDay={currentDateNumber}
           streakCount={userActivity ? userActivity!.userStats.currentStreak : 0}

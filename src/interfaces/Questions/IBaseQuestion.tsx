@@ -8,7 +8,7 @@ export interface IBaseQuestion {
   questionId: string;
   vietnameseText: string | null;
   picture: IResource | null;
-  englishText: string;
+  englishText: string | null;
   audio: IResource | null;
   questionConfigure: Configure;
   optionConfigure: Configure;
@@ -19,7 +19,7 @@ export interface IBaseQuestion {
 export interface IAddQuestion {
   instruction: string;
   vietnameseText: string | null;
-  englishText: string;
+  englishText: string | null;
   sentence: string;
   image: string | null;
   audio: string | null;

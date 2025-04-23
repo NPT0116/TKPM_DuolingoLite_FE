@@ -14,8 +14,8 @@ const createEmptyOption = (): IBuildSentenceOption => ({
   order: -1,
   optionId: "",
   audio: null,
-  vietnameseText: "",
-  englishText: "",
+  vietnameseText: null,
+  englishText: null,
   image: null,
 });
 

@@ -26,8 +26,8 @@ const PopupOptionForm: React.FC<PopupOptionFormProps> = ({
 }) => {
   const [tempOption, setTempOption] = useState<IAddNewOption>({
     optionId: "",
-    vietnameseText: "",
-    englishText: "",
+    vietnameseText: null,
+    englishText: null,
     image: null,
     audio: null,
     needAudio: false,
