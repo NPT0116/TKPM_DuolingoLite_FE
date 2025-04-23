@@ -172,7 +172,8 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
       }, 10000);
     }
   };
-
+  console.log("Result: ", result);
+  console.log("Answer: ", answer);
   return (
     <div
       className="relative w-full h-full flex flex-col justify-center items-center"

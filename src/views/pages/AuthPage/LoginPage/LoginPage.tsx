@@ -1,12 +1,13 @@
 import { InputField } from "../../../components/Auth/Input";
 import { Navbar } from "../../../components/Auth/NavBar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../../../configs/axiosConfig";
 import facebook_icon from "../../../../assets/imgs/login/facebook_icon.png";
 import google_icon from "../../../../assets/imgs/login/google_icon.png";
 import { getUserRanking } from "../../../../services/LeaderBoard/GetUserRanking";
-import { fetchUserId } from "../../../../services/Authentication/AuthService";
+import { getUserProfile } from "../../../../services/Authentication/AuthService";
+import { UserRole } from "../../../../enums/userRole";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -58,7 +59,16 @@ const LoginPage: React.FC = () => {
         console.log("Login Successfully:", response);
         localStorage.setItem("authToken", response.data.value);
         handleFetchUserRanking();
-        navigation("/home");
+        const userData = await getUserProfile();
+        const user = userData.value;
+        console.log("Role:", user.role);
+        if (user.role === UserRole.ADMIN) {
+          navigation("/admin");
+        } else if (user.role === UserRole.USER) {
+          navigation("/home");
+        } else {
+          navigation("/unauthorized");
+        }
       } catch (error: any) {
         if (error.response) {
           console.error("Error status:", error.response.status);

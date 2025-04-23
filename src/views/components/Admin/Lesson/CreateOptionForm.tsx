@@ -15,8 +15,8 @@ const CreateOptionForm: React.FC<CreateOptionFormProps> = ({
 }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [tempOption, setTempOption] = useState<IAddNewOption>({
-    vietnameseText: "",
-    englishText: "",
+    vietnameseText: null,
+    englishText: null,
     image: null,
     audio: null,
     needAudio: false,

@@ -46,7 +46,7 @@ const Notify: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!isOpen && realtimeNotifies.length > 1) {
+    if (!isOpen && realtimeNotifies.length > 0) {
       setRealtimeNotifies([realtimeNotifies[0]]);
     }
   }, [isOpen]);

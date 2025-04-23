@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { finishLesson } from "../../../services/Course/FinishLessonService";
 import { useStopAudio } from "../LearnPage/Audio/AudioProvider";
 import { postRecordActivity } from "../../../services/UserActivity/PostRecordActivityService";
+import { useEffect } from "react";
+import { nav } from "framer-motion/client";
 interface IContinueButton {
   setXp: React.Dispatch<
     React.SetStateAction<{ accumulated: number; total: number }>
@@ -13,8 +15,10 @@ interface IContinueButton {
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
   setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSubmit: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsCongratulation: React.Dispatch<React.SetStateAction<boolean>>;
   isButtonCorrect: boolean;
   isButtonActivate: boolean;
+  isCongratulation: boolean;
   mainColor: string;
   borderColor: string;
   hoverColor: string;
@@ -37,12 +41,10 @@ const handleFinishLesson = async (
   type: string,
   courseId?: string
 ) => {
-  if (currentOrder === lessonOrder) {
+  if (type === "lesson" && currentOrder === lessonOrder) {
     await finishLesson(courseId ? courseId : "");
     await postRecordActivity();
-  }
-
-  if (type === "review") {
+  } else if (type === "review") {
     navigate("/review");
   } else navigate("/home");
 };
@@ -54,8 +56,10 @@ const ContinueButton: React.FC<IContinueButton> = ({
   setIsButtonCorrect,
   setIsNext,
   setIsSubmit,
+  setIsCongratulation,
   isNext,
   isFinished,
+  isCongratulation,
   isButtonCorrect,
   isButtonActivate,
   mainColor,
@@ -70,6 +74,10 @@ const ContinueButton: React.FC<IContinueButton> = ({
   lessonOrder,
   type,
 }) => {
+  useEffect(() => {
+    console.log("Current Order", currentOrder);
+    console.log("Lesson Order", lessonOrder);
+  }, []);
   const CSS = css`
     background-color: #${isButtonActivate ? mainColor : "37464F"};
     right: ${positionRight}px;
@@ -115,13 +123,18 @@ const ContinueButton: React.FC<IContinueButton> = ({
   const stopAudio = useStopAudio();
   return (
     <button
-      disabled={!isButtonActivate}
+      disabled={!isButtonActivate && !isCongratulation}
       className={`absolute top-1/2 -translate-y-1/2 text-md rounded-2xl font-bold text-white border-b-[4px] cursor-pointer active:border-b-0 active:translate-y-[50% + 4px]`}
       style={{ padding: `12px ${paddingWidth}px` }}
       onClick={() => {
         console.log("Continue Button Click");
         stopAudio();
-        if (isButtonActivate) {
+        if (isButtonActivate || isCongratulation) {
+          if (isCongratulation) {
+            navigate("/home");
+            return;
+          }
+
           if (isButtonCorrect && !isNext) {
             setIsNext(true);
             setIsSubmit(true);
@@ -138,6 +151,7 @@ const ContinueButton: React.FC<IContinueButton> = ({
             }
             setXp({ accumulated: state, total: maxState });
           }
+
           if (isFinished) {
             handleFinishLesson(
               currentOrder,
@@ -146,10 +160,21 @@ const ContinueButton: React.FC<IContinueButton> = ({
               type,
               courseId
             );
+            if (currentOrder === lessonOrder) {
+              setIsCongratulation(true);
+            }
           }
         }
       }}
-      css={!isNext ? CSS : isButtonCorrect ? CSS_Correct : CSS_Wrong}
+      css={
+        isCongratulation
+          ? CSS_Correct
+          : !isNext
+          ? CSS
+          : isButtonCorrect
+          ? CSS_Correct
+          : CSS_Wrong
+      }
     >
       {isButtonActivate ? (isNext ? "TIẾP TỤC" : "KIỂM TRA") : "TIẾP TỤC"}
     </button>

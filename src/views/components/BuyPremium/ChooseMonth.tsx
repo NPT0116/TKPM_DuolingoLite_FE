@@ -4,7 +4,11 @@ import { ButtonMonthClick } from "./Button/ButtonMonthClick";
 import { ButtonMonthUnclick } from "./Button/ButtonMonthUnclick";
 import { useNavigate } from "react-router-dom";
 
-const ChooseMonth: React.FC = () => {
+interface ChooseMonthProps {
+  onSelect: (month: number, money: number) => void;
+}
+
+const ChooseMonth: React.FC<ChooseMonthProps> = ({ onSelect }) => {
   const months = [1, 2, 3];
   const money = [100000, 200000, 300000];
   const upSelling = ["FOR NEWERS", "MOST POPULAR", "GOOD EXPERIENCE"];
@@ -56,7 +60,10 @@ const ChooseMonth: React.FC = () => {
                 money={money[index]}
                 month={month}
                 upSelling={upSelling[index]}
-                onClick={() => setSelectedIndex(index)}
+                onClick={() => {
+                  setSelectedIndex(index);
+                  onSelect(months[index], money[index]);
+                }}
               />
             ) : (
               <ButtonMonthUnclick
@@ -64,7 +71,10 @@ const ChooseMonth: React.FC = () => {
                 money={money[index]}
                 month={month}
                 upSelling={upSelling[index]}
-                onClick={() => setSelectedIndex(index)}
+                onClick={() => {
+                  setSelectedIndex(index);
+                  onSelect(months[index], money[index]);
+                }}
               />
             )
           )}

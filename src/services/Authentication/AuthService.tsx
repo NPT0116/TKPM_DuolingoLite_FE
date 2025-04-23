@@ -15,6 +15,7 @@ export const getUserProfile = async (): Promise<any> => {
       },
     });
     localStorage.setItem("userId", response.data.value.id);
+    localStorage.setItem("role", response.data.value.role);
     return response.data;
   } catch (error) {
     console.error("Error fetching user profile:", error);

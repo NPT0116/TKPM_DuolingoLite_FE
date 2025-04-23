@@ -90,7 +90,7 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
       setAudioForced(newValue);
       if (
         questionType === QuestionType.MultipleChoice ||
-        QuestionType.BuildSentence
+        questionType === QuestionType.BuildSentence
       ) {
         setVietnameseTextForced(newValue);
       }
@@ -107,7 +107,7 @@ const OptionPrompt: React.FC<OptionPromptProps> = ({
       }
       if (
         questionType === QuestionType.MultipleChoice ||
-        QuestionType.BuildSentence
+        questionType === QuestionType.BuildSentence
       ) {
         setEnglishTextForced(newValue);
       }

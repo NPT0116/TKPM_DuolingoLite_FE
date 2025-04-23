@@ -3,7 +3,7 @@ import { IAddQuestion } from "../../../../interfaces/Questions/IBaseQuestion";
 export const createEmptyQuestion = (): IAddQuestion => ({
   instruction: "",
   vietnameseText: null,
-  englishText: "",
+  englishText: null,
   sentence: "",
   image: null,
   audio: null,
