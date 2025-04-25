@@ -19,6 +19,8 @@
     "date-fns": "^4.1.0",
     "fireworks-js": "^2.10.8",
     "framer-motion": "^12.4.7",
+    "polish": "^0.2.3",
+    "polished": "^4.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.5",
