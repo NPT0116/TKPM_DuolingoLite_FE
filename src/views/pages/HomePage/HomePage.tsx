@@ -34,15 +34,14 @@ const HomePage: React.FC = () => {
       React.SetStateAction<ILessonInformation[]>
     >
   ) => {
-    await api
-      .get(`/Lesson/${courseId}`)
-      .then((response) => {
+    try {
+      const response = await api.get(`/Lesson/${courseId}`);
+      if (response.data) {
         setLessonsInformation(response.data.value);
-      })
-      .catch((error) => {
-        console.error("Error while fetching course's lessons:", error);
-      });
-    console.log(lessonsInformation.length);
+      }
+    } catch (error) {
+      console.error("Error while fetching course's lessons:", error);
+    }
   };
   const fetchUserRegisteredCourse = async () => {
     try {

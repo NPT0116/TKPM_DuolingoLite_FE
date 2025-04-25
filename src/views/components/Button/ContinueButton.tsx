@@ -28,25 +28,28 @@ interface IContinueButton {
   maxState: number;
   isNext: boolean;
   isFinished: boolean;
+  isFinishedCourse: boolean;
   courseId?: string;
   currentOrder: number;
   lessonOrder: number;
   type: string;
 }
-
 const handleFinishLesson = async (
   currentOrder: number,
   lessonOrder: number,
+  isFinishCourse: boolean,
   navigate: ReturnType<typeof useNavigate>,
   type: string,
   courseId?: string
 ) => {
   if (type === "lesson" && currentOrder === lessonOrder) {
+    console.log("aaaa");
     await finishLesson(courseId ? courseId : "");
     await postRecordActivity();
   } else if (type === "review") {
     navigate("/review");
-  } else navigate("/home");
+  } else if (isFinishCourse) navigate("/courses");
+  else navigate("/home");
 };
 
 const ContinueButton: React.FC<IContinueButton> = ({
@@ -59,6 +62,7 @@ const ContinueButton: React.FC<IContinueButton> = ({
   setIsCongratulation,
   isNext,
   isFinished,
+  isFinishedCourse,
   isCongratulation,
   isButtonCorrect,
   isButtonActivate,
@@ -74,6 +78,8 @@ const ContinueButton: React.FC<IContinueButton> = ({
   lessonOrder,
   type,
 }) => {
+  console.log("Current Order", currentOrder);
+  console.log("Lesson Order", lessonOrder);
   useEffect(() => {
     console.log("Current Order", currentOrder);
     console.log("Lesson Order", lessonOrder);
@@ -131,7 +137,9 @@ const ContinueButton: React.FC<IContinueButton> = ({
         stopAudio();
         if (isButtonActivate || isCongratulation) {
           if (isCongratulation) {
-            navigate("/home");
+            if (isFinishedCourse) {
+              navigate("/courses");
+            } else navigate("/home");
             return;
           }
 
@@ -153,9 +161,11 @@ const ContinueButton: React.FC<IContinueButton> = ({
           }
 
           if (isFinished) {
+            console.log("Finish Lesson");
             handleFinishLesson(
               currentOrder,
               lessonOrder,
+              isFinishedCourse,
               navigate,
               type,
               courseId

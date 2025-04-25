@@ -286,6 +286,7 @@ const LessonLayout: React.FC = () => {
             setIsCongratulation={setIsCongratulation}
             isNext={isNext}
             isFinished={isFinished}
+            isFinishedCourse={currentOrder === lessonLength}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
             setIsNext={setIsNext}
