@@ -51,6 +51,7 @@ export const renderQuestion = ({
           data={questionData as unknown as IPronunciationQuestion}
           setIsNext={setIsNext}
           setIsRetry={setIsRetry}
+          setIsSubmit={setIsSubmit}
           isRetry={isRetry}
           setIsButtonActive={setIsButtonActive}
           setIsButtonCorrect={setIsButtonCorrect}
