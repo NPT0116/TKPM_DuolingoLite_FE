@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import ic_courses from "../../assets/icons/ic_courses.svg";
+import { handleLogout } from "../../ultils/handleLogout";
 
 const lessonItems = [
   // {
@@ -62,7 +63,7 @@ const AdminLayout: React.FC = () => {
 
   const handleMenuClick = (key: string) => {
     if (key === "logout") {
-      handleLogout();
+      handleLogout(navigate);
       return;
     }
     const routeMap: Record<string, string> = {
@@ -77,15 +78,6 @@ const AdminLayout: React.FC = () => {
     if (routeMap[key]) {
       navigate(routeMap[key]);
     }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("previousUserRanking");
-    localStorage.removeItem("role");
-    localStorage.removeItem("prevLessonOrder");
-    navigate("/login");
   };
 
   const toggleExpand = (key: string, e: React.MouseEvent) => {
