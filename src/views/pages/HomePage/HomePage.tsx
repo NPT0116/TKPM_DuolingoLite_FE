@@ -166,11 +166,6 @@ const HomePage: React.FC = () => {
     );
   }
 
-  useEffect(() => {
-    console.log("a");
-    console.log(lessonsInformation.length);
-  }, []);
-
   return (
     <div
       className="flex h-full justify-between w-3/5"
