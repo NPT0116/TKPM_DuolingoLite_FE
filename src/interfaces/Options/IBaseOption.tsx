@@ -24,10 +24,10 @@ export interface IAddOption {
 
 export interface IAddNewOption {
   optionId: string | null;
-  vietnameseText: string;
+  vietnameseText: string | null;
   image: string | null;
   audio: string | null;
-  englishText: string;
+  englishText: string | null;
   needAudio: boolean;
   needImage: boolean;
 }

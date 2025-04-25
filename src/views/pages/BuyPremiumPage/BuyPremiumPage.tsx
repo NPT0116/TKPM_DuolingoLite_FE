@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import icon_check from "../../../assets/icons/ic_check.png";
 import ChooseMonth from "../../components/BuyPremium/ChooseMonth";
 import { useNavigate } from "react-router-dom";
+import { upgradePreimium } from "../../../services/Payment/UpgradePremiumService";
 
 const BuyPremiumPage = () => {
   const [isPaymentSuccess, setIsPaymentSuccess] = useState<boolean>(false);
   const [isTrialButtonClick, setIsTrialButtonClick] = useState<boolean>(false);
-  const navigate = useNavigate;
+  const [selectedMonth, setSelectedMonth] = useState<number>(1);
+  const [selectedMoney, setSelectedMoney] = useState<number>(100000);
+  const navigate = useNavigate();
   useEffect(() => {
     const query = window.location.search;
 
@@ -26,6 +29,17 @@ const BuyPremiumPage = () => {
 
     fetchPaymentResult();
   }, [navigate]);
+
+  const handleGoHome = () => {
+    localStorage.setItem(
+      "upgradeAfterPayment",
+      JSON.stringify({
+        month: selectedMonth,
+        money: selectedMoney,
+      })
+    );
+    navigate("/home");
+  };
 
   return (
     <div
@@ -77,12 +91,17 @@ const BuyPremiumPage = () => {
               alt=""
             />
           </div>
-          <a href="/home" className="text-[16px]">
+          <button className="text-[16px] cursor-pointer" onClick={handleGoHome}>
             QUAY VỀ TRANG CHỦ
-          </a>
+          </button>
         </div>
       ) : isTrialButtonClick ? (
-        <ChooseMonth />
+        <ChooseMonth
+          onSelect={(month, money) => {
+            setSelectedMonth(month);
+            setSelectedMoney(money);
+          }}
+        />
       ) : (
         <div
           className="flex flex-col h-full gap-[40px] w-[650px] justify-start items-center"

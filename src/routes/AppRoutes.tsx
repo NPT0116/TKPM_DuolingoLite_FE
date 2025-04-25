@@ -22,14 +22,24 @@ import AdminCourseManagementPage from "../views/pages/AdminPage/management/Admin
 import AdminAddQuestionPage from "../views/pages/AdminPage/AdminAddQuestionPage";
 import { QuestionType } from "../enums/questionType";
 import CourseManagementPage from "../views/pages/ChooseCoursePage/CourseManagementPage";
+import { withRoleProtection } from "../hooks/withRoleProtection";
+import { UserRole } from "../enums/userRole";
+import RoleProtectedRoute from "./RoleProtectedRoute";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
 }
 
+const AdminLayoutProtected = withRoleProtection(AdminLayout, [UserRole.ADMIN]);
+
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const token = localStorage.getItem("authToken");
   return token ? children : <Navigate to="/login" />;
+};
+
+const getRoleFromStorage = (): string | null => {
+  const role = localStorage.getItem("role");
+  return role || null;
 };
 
 const AppRoutes: React.FC = () => {
@@ -37,7 +47,15 @@ const AppRoutes: React.FC = () => {
     <div>
       <Routes>
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route
+          path="/"
+          element={(() => {
+            const role = getRoleFromStorage();
+            if (role === UserRole.ADMIN)
+              return <Navigate to="/admin" replace />;
+            return <Navigate to="/home" replace />;
+          })()}
+        />
         <Route path="/welcome" element={<WelcomePage />} />
         {/* Authentication */}
         <Route path="/login" element={<LoginPage />} />
@@ -46,100 +64,144 @@ const AppRoutes: React.FC = () => {
         {/* For component that have layout, only access when have authToken */}
         {/* <Route path="/courses" element={<ChooseCoursePage />} /> */}
         <Route element={<NavigationLayout />}>
-          <Route path="/courses" element={<CourseManagementPage />} />
-          <Route path={PATH.USER.index} element={<GuestPage />} />
-          <Route path={PATH.USER.outlets.home} element={<HomePage />} />
-          <Route path={PATH.USER.outlets.profile} element={<ProfilePage />} />
+          <Route
+            path="/courses"
+            element={
+              <RoleProtectedRoute allowedRoles={[UserRole.USER]}>
+                <CourseManagementPage />
+              </RoleProtectedRoute>
+            }
+          />
+          <Route
+            path={PATH.USER.index}
+            element={
+              <RoleProtectedRoute allowedRoles={[UserRole.USER]}>
+                <CourseManagementPage />
+              </RoleProtectedRoute>
+            }
+          />
+          <Route
+            path={PATH.USER.outlets.home}
+            element={
+              <RoleProtectedRoute allowedRoles={[UserRole.USER]}>
+                <HomePage />
+              </RoleProtectedRoute>
+            }
+          />
+          <Route
+            path={PATH.USER.outlets.profile}
+            element={
+              <RoleProtectedRoute allowedRoles={[UserRole.USER]}>
+                <ProfilePage />
+              </RoleProtectedRoute>
+            }
+          />
           <Route
             path={PATH.USER.outlets.leaderboard}
-            element={<LeaderboardPage />}
+            element={
+              <RoleProtectedRoute allowedRoles={[UserRole.USER]}>
+                <LeaderboardPage />
+              </RoleProtectedRoute>
+            }
           ></Route>
           <Route
             path="/home"
             element={
-              <ProtectedRoute>
+              <RoleProtectedRoute allowedRoles={[UserRole.USER]}>
                 <HomePage />
-              </ProtectedRoute>
+              </RoleProtectedRoute>
             }
           />
           <Route
             path="/profile"
             element={
-              <ProtectedRoute>
+              <RoleProtectedRoute allowedRoles={[UserRole.USER]}>
                 <ProfilePage />
-              </ProtectedRoute>
+              </RoleProtectedRoute>
             }
           />
           <Route
             path="/review"
             element={
-              <ProtectedRoute>
+              <RoleProtectedRoute allowedRoles={[UserRole.USER]}>
                 <ReviewPage />
-              </ProtectedRoute>
+              </RoleProtectedRoute>
             }
           />
         </Route>
         <Route
           path="/lesson"
           element={
-            <ProtectedRoute>
+            <RoleProtectedRoute allowedRoles={[UserRole.USER]}>
               <LessonLayout />
-            </ProtectedRoute>
+            </RoleProtectedRoute>
           }
         />
         <Route
           path="/review-lesson"
           element={
-            <ProtectedRoute>
+            <RoleProtectedRoute allowedRoles={[UserRole.USER]}>
               <ReviewLayout />
-            </ProtectedRoute>
+            </RoleProtectedRoute>
           }
         />
         {/* Payment Page */}
         <Route
           path="/buy-premium"
           element={
-            <ProtectedRoute>
+            <RoleProtectedRoute allowedRoles={[UserRole.USER]}>
               <BuyPremiumPage />
-            </ProtectedRoute>
+            </RoleProtectedRoute>
           }
         />
-        <Route path={PATH.ADMIN.index} element={<AdminLayout />}>
+        <Route path={PATH.ADMIN.index} element={<AdminLayoutProtected />}>
           <Route path={PATH.ADMIN.lesson.base}>
             <Route
               path={PATH.ADMIN.lesson.multipleChoice}
               element={
-                <AdminAddQuestionPage
-                  questionType={QuestionType.MultipleChoice}
-                />
+                <RoleProtectedRoute allowedRoles={[UserRole.ADMIN]}>
+                  <AdminAddQuestionPage
+                    questionType={QuestionType.MultipleChoice}
+                  />
+                </RoleProtectedRoute>
               }
             />
             <Route
               path={PATH.ADMIN.lesson.matching}
               element={
-                <AdminAddQuestionPage questionType={QuestionType.Matching} />
+                <RoleProtectedRoute allowedRoles={[UserRole.ADMIN]}>
+                  <AdminAddQuestionPage questionType={QuestionType.Matching} />
+                </RoleProtectedRoute>
               }
             />
             <Route
               path={PATH.ADMIN.lesson.buildSentence}
               element={
-                <AdminAddQuestionPage
-                  questionType={QuestionType.BuildSentence}
-                />
+                <RoleProtectedRoute allowedRoles={[UserRole.ADMIN]}>
+                  <AdminAddQuestionPage
+                    questionType={QuestionType.BuildSentence}
+                  />
+                </RoleProtectedRoute>
               }
             />
             <Route
               path={PATH.ADMIN.lesson.pronunciation}
               element={
-                <AdminAddQuestionPage
-                  questionType={QuestionType.Pronunciation}
-                />
+                <RoleProtectedRoute allowedRoles={[UserRole.ADMIN]}>
+                  <AdminAddQuestionPage
+                    questionType={QuestionType.Pronunciation}
+                  />
+                </RoleProtectedRoute>
               }
             />
           </Route>
           <Route
             path={PATH.ADMIN.lesson.management}
-            element={<AdminCourseManagementPage />}
+            element={
+              <RoleProtectedRoute allowedRoles={[UserRole.ADMIN]}>
+                <AdminCourseManagementPage />
+              </RoleProtectedRoute>
+            }
           />
         </Route>
       </Routes>

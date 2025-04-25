@@ -1,23 +1,21 @@
 /** @jsxImportSource @emotion/react */
 import DisplayUnit from "../../components/LearnPage/DisplayUnit";
 import { css } from "@emotion/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import api from "../../../configs/axiosConfig";
 import {
   ICourseValue,
   IUserCourseValue,
   ILessonInformation,
-  IRegisteredCourse,
 } from "../../../interfaces/Course";
-import { useLocation, useNavigate } from "react-router-dom";
-import { getUserCurrentCourse } from "../../../services/Course/GetUserCourseService";
+import { useNavigate } from "react-router-dom";
 import { getCourseById } from "../../../services/Course/GetCourseByIdService";
 import { getUserProfile } from "../../../services/Authentication/AuthService";
 import { LessonOrderContext } from "../../../context/LessonContext";
-import { getUserRanking } from "../../../services/LeaderBoard/GetUserRanking";
 import { useCourseContext } from "../../../context/CourseContext";
 import StepButton from "../../components/Admin/Components/StepButton";
 import { getUserRegisterCourse } from "../../../services/User/GetUserRegisterdCourse";
+import { upgradePremium } from "../../../services/Payment/UpgradePremiumService";
 
 const scrollContainerStyle = css`
   scrollbar-width: 0px;
@@ -43,14 +41,14 @@ const HomePage: React.FC = () => {
       React.SetStateAction<ILessonInformation[]>
     >
   ) => {
-    await api
-      .get(`/Lesson/${courseId}`)
-      .then((response) => {
+    try {
+      const response = await api.get(`/Lesson/${courseId}`);
+      if (response.data) {
         setLessonsInformation(response.data.value);
-      })
-      .catch((error) => {
-        console.error("Error while fetching course's lessons:", error);
-      });
+      }
+    } catch (error) {
+      console.error("Error while fetching course's lessons:", error);
+    }
   };
   const fetchUserRegisteredCourse = async () => {
     try {
@@ -125,16 +123,33 @@ const HomePage: React.FC = () => {
   >([]);
 
   useEffect(() => {
-    fetchUserCourse(navigate, setSelectedCourse, setCourseDetail);
-  }, [navigate]);
+    if (switchCourse) {
+      fetchUserCourse(navigate, setSelectedCourse, setCourseDetail);
+    }
+  }, [switchCourse, navigate]);
+
+  useEffect(() => {
+    const upgradeData = localStorage.getItem("upgradeAfterPayment");
+    if (upgradeData) {
+      const { month, money } = JSON.parse(upgradeData);
+      upgradePremium(month, money)
+        .then(() => {
+          console.log("Upgrade Premium thành công sau khi thanh toán");
+          // Dispatch event to notify right side bar
+          window.dispatchEvent(new Event("premiumUpgraded"));
+        })
+        .catch((err) => {
+          console.error("Upgrade Premium lỗi:", err);
+        })
+        .finally(() => {
+          localStorage.removeItem("upgradeAfterPayment");
+        });
+    }
+  }, []);
 
   useEffect(() => {
     if (selectedCourse?.courseId) {
-      console.log(selectedCourse.courseId);
       fetchLessonDetail(selectedCourse.courseId, setLessonsInformation);
-      console.log("Selected Course:", selectedCourse);
-      console.log("Lesson information:", lessonsInformation);
-      console.log("length", lessonsInformation.length);
     }
   }, [selectedCourse]);
   if (isLoading) {
@@ -151,12 +166,21 @@ const HomePage: React.FC = () => {
     );
   }
 
+  useEffect(() => {
+    console.log("a");
+    console.log(lessonsInformation.length);
+  }, []);
+
   return (
     <div
       className="flex h-full justify-between w-3/5"
       css={scrollContainerStyle}
     >
-      <div className="h-full w-full overflow-auto" css={scrollContainerStyle}>
+      <div
+        className="h-full w-full overflow-auto"
+        css={scrollContainerStyle}
+        style={{ marginTop: "7%" }}
+      >
         <LessonOrderContext.Provider value={selectedCourse?.lessonOrder ?? 0}>
           {selectedCourse ? (
             <DisplayUnit
@@ -164,6 +188,10 @@ const HomePage: React.FC = () => {
                 localStorage.setItem(
                   "prevLessonOrder",
                   JSON.stringify(selectedCourse?.lessonOrder ?? 0)
+                );
+                localStorage.setItem(
+                  "lessonLength",
+                  JSON.stringify(lessonsInformation.length)
                 );
               }}
               setShowToast={setShowToast}

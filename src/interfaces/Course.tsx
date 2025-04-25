@@ -67,6 +67,7 @@ export interface IRegisteredCourse {
   lessonOrder: number;
   totalLesson: number;
   courseName: string;
+  isCompleted: boolean;
 }
 export interface ICourseInfoCardTemplate {
   courseImageUrl: string;

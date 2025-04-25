@@ -13,19 +13,28 @@ const RightSideBar: React.FC = () => {
   const navigate = useNavigate();
   const [currentIconUrl, setCurrentIconUrl] = useState<string>("");
   useEffect(() => {
-    if (!fetched.current) {
-      fetched.current = true; // Đánh dấu rằng API đã được gọi
-      const fetchUserProfile = async () => {
-        try {
-          const userData = await getUserProfile();
-          setUser(userData.value);
-        } catch (err) {
-          console.log("Failed to fetch user profile: " + err);
-        }
-      };
+    const fetchUserProfile = async () => {
+      try {
+        const userData = await getUserProfile();
+        setUser(userData.value);
+      } catch (err) {
+        console.log("Failed to fetch user profile: " + err);
+      }
+    };
 
+    // Gọi khi component mount (load trang)
+    fetchUserProfile();
+
+    // Gọi lại khi upgrade thành công
+    const handleUpgrade = () => {
       fetchUserProfile();
-    }
+    };
+
+    window.addEventListener("premiumUpgraded", handleUpgrade);
+
+    return () => {
+      window.removeEventListener("premiumUpgraded", handleUpgrade);
+    };
   }, []);
 
   useEffect(() => {

@@ -1,3 +1,5 @@
+import { UserRole } from "../enums/userRole";
+
 export interface IUserProgress {
   courseId: string;
   lessonOrder: number;
@@ -19,6 +21,7 @@ export interface IUser {
   firstName: string;
   lastName: string;
   email: string;
+  role: UserRole;
   nickName: string;
   profileImageUrl: string | null;
   subscription: unknown | null; // Change `unknown` to a more specific type if you know the structure
