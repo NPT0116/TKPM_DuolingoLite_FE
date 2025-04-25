@@ -19,6 +19,7 @@ interface IPronunciationPage {
   setIsButtonCorrect: React.Dispatch<React.SetStateAction<boolean>>;
   setIsNext: React.Dispatch<React.SetStateAction<boolean>>;
   setIsRetry: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSubmit?: React.Dispatch<React.SetStateAction<boolean>>;
   isRetry: boolean;
   data: IPronunciationQuestion;
   isQuestionRetry: boolean;
@@ -30,6 +31,7 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
   setIsButtonCorrect,
   setIsNext,
   setIsRetry,
+  setIsSubmit,
   data,
   isRetry,
   isQuestionRetry,
@@ -70,6 +72,7 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
       setIsButtonCorrect(true);
       setIsButtonActive(true);
       setIsRetry(false);
+      if (setIsSubmit) setIsSubmit(true);
     } else {
       console.log("Incorrect");
       if (countRetry >= 1) setIsRetry(true);
@@ -101,6 +104,7 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
       };
 
       mediaRecorder.onstart = () => {
+        setIsRecordButtonActive(true);
         console.log("Recording started...");
         audioChunksRef.current = []; // Clear old chunks
       };
@@ -143,7 +147,7 @@ const PronunciationPage: React.FC<IPronunciationPage> = ({
             setIsButtonActive(true);
             setIsRetry(false);
             setIsRecordButtonActive(false); // Set Disabled Button
-
+            if (setIsSubmit) setIsSubmit(true);
             setIsButtonCorrect(false);
             setIsNext(true);
           }
