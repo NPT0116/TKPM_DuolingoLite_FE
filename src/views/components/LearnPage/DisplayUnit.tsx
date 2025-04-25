@@ -1,8 +1,9 @@
 import LessonNode from "./LessonNode";
-import { IDisplayUnit } from "../../../interfaces/Course";
+import { IDisplayUnit, IRegisteredCourse } from "../../../interfaces/Course";
 import { motion } from "framer-motion";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LessonOrderContext } from "../../../context/LessonContext";
+import { getUserRegisterCourse } from "../../../services/User/GetUserRegisterdCourse";
 
 const DisplayUnit: React.FC<IDisplayUnit> = ({
   type,
@@ -67,6 +68,25 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
   const lessonOrder = useContext(LessonOrderContext);
   console.log("Lesson order ne", lessonOrder);
   const randomTemplate = getRandomTemplate();
+
+  // Check is Course finished
+  const [isFinishCourse, setIsFinishCourse] = useState(false);
+  const checkFinishCourse = async () => {
+    const data = await getUserRegisterCourse();
+
+    if (data && data.value && Array.isArray(data.value)) {
+      const match = data.value.find(
+        (course) => course.courseId === courseId && course.isCompleted === true
+      );
+      if (match) {
+        setIsFinishCourse(true);
+      }
+    }
+  };
+  useEffect(() => {
+    checkFinishCourse();
+  }, [courseId]);
+
   return (
     <div className="flex flex-col h-full justify-start w-full font-bold gap-8 items-center relative ">
       {/* Course Summary */}
@@ -113,7 +133,7 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
         .sort((a, b) => a.order - b.order)
         .map((item, index) => (
           <div key={item.id} className="relative">
-            {lessonOrder == index + 1 && (
+            {lessonOrder == index + 1 && !isFinishCourse && (
               <motion.div
                 className={`absolute top-[-60px] whitespace-nowrap rounded-2xl border-2 border-[#37464F] bg-[#131F23] z-10`}
                 style={{
@@ -162,7 +182,7 @@ const DisplayUnit: React.FC<IDisplayUnit> = ({
               shadowColor={randomTemplate.shadowColor}
               transX={layouts[type][index]}
               isEnable={lessonOrder >= index + 1}
-              isFinished={lessonOrder > index + 1}
+              isFinished={lessonOrder > index + 1 || isFinishCourse}
               whiteIcon={whiteIcon[index]}
               grayIcon={grayIcon[index]}
               currentOrder={index + 1}

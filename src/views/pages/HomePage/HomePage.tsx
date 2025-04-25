@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import DisplayUnit from "../../components/LearnPage/DisplayUnit";
 import { css } from "@emotion/react";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import api from "../../../configs/axiosConfig";
 import {
   ICourseValue,
@@ -42,6 +42,7 @@ const HomePage: React.FC = () => {
       .catch((error) => {
         console.error("Error while fetching course's lessons:", error);
       });
+    console.log(lessonsInformation.length);
   };
   const fetchUserRegisteredCourse = async () => {
     try {
@@ -116,8 +117,10 @@ const HomePage: React.FC = () => {
   >([]);
 
   useEffect(() => {
-    fetchUserCourse(navigate, setSelectedCourse, setCourseDetail);
-  }, [navigate]);
+    if (switchCourse) {
+      fetchUserCourse(navigate, setSelectedCourse, setCourseDetail);
+    }
+  }, [switchCourse, navigate]);
 
   useEffect(() => {
     const upgradeData = localStorage.getItem("upgradeAfterPayment");
@@ -140,13 +143,14 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     if (selectedCourse?.courseId) {
-      console.log(selectedCourse.courseId);
       fetchLessonDetail(selectedCourse.courseId, setLessonsInformation);
-      console.log("Selected Course:", selectedCourse);
-      console.log("Lesson information:", lessonsInformation);
-      console.log("length", lessonsInformation.length);
     }
   }, [selectedCourse]);
+
+  useEffect(() => {
+    console.log("a");
+    console.log(lessonsInformation.length);
+  }, []);
 
   return (
     <div
@@ -165,6 +169,10 @@ const HomePage: React.FC = () => {
                 localStorage.setItem(
                   "prevLessonOrder",
                   JSON.stringify(selectedCourse?.lessonOrder ?? 0)
+                );
+                localStorage.setItem(
+                  "lessonLength",
+                  JSON.stringify(lessonsInformation.length)
                 );
               }}
               setShowToast={setShowToast}
