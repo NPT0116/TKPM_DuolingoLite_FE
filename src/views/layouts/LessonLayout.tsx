@@ -78,15 +78,21 @@ const LessonLayout: React.FC = () => {
 
   // Care
   const location = useLocation();
-  const { lessonInformation, courseId, currentOrder, lessonOrder } =
-    location.state as {
-      lessonInformation: ILessonInformation;
-      courseId: string;
-      order: number;
-      currentOrder: number; //Kiểm tra xem user có làm lại bài cũ không, nếu có thì không xét finish lesson
-      lessonOrder: number;
-    };
-  const lessonLength = Number(localStorage.getItem("lessonLength") ?? "0");
+  const {
+    lessonInformation,
+    courseId,
+    currentOrder,
+    lessonOrder,
+    lessonLength,
+  } = location.state as {
+    lessonInformation: ILessonInformation;
+    courseId: string;
+    order: number;
+    currentOrder: number; //Kiểm tra xem user có làm lại bài cũ không, nếu có thì không xét finish lesson
+    lessonOrder: number;
+    lessonLength: number; // Số lượng lesson
+  };
+  console.log("Lesson length:", lessonLength);
   // Care
   useEffect(() => {
     fetchUserId(setUserId);

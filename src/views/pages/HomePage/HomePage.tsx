@@ -146,6 +146,11 @@ const HomePage: React.FC = () => {
     }
   }, [selectedCourse]);
 
+  useEffect(() => {
+    console.log("a");
+    console.log(lessonsInformation.length);
+  }, []);
+
   return (
     <div
       className="flex h-full justify-between w-3/5"
