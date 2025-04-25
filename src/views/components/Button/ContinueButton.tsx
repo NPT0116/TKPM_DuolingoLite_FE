@@ -43,7 +43,6 @@ const handleFinishLesson = async (
   courseId?: string
 ) => {
   if (type === "lesson" && currentOrder === lessonOrder) {
-    console.log("aaaa");
     await finishLesson(courseId ? courseId : "");
     await postRecordActivity();
   } else if (type === "review") {
@@ -78,8 +77,7 @@ const ContinueButton: React.FC<IContinueButton> = ({
   lessonOrder,
   type,
 }) => {
-  console.log("Current Order", currentOrder);
-  console.log("Lesson Order", lessonOrder);
+  console.log("IsFinishedCourse", isFinishedCourse);
   useEffect(() => {
     console.log("Current Order", currentOrder);
     console.log("Lesson Order", lessonOrder);
