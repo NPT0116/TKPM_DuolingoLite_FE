@@ -68,3 +68,7 @@ export interface IRegisteredCourse {
   totalLesson: number;
   courseName: string;
 }
+export interface ICourseInfoCardTemplate {
+  courseImageUrl: string;
+  courseColor: string; // you could tighten this to a union of allowed colors if you like
+}

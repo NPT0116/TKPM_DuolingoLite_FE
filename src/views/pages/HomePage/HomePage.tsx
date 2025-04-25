@@ -27,6 +27,13 @@ const scrollContainerStyle = css`
 `;
 
 const HomePage: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const { switchCourse, registeredCourses, setRegisteredCourses } =
     useCourseContext();
 
@@ -130,6 +137,19 @@ const HomePage: React.FC = () => {
       console.log("length", lessonsInformation.length);
     }
   }, [selectedCourse]);
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full w-full">
+        <img
+          src="https://media.tenor.com/J0KDvos3V28AAAAj/duolingo.gif"
+          alt="Loading…"
+          className="w-[200px]"
+          loading="lazy"
+        />
+        <span className="text-xl font-bold">Đang load dữ liệu người dùng…</span>
+      </div>
+    );
+  }
 
   return (
     <div

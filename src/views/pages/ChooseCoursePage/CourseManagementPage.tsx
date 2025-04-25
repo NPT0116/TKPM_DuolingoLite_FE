@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { CourseMockData } from "./CourseMockData";
 import {
+  ICourseInfoCardTemplate,
   ICourse,
   ICourseValue,
   ILessonInformation,
@@ -25,9 +26,43 @@ const scrollBar = css`
   -ms-overflow-style: none;
   scrollbar-width: none;
 `;
-const CourseManagementPage: React.FC = () => {
-  const { setSwitchCourse, setRegisteredCourses } = useCourseContext();
 
+const CourseManagementPage: React.FC = () => {
+  // Course Image - Color Mapping
+  const courseInfoCardTemplate: ICourseInfoCardTemplate[] = [
+    {
+      courseImageUrl:
+        "https://d35aaqx5ub95lt.cloudfront.net/images/pathSections/exampleSentences/801070f230984a26ae39fff41cbb1dc6.svg",
+      courseColor: "#58CB00",
+    },
+    {
+      courseImageUrl:
+        "https://d35aaqx5ub95lt.cloudfront.net/images/pathSections/exampleSentences/3d544b217f0f66952b44b0caa5681fa2.svg",
+      courseColor: "#27E97B",
+    },
+    {
+      courseImageUrl:
+        "https://d35aaqx5ub95lt.cloudfront.net/images/pathSections/exampleSentences/45a3c65a8dbd5f2eab7d98d7c732f449.svg",
+      courseColor: "#E619DF",
+    },
+    {
+      courseImageUrl:
+        "https://d35aaqx5ub95lt.cloudfront.net/images/pathSections/exampleSentences/2caa8beaa5242118ba32b0aa79c10c03.svg",
+      courseColor: "#89E219",
+    },
+    {
+      courseImageUrl:
+        "https://d35aaqx5ub95lt.cloudfront.net/images/pathSections/exampleSentences/84513fc7eaf3242eefcc91065cd64d19.svg",
+      courseColor: "#FF8ACF",
+    },
+    {
+      courseImageUrl:
+        "https://d35aaqx5ub95lt.cloudfront.net/images/pathSections/exampleSentences/b73daf15e4e5d58e93c293745a3304af.svg",
+      courseColor: "blue",
+    },
+  ];
+
+  const { setSwitchCourse, setRegisteredCourses } = useCourseContext();
   const [courses, setCourses] = useState<ICourseValue[]>([]);
   const [userRegisterdCourses, setUserRegisterCourses] = useState<
     IRegisteredCourse[] | null
@@ -94,6 +129,9 @@ const CourseManagementPage: React.FC = () => {
           }
           return (
             <CourseInfoCard
+              courseInfoCardTemplate={
+                courseInfoCardTemplate[index % courseInfoCardTemplate.length]
+              }
               key={course.id}
               onClick={() => {
                 handleCourseSelected(course);
