@@ -78,21 +78,15 @@ const LessonLayout: React.FC = () => {
 
   // Care
   const location = useLocation();
-  const {
-    lessonInformation,
-    courseId,
-    currentOrder,
-    lessonOrder,
-    lessonLength,
-  } = location.state as {
-    lessonInformation: ILessonInformation;
-    courseId: string;
-    order: number;
-    currentOrder: number; //Kiểm tra xem user có làm lại bài cũ không, nếu có thì không xét finish lesson
-    lessonOrder: number;
-    lessonLength: number; // Số lượng lesson
-  };
-  console.log("Lesson length:", lessonLength);
+  const { lessonInformation, courseId, currentOrder, lessonOrder } =
+    location.state as {
+      lessonInformation: ILessonInformation;
+      courseId: string;
+      order: number;
+      currentOrder: number; //Kiểm tra xem user có làm lại bài cũ không, nếu có thì không xét finish lesson
+      lessonOrder: number;
+    };
+  const lessonLength = Number(localStorage.getItem("lessonLength") ?? "0");
   // Care
   useEffect(() => {
     fetchUserId(setUserId);
@@ -286,6 +280,7 @@ const LessonLayout: React.FC = () => {
             setIsCongratulation={setIsCongratulation}
             isNext={isNext}
             isFinished={isFinished}
+            isFinishedCourse={currentOrder === lessonLength}
             setIsButtonActive={setIsButtonActive}
             setIsButtonCorrect={setIsButtonCorrect}
             setIsNext={setIsNext}

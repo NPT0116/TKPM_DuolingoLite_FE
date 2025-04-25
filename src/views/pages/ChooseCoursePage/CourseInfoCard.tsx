@@ -70,16 +70,14 @@ const CourseInfoCard: React.FC<ICourseInfoCard> = ({
           </div>
         </div>
         <div className="w-full h-1/2 flex justify-start items-end ">
-          {!isBlock ? (
-            <StepButton
-              onClick={onClick}
-              content={handleCurrentLesson() === totalLesson ? "ÔN" : "HỌC"}
-              width="90%"
-              bgColor="#FFFFFF"
-              textColor="#FF64BF"
-              borderColor="#EFC0DA"
-            />
-          ) : null}
+          <StepButton
+            onClick={onClick}
+            content={handleCurrentLesson() === totalLesson ? "ÔN" : "HỌC"}
+            width="90%"
+            bgColor={isBlock ? "#37464F" : "#FFFFFF"}
+            textColor={isBlock ? "white" : "#FF64BF"}
+            borderColor={isBlock ? "#53646e" : "#EFC0DA"}
+          />
         </div>
       </div>
       {/* Image Decoration */}
