@@ -54,6 +54,7 @@ const HomePage: React.FC = () => {
     try {
       const result = await getUserRegisterCourse();
       console.log("SWITCHHHH COURSE NEE", switchCourse);
+      console.log(result);
       const courseId =
         result!.value.length === 0
           ? ""
@@ -124,8 +125,8 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     if (switchCourse) {
-      fetchUserCourse(navigate, setSelectedCourse, setCourseDetail);
     }
+    fetchUserCourse(navigate, setSelectedCourse, setCourseDetail);
   }, [switchCourse, navigate]);
 
   useEffect(() => {
