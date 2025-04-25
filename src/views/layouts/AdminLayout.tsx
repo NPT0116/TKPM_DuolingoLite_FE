@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-
-import ic_flag from "../../assets/icons/ic_flag.svg";
 import ic_courses from "../../assets/icons/ic_courses.svg";
-import ic_add from "../../assets/icons/ic_add.svg";
 
 const lessonItems = [
   // {
@@ -31,6 +28,17 @@ const lessonItems = [
     label: "Courses",
     children: [{ key: "Courses", label: "Courses" }],
   },
+  {
+    key: "logout",
+    icon: (
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/126/126467.png" // icon logout
+        alt="Logout Icon"
+        style={{ width: 20, height: 20 }}
+      />
+    ),
+    label: "Logout",
+  },
   // {
   //   key: "",
   //   icon: (
@@ -53,6 +61,10 @@ const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
 
   const handleMenuClick = (key: string) => {
+    if (key === "logout") {
+      handleLogout();
+      return;
+    }
     const routeMap: Record<string, string> = {
       course: "/admin/course",
       questions: "/admin/question",
@@ -65,6 +77,15 @@ const AdminLayout: React.FC = () => {
     if (routeMap[key]) {
       navigate(routeMap[key]);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("previousUserRanking");
+    localStorage.removeItem("role");
+    localStorage.removeItem("prevLessonOrder");
+    navigate("/login");
   };
 
   const toggleExpand = (key: string, e: React.MouseEvent) => {
