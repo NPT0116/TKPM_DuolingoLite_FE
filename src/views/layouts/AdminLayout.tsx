@@ -66,6 +66,8 @@ const AdminLayout: React.FC = () => {
       handleLogout(navigate);
       return;
     }
+    setActiveKey(key);
+
     const routeMap: Record<string, string> = {
       course: "/admin/course",
       questions: "/admin/question",
@@ -87,6 +89,7 @@ const AdminLayout: React.FC = () => {
       [key]: !prev[key],
     }));
   };
+  const [activeKey, setActiveKey] = useState<string | null>(null);
 
   return (
     <div className="h-screen flex flex-col">
@@ -130,74 +133,84 @@ const AdminLayout: React.FC = () => {
             </button>
 
             <ul className="flex flex-col " style={{ margin: "40px 0" }}>
-              {lessonItems.map((item) => (
-                <React.Fragment key={item.key}>
-                  <li
-                    onClick={
-                      item.key
-                        ? () => handleMenuClick(item.key)
-                        : (e) => toggleExpand(item.key, e)
-                    }
-                    className="group relative text-[#AFAFAF] flex items-center gap-2 cursor-pointer hover:bg-[#DDF4FF] hover:text-[#1999D6]"
-                    style={{ padding: "10px 5px" }}
-                  >
-                    {/* Icon Container with fixed size */}
-                    <div className="w-10 h-10 flex items-center justify-center">
-                      {item.icon}
-                    </div>
-                    {/* Show label only when not collapsed */}
-                    {!collapsed && (
-                      <span className="font-medium text-lg">{item.label}</span>
-                    )}
-                    {/* Toggle button for children (only in expanded mode and if children exist) */}
-                    {!collapsed &&
-                      item.children &&
-                      item.children.length > 1 && (
-                        <button
-                          onClick={(e) => toggleExpand(item.key, e)}
-                          className="ml-auto text-xl font-bold text-[#AFAFAF] group-hover:text-[#1999D6]"
-                        >
-                          {expanded[item.key] ? "–" : "+"}
-                        </button>
-                      )}
-                    {/* When collapsed and item has children, show popup on hover */}
-                    {collapsed && item.children && (
-                      <div className="absolute left-full hidden group-hover:block bg-white shadow-xl rounded w-[200px]">
-                        <ul>
-                          {item.children.map((child) => (
-                            <li
-                              key={child.key}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleMenuClick(child.key);
-                              }}
-                              className="p-1 hover:bg-gray-100 cursor-pointer font-medium"
-                              style={{ padding: "10px 20px" }}
-                            >
-                              {child.label}
-                            </li>
-                          ))}
-                        </ul>
+              {lessonItems.map((item) => {
+                const isActive = item.key === activeKey;
+                console.log(isActive);
+                return (
+                  <React.Fragment key={item.key}>
+                    <li
+                      onClick={
+                        item.key
+                          ? () => handleMenuClick(item.key)
+                          : (e) => toggleExpand(item.key, e)
+                      }
+                      className="group relative text-[#AFAFAF] flex items-center gap-2 cursor-pointer hover:bg-[#DDF4FF] hover:text-[#1999D6] "
+                      style={{
+                        padding: "10px 5px",
+                        background: isActive ? "#DDF4FF" : "",
+                        color: isActive ? "#1999D6" : "",
+                      }}
+                    >
+                      {/* Icon Container with fixed size */}
+                      <div className="w-10 h-10 flex items-center justify-center">
+                        {item.icon}
                       </div>
+                      {/* Show label only when not collapsed */}
+                      {!collapsed && (
+                        <span className="font-medium text-lg">
+                          {item.label}
+                        </span>
+                      )}
+                      {/* Toggle button for children (only in expanded mode and if children exist) */}
+                      {!collapsed &&
+                        item.children &&
+                        item.children.length > 1 && (
+                          <button
+                            onClick={(e) => toggleExpand(item.key, e)}
+                            className="ml-auto text-xl font-bold text-[#AFAFAF] group-hover:text-[#1999D6]"
+                          >
+                            {expanded[item.key] ? "–" : "+"}
+                          </button>
+                        )}
+                      {/* When collapsed and item has children, show popup on hover */}
+                      {collapsed && item.children && (
+                        <div className="absolute left-full hidden group-hover:block bg-white shadow-xl rounded w-[200px]">
+                          <ul>
+                            {item.children.map((child) => (
+                              <li
+                                key={child.key}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleMenuClick(child.key);
+                                }}
+                                className="p-1 hover:bg-gray-100 cursor-pointer font-medium"
+                                style={{ padding: "10px 20px" }}
+                              >
+                                {child.label}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </li>
+                    {/* In expanded mode, if this item has children and is toggled open, show them */}
+                    {!collapsed && item.children && expanded[item.key] && (
+                      <ul className="flex flex-col gap-1">
+                        {item.children.map((child) => (
+                          <li
+                            key={child.key}
+                            onClick={() => handleMenuClick(child.key)}
+                            className="cursor-pointer p-1 hover:bg-[#DDF4FF] hover:text-[#1999D6] rounded text-[#AFAFAF]"
+                            style={{ padding: "8px 20px" }}
+                          >
+                            {child.label}
+                          </li>
+                        ))}
+                      </ul>
                     )}
-                  </li>
-                  {/* In expanded mode, if this item has children and is toggled open, show them */}
-                  {!collapsed && item.children && expanded[item.key] && (
-                    <ul className="flex flex-col gap-1">
-                      {item.children.map((child) => (
-                        <li
-                          key={child.key}
-                          onClick={() => handleMenuClick(child.key)}
-                          className="cursor-pointer p-1 hover:bg-[#DDF4FF] hover:text-[#1999D6] rounded text-[#AFAFAF]"
-                          style={{ padding: "8px 20px" }}
-                        >
-                          {child.label}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </React.Fragment>
-              ))}
+                  </React.Fragment>
+                );
+              })}
             </ul>
           </div>
         </aside>
