@@ -210,7 +210,7 @@ const RegisterPage: React.FC = () => {
           TẠO TÀI KHOẢN
         </button>
 
-        <div className="text-[#52656B] flex items-center w-full gap-2">
+        {/* <div className="text-[#52656B] flex items-center w-full gap-2">
           <hr className="flex-grow border-t border-[#52656B]" />
           <div className="text-sm font-bold">HOẶC</div>
           <hr className="flex-grow border-t border-[#52656B]" />
@@ -230,7 +230,7 @@ const RegisterPage: React.FC = () => {
             <img src={facebook_icon} alt="" className="w-[25px] h-[25px]" />
             <div>FACEBOOK</div>
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
