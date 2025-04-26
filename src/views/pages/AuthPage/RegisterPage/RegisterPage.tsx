@@ -79,31 +79,31 @@ const RegisterPage: React.FC = () => {
         if (error.response.data.code.toLowerCase().includes("firstname")) {
           setErrors((prev) => ({
             ...prev,
-            firstName: error.response.data.code,
+            firstName: error.response.data.description,
           }));
         }
         if (error.response.data.code.toLowerCase().includes("lastname")) {
           setErrors((prev) => ({
             ...prev,
-            lastName: error.response.data.code,
+            lastName: error.response.data.description,
           }));
         }
         if (error.response.data.code.toLowerCase().includes("email")) {
           setErrors((prev) => ({
             ...prev,
-            email: error.response.data.code,
+            email: error.response.data.description,
           }));
         }
         if (error.response.data.code.toLowerCase().includes("username")) {
           setErrors((prev) => ({
             ...prev,
-            username: error.response.data.code,
+            username: error.response.data.description,
           }));
         }
         if (error.response.data.code.toLowerCase().includes("password")) {
           setErrors((prev) => ({
             ...prev,
-            password: error.response.data.code,
+            password: error.response.data.description,
           }));
         }
       }
