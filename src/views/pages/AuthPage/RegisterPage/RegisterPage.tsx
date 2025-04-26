@@ -79,31 +79,31 @@ const RegisterPage: React.FC = () => {
         if (error.response.data.code.toLowerCase().includes("firstname")) {
           setErrors((prev) => ({
             ...prev,
-            firstName: error.response.data.code,
+            firstName: error.response.data.description,
           }));
         }
         if (error.response.data.code.toLowerCase().includes("lastname")) {
           setErrors((prev) => ({
             ...prev,
-            lastName: error.response.data.code,
+            lastName: error.response.data.description,
           }));
         }
         if (error.response.data.code.toLowerCase().includes("email")) {
           setErrors((prev) => ({
             ...prev,
-            email: error.response.data.code,
+            email: error.response.data.description,
           }));
         }
         if (error.response.data.code.toLowerCase().includes("username")) {
           setErrors((prev) => ({
             ...prev,
-            username: error.response.data.code,
+            username: error.response.data.description,
           }));
         }
         if (error.response.data.code.toLowerCase().includes("password")) {
           setErrors((prev) => ({
             ...prev,
-            password: error.response.data.code,
+            password: error.response.data.description,
           }));
         }
       }
@@ -210,7 +210,7 @@ const RegisterPage: React.FC = () => {
           TẠO TÀI KHOẢN
         </button>
 
-        <div className="text-[#52656B] flex items-center w-full gap-2">
+        {/* <div className="text-[#52656B] flex items-center w-full gap-2">
           <hr className="flex-grow border-t border-[#52656B]" />
           <div className="text-sm font-bold">HOẶC</div>
           <hr className="flex-grow border-t border-[#52656B]" />
@@ -230,7 +230,7 @@ const RegisterPage: React.FC = () => {
             <img src={facebook_icon} alt="" className="w-[25px] h-[25px]" />
             <div>FACEBOOK</div>
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -143,12 +143,12 @@ const LoginPage: React.FC = () => {
           ĐĂNG NHẬP
         </button>
 
-        <div className="text-[#52656B] flex items-center w-full gap-2">
+        {/* <div className="text-[#52656B] flex items-center w-full gap-2">
           <hr className="flex-grow border-t border-[#52656B]" />
           <div className="text-sm font-bold">HOẶC</div>
           <hr className="flex-grow border-t border-[#52656B]" />
-        </div>
-        <div className="flex w-full gap-4">
+        </div> */}
+        {/* <div className="flex w-full gap-4">
           <button
             className="w-[50%] text-[#3C5A99] font-semibold flex justify-center gap-1 border-2 border-[#37464F] border-b-0 rounded-2xl hover:bg-[#2b131f42] cursor-pointer 
           transition-all duration-100 active:translate-y-0.5"
@@ -177,7 +177,7 @@ const LoginPage: React.FC = () => {
             <img src={google_icon} alt="" className="w-[25px] h-[25px]" />
             <div>GOOGLE</div>
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
